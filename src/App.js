@@ -8,6 +8,7 @@ import EditItem from './components/ItemsCrud/EditItem';
 import Login from './components/Login';
 import Register from './components/Register';
 import './App.css';
+import Header from './components/Header';
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -36,8 +37,8 @@ const App = () => {
 
   return (
     <Router>
-      <div className="bg-gray-100 min-h-screen">
-        <nav className="bg-blue-500 p-4 flex justify-between items-center">
+      <div className="bg-gradient-to-r from-red-500 to-indigo-600 min-h-screen">
+        {/* <nav className="bg-blue-500 p-4 flex justify-between items-center">
           <div>
             <Link to="/" className="text-white mr-4">Home</Link>
             <Link to="/items" className="text-white mr-4">Lista e Itemeve</Link>
@@ -56,8 +57,8 @@ const App = () => {
               </>
             )}
           </div>
-        </nav>
-        <div className="p-4">
+        </nav> */}
+        <div className="py-4">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/items" element={<ItemList />} />
