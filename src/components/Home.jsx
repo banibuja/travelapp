@@ -60,13 +60,13 @@ function Home() {
   return (
     
     
-    <div className="bg-cover bg-center bg-gradient-to-r from-red-500 to-indigo-600 h-screen text-white" style={{ backgroundImage: "url('/path/to/background-image.jpg')" }}>
+    <div className="bg-gradient-to-r from-red-500 to-indigo-600 h-screen text-white" style={{ backgroundImage: "url('/path/to/background-image.jpg')" }}>
     
       {/* Header */}
      <Header />
 
       {/* Search Form */}
-      <div className="flex justify-center mt-10">
+      <div className="flex justify-center mt-10 ">
   <div className="bg-gradient-to-r from-red-500 to-indigo-600 border text-black rounded-lg shadow-lg p-10 w-11/12 md:w-3/5 transform hover:scale-105 transition-transform duration-300">
     <div className="flex items-center space-x-8 mb-6">
       <label className="flex items-center space-x-2 text-lg text-gray-800">

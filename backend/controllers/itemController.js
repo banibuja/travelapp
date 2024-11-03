@@ -3,24 +3,32 @@ const Item = require('../models/item');
 // Krijimi i Item-it
 const createItem = async (req, res) => {
   try {
-    const item = await Item.create(req.body);
+    const itemData = {
+      ...req.body,
+      userId: req.user.id, 
+    };
+    const item = await Item.create(itemData);
     res.json(item);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-// Merr të gjitha Item-et
+
 const getItems = async (req, res) => {
   try {
-    const items = await Item.findAll();
+    const items = await Item.findAll({
+      where: {
+        userId: req.user.id, 
+      }
+    });
     res.json(items);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-// Përditësimi i Item-it
+
 const updateItem = async (req, res) => {
   try {
     const { id } = req.params;
@@ -36,7 +44,6 @@ const updateItem = async (req, res) => {
   }
 };
 
-// Fshirja e Item-it
 const deleteItem = async (req, res) => {
   try {
     const { id } = req.params;

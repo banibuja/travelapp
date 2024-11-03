@@ -17,30 +17,27 @@ const User = require('./models/user');
 const { createItem, getItems, updateItem, deleteItem } = require('./controllers/itemController');
 
 
-// Initialize Express app
 const app = express();
 
 // Configure session middleware with secure settings
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'supersecret', // Store secret in environment variable
+  secret: process.env.SESSION_SECRET || 'supersecret', 
   resave: false,
   saveUninitialized: false,
   cookie: {
-    httpOnly: true, // Helps prevent XSS attacks
-    secure: process.env.NODE_ENV === 'production', // Set to true if using HTTPS
+    httpOnly: true, 
+    secure: process.env.NODE_ENV === 'production', 
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
 }));
 
-// Initialize cookie-parser
 app.use(cookieParser());
 
-// Initialize passport and session middleware
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-// Configure Helmet for extra security headers
+// Configure Helmet  extra security headers
 app.use(helmet());
 
 // Configure rate limiting for DDoS protection
