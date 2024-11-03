@@ -3,11 +3,19 @@ import photobackground from './images/aaa.webp'
 import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import Header from './Header';
+import Qytetet from './qytetet/page';
+import { data } from 'autoprefixer';
 
 
 
 function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOptions, setSearchOptions] = useState({
+    nga: "",
+    deri: "",
+    data: new Date().toLocaleDateString("en-GB"),
+    tripType: ""
+  });
   const [user, setUser] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const cardData = [
@@ -55,7 +63,28 @@ function Home() {
     }
   };
   
-
+  const handleTripType = async (option) => {
+    console.log(searchOptions);
+    setSearchOptions(prev => {
+      return {...prev, tripType: option.target.value}
+    })
+  }
+  const handleNga = async (qyteti) => {
+    console.log(searchOptions);
+    setSearchOptions(prev => {
+      return {...prev, nga: qyteti.target.value}
+    })
+  }
+  const handleDeri = async (qyteti) => {
+    setSearchOptions(prev => {
+      return {...prev, deri: qyteti.target.value}
+    })
+  }
+  const handleDatenENisjes = async (data) => {
+    setSearchOptions(prev => {
+      return {...prev, data:data.target.value}
+    })
+  }
 
   return (
     
@@ -70,26 +99,30 @@ function Home() {
   <div className="bg-gradient-to-r from-red-500 to-indigo-600 border text-black rounded-lg shadow-lg p-10 w-11/12 md:w-3/5 transform hover:scale-105 transition-transform duration-300">
     <div className="flex items-center space-x-8 mb-6">
       <label className="flex items-center space-x-2 text-lg text-gray-800">
-        <input type="radio" name="tripType" className="form-radio text-red-600 focus:ring-red-500" />
+        <input type="radio" name="tripType" onClick={handleTripType} value="one-way" className="form-radio text-red-600 focus:ring-red-500" />
         <span>Nje drejtim</span>
       </label>
       <label className="flex items-center space-x-2 text-lg text-gray-800">
-        <input type="radio" name="tripType" className="form-radio text-red-600 focus:ring-red-500" />
+        <input type="radio" name="tripType" onClick={handleTripType} value="two-ways" className="form-radio text-red-600 focus:ring-red-500" />
         <span>Vajtje-ardhje</span>
       </label>
     </div>
     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
       <div className="col-span-1">
         <label className="block text-gray-700 font-semibold mb-1">Nga</label>
-        <input type="text" className="border border-gray-300 rounded p-3 w-full focus:ring focus:ring-red-200" placeholder="Qyteti i nisjes" />
+        <select name="qytetiNisjes" id="qytetiNisjes" onChange={handleNga}  className='border border-gray-300 rounded p-3 w-full focus:ring focus:ring-red-200'>
+          <Qytetet/>
+        </select>
       </div>
       <div className="col-span-1">
         <label className="block text-gray-700 font-semibold mb-1">Deri</label>
-        <input type="text" className="border border-gray-300 rounded p-3 w-full focus:ring focus:ring-red-200" placeholder="Qyteti i mbërritjes" />
+        <select name="qytetiMberrites" id="qytetiMberrites" onChange={handleDeri} className='border border-gray-300 rounded p-3 w-full focus:ring focus:ring-red-200'>
+          <Qytetet />
+        </select>
       </div>
       <div className="col-span-1">
         <label className="block text-gray-700 font-semibold mb-1">Data e nisjes</label>
-        <input type="date" className="border border-gray-300 rounded p-3 w-full focus:ring focus:ring-red-200" />
+        <input type="date"  lang="en-GB" onChange={handleDatenENisjes} className="border border-gray-300 rounded p-3 w-full focus:ring focus:ring-red-200" />
       </div>
       <div className="col-span-1 flex items-end">
   <button className="btn-custom bg-gradient-to-r from-red-500 to-indigo-500 text-white font-bold py-3 px-4 rounded-lg w-full hover:from-yellow-500 hover:to-red-500 focus:outline-none focus:ring-4 focus:ring-red-300">
