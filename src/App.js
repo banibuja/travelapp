@@ -37,15 +37,12 @@ const App = () => {
 
   return (
     <Router>
-          <div>
+          <div className='overflow-hidden'>
             <Link to="/" className="text-white mr-4">Home</Link>
-            {/* <Link to="/turqi" className="text-white mr-4">Turqi</Link> */}
-
-            {/* <Link to="/items" className="text-white mr-4">Items</Link> */}
-            {/* <Link to="/dashboard" className="text-white mr-4">Dashboard</Link> */}
+      
 
     
-        <div className="py-4">
+        <div className="">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/turqi" element={<Turqi />} />
