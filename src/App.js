@@ -8,6 +8,7 @@ import './App.css';
 import Header from './components/Header';
 import { AddItem, EditItem, ItemList } from './components/ItemsCrud/ItemCrud'; // Import CRUD components
 import Dashboard from './components/dashboard/Dashboard';
+import Turqi from './components/Turqi';
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -36,25 +37,21 @@ const App = () => {
 
   return (
     <Router>
-      <div className="bg-gradient-to-r from-red-500 to-indigo-600 min-h-screen">
-        <nav className="bg-blue-500 p-4 flex justify-between items-center">
           <div>
             <Link to="/" className="text-white mr-4">Home</Link>
-            <Link to="/items" className="text-white mr-4">Items</Link>
-            <Link to="/dashboard" className="text-white mr-4">Dashboard</Link>
+            {/* <Link to="/turqi" className="text-white mr-4">Turqi</Link> */}
 
-          </div>
+            {/* <Link to="/items" className="text-white mr-4">Items</Link> */}
+            {/* <Link to="/dashboard" className="text-white mr-4">Dashboard</Link> */}
+
     
-        </nav>
         <div className="py-4">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/turqi" element={<Turqi />} />
+
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/items" element={<ItemList />} />
-            <Route path="/add" element={<AddItem />} /> 
-            <Route path="/edit/:id" element={<EditItem />} /> 
-            <Route path="/dashboard" element={<Dashboard />} /> 
 
           </Routes>
         </div>
