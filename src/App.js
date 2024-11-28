@@ -9,6 +9,7 @@ import Header from './components/Header';
 import { AddItem, EditItem, ItemList } from './components/ItemsCrud/ItemCrud'; // Import CRUD components
 import Dashboard from './components/dashboard/Dashboard';
 import Turqi from './components/Turqi';
+import Bullgari from './components/Bullgari';
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -46,6 +47,8 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/turqi" element={<Turqi />} />
+            <Route path="/bullgari" element={<Bullgari />} />
+
 
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

@@ -28,7 +28,6 @@ function HomeTable() {
   return (
     <div>
       <div className="relative w-full min-h-[20rem]">
-        {/* Fotoja si background plotësisht responsive */}
         <img
           className="absolute inset-0 h-full w-full object-cover"
           src="https://images.ctfassets.net/pzootm7d2s0g/1yMXBdbEwCAfuujxANPt4f/68edd67a4c458ca8339f7d8c29775d78/BANNER11.jpg"

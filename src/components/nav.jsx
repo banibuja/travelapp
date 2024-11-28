@@ -12,7 +12,7 @@ function Nav() {
       <div className="container mx-auto flex justify-center items-center py-2 border-b">
         <div className="flex items-center space-x-6">
           <a href="#" className="text-gray-700 hover:text-blue-500">
-            <span role="img" aria-label="heart">❤️</span> Të preferuarat
+            <span role="img" aria-label="heart"> <a href="/">❤️</a></span> Të preferuarat
           </a>
           <input
             type="text"
@@ -53,14 +53,12 @@ function Nav() {
       {/* Navigimi kryesor */}
       <div className="container mx-auto flex justify-center items-center py-4">
         <div className="hidden md:flex space-x-6 truncate text-sm font-medium text-black transition-colors hover:text-primary">
-          <a href="#" className="text-gray-700 hover:text-blue-500">
-            Visit Kosova
-          </a>
-          <a href="#" className="text-gray-700 hover:text-blue-500">
+         
+          <a href="/turqi" className="text-gray-700 hover:text-blue-500">
             Turqi
           </a>
-          <a href="#" className="text-gray-700 hover:text-blue-500">
-            Dimri
+          <a href="/bullgari" className="text-gray-700 hover:text-blue-500">
+            Bullgari
           </a>
           <a href="#" className="text-gray-700 hover:text-blue-500">
             Festat e fundvitit
@@ -78,10 +76,13 @@ function Nav() {
             Dubai
           </a>
           <a href="#" className="text-gray-700 hover:text-blue-500">
-            Client Care
+            Visit Kosova
           </a>
-          <a href="#" className="text-gray-700 hover:text-blue-500">
-            B2B Login
+          <a href="/register" className="text-gray-700 hover:text-blue-500">
+            Register
+          </a>
+          <a href="/login" className="text-gray-700 hover:text-blue-500">
+            Login
           </a>
           <a href="#" className="text-gray-700 hover:text-blue-500">
             Kontakti
