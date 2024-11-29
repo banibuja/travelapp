@@ -6,48 +6,35 @@ import Login from './components/Login';
 import Register from './components/Register';
 import './App.css';
 import Header from './components/Header';
-import { AddItem, EditItem, ItemList } from './components/ItemsCrud/ItemCrud'; // Import CRUD components
 import Dashboard from './components/dashboard/Dashboard';
 import Turqi from './components/Turqi';
 import Bullgari from './components/Bullgari';
+import AddUser from './components/dashboard/AddUser';
+import ManageUser from './components/dashboard/ManageUser';
+import ManageHomeTable from './components/dashboard/ManageHomeTable';
+import TurqiTable from './components/dashboard/TurqiTable';
+
 
 const App = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/user', { withCredentials: true });
-        setUser(response.data.user);
-      } catch (error) {
-        console.log('Error fetching user:', error);
-      }
-    };
-    fetchUser();
-  }, []);
-
-  const handleLogout = async () => {
-    try {
-      await axios.post('http://localhost:5000/logout', {}, { withCredentials: true });
-      setUser(null);
-      window.location.href = '/';
-    } catch (error) {
-      console.error('Logout error:', error.response || error.message);
-    }
-  };
+ 
 
   return (
     <Router>
           <div className='overflow-hidden'>
-            <Link to="/" className="text-white mr-4">Home</Link>
       
 
     
-        <div className="">
+        <div>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/turqi" element={<Turqi />} />
             <Route path="/bullgari" element={<Bullgari />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/AddUser" element={<AddUser />} />
+            <Route path="/ManageUser" element={<ManageUser />} />
+            <Route path="/ManageHomeTable" element={<ManageHomeTable />} />
+            <Route path="/TurqiTable" element={<TurqiTable />} />
+            {/* <Route path="/AddRoomPrices" element={<AddRoomPrices />} /> */}
 
 
             <Route path="/login" element={<Login />} />

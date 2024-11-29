@@ -12,9 +12,10 @@ const rateLimit = require('express-rate-limit');
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const sequelize = require('./db');
-const Item = require('./models/item');
 const User = require('./models/user');
-const { createItem, getItems, updateItem, deleteItem } = require('./controllers/itemController');
+const { registerUser, loginUser, getUsers, deleteUser, updateUser, verifyRole  } = require('./controllers/userController');
+const { getAllTravelPlans, addTravelPlan, deleteTravelPlan, updateTravelPlan  } = require('./controllers/travelController');
+const { getAllRoomPrices, addRoomPrice, deleteRoomPrice, updateRoomPrice  } = require('./controllers/roomPricesController');
 
 
 const app = express();
@@ -42,15 +43,14 @@ app.use(helmet());
 
 // Configure rate limiting for DDoS protection
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000, 
   max: 100, // Limit each IP to 100 requests per windowMs
 });
 app.use(limiter);
 
-// Configure body parser and CORS
 app.use(cors({
-  origin: 'http://localhost:3000', // Frontend URL
-  credentials: true // Allow credentials (cookies) to be sent
+  origin: 'http://localhost:3000', 
+  credentials: true 
 }));
 app.use(bodyParser.json());
 
@@ -106,49 +106,15 @@ const isAuthenticated = (req, res, next) => {
   });
 };
 
-// Auth route for login
-app.post('/login', (req, res, next) => {
-  passport.authenticate('local', async (err, user, info) => {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      return res.status(401).json({ message: 'Login i dështuar. Provoni përsëri.' });
-    }
-    req.logIn(user, (err) => {
-      if (err) {
-        return next(err);
-      }
-      const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, process.env.JWT_SECRET || 'supersecret', {
-        expiresIn: '24h'
-      });
-      res.cookie('ubtsecured', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 24 * 60 * 60 * 1000,
-        sameSite: 'strict'
-      });
-      res.status(200).json({ message: 'Login i suksesshëm', user });
-    });
-  })(req, res, next);
-});
+
 
 // Route to get the logged-in user's information
 app.get('/user', isAuthenticated, (req, res) => {
   res.json({ user: req.user });
 });
 
-// Registration route
-app.post('/register', async (req, res) => {
-  const { username, password } = req.body;
-  const hash = await bcrypt.hash(password, 10);
-  try {
-    const user = await User.create({ username, password: hash, role: 'user' });
-    res.json(user);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+
+
 
 // Logout route
 app.post('/logout', (req, res) => {
@@ -165,11 +131,36 @@ app.post('/logout', (req, res) => {
   });
 });
 
-// CRUD routes for items
-app.post('/items', isAuthenticated, createItem);
-app.get('/items', isAuthenticated, getItems);
-app.put('/items/:id', isAuthenticated, updateItem);
-app.delete('/items/:id', isAuthenticated, deleteItem);
+// Check session or authentication status
+app.get('/check-session', (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.status(200).json({ message: 'User is logged in' });
+  } else {
+    return res.status(401).json({ message: 'User not logged in' });
+  }
+});
+
+
+app.post('/register', registerUser);
+app.post('/login', (req, res, next) => loginUser(req, res, next));
+app.get('/users-get', isAuthenticated, getUsers);
+app.delete('/users/:id', isAuthenticated, deleteUser);
+app.put('/users/:id', isAuthenticated, updateUser);
+// app.use('/manage-user', verifyRole('admin'));
+
+
+app.post('/travel-plans', addTravelPlan);
+app.get('/travel-plans', getAllTravelPlans);
+app.delete('/travel-plans/:id', deleteTravelPlan);
+app.put('/travel-plans/:id', updateTravelPlan);
+
+
+app.post('/add-room-price', addRoomPrice);
+app.get('/room-price', getAllRoomPrices);
+app.delete('/room-prices-delete/:id', deleteRoomPrice);
+app.put('/room-prices-update/:id', updateRoomPrice);
+
+
 
 // Initialize server and ensure database and table creation
 const initializeDatabase = async () => {

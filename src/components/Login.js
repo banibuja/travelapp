@@ -1,10 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';  
+import Nav from './nav';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();  
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/check-session', { withCredentials: true });
+        if (response.status === 200) {
+          navigate('/dashboard');
+        }
+      } catch (error) {
+        console.log('User is not logged in');
+      }
+    };
+    checkLoginStatus();
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,8 +33,7 @@ const Login = () => {
       );
       console.log('Login response:', response);
       setMessage('Login ishte i suksesshëm.');
-      window.location.reload();
-      window.location.href = '/';
+      navigate('/dashboard'); // Redirect to dashboard after successful login
     } catch (error) {
       console.error('Login error:', error.response || error.message);
       setMessage('Gabim gjatë login.');
@@ -25,7 +41,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-500 to-blue-600">
+
+    <><Nav /><div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-500 to-blue-600">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
         <h2 className="text-3xl font-semibold text-gray-800 text-center mb-6">Hyr në Llogari</h2>
         <form onSubmit={handleSubmit}>
@@ -40,8 +57,7 @@ const Login = () => {
               onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Shkruani username tuaj"
-              required
-            />
+              required />
           </div>
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="password">
@@ -54,8 +70,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Shkruani password tuaj"
-              required
-            />
+              required />
           </div>
           <button
             type="submit"
@@ -72,7 +87,7 @@ const Login = () => {
           </a>
         </p>
       </div>
-    </div>
+    </div></>
   );
 };
 

@@ -1,10 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Nav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const response = await fetch('/check-session', { method: 'GET', credentials: 'include' });
+        if (response.ok) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } catch (error) {
+        console.error('Error checking session:', error);
+        setIsLoggedIn(false);
+      }
+    };
+
+    checkSession();
+  }, []);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/logout', {}, { withCredentials: true });
+
+      if (response.status === 200) {
+        window.location.reload(); 
+        navigate('/');
+        
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (
@@ -12,7 +49,9 @@ function Nav() {
       <div className="container mx-auto flex justify-center items-center py-2 border-b">
         <div className="flex items-center space-x-6">
           <a href="#" className="text-gray-700 hover:text-blue-500">
-            <span role="img" aria-label="heart"> <a href="/">❤️</a></span> Të preferuarat
+            <span role="img" aria-label="heart">
+              <a href="/">❤️</a>
+            </span> Të preferuarat
           </a>
           <input
             type="text"
@@ -53,40 +92,31 @@ function Nav() {
       {/* Navigimi kryesor */}
       <div className="container mx-auto flex justify-center items-center py-4">
         <div className="hidden md:flex space-x-6 truncate text-sm font-medium text-black transition-colors hover:text-primary">
-         
-          <a href="/turqi" className="text-gray-700 hover:text-blue-500">
-            Turqi
-          </a>
-          <a href="/bullgari" className="text-gray-700 hover:text-blue-500">
-            Bullgari
-          </a>
-          <a href="#" className="text-gray-700 hover:text-blue-500">
-            Festat e fundvitit
-          </a>
-          <a href="#" className="text-gray-700 hover:text-blue-500">
-            Maqedoni
-          </a>
-          <a href="#" className="text-gray-700 hover:text-blue-500">
-            Greqi
-          </a>
-          <a href="#" className="text-gray-700 hover:text-blue-500">
-            Europe-City Break
-          </a>
-          <a href="#" className="text-gray-700 hover:text-blue-500">
-            Dubai
-          </a>
-          <a href="#" className="text-gray-700 hover:text-blue-500">
-            Visit Kosova
-          </a>
-          <a href="/register" className="text-gray-700 hover:text-blue-500">
-            Register
-          </a>
-          <a href="/login" className="text-gray-700 hover:text-blue-500">
-            Login
-          </a>
-          <a href="#" className="text-gray-700 hover:text-blue-500">
-            Kontakti
-          </a>
+          <a href="/turqi" target="_blank" className="text-gray-700 hover:text-blue-500">Turqi</a>
+          <a href="/bullgari" target="_blank" className="text-gray-700 hover:text-blue-500">Bullgari</a>
+          <a href="#" className="text-gray-700 hover:text-blue-500">Festat e fundvitit</a>
+          <a href="#" className="text-gray-700 hover:text-blue-500">Maqedoni</a>
+          <a href="#" className="text-gray-700 hover:text-blue-500">Greqi</a>
+          <a href="#" className="text-gray-700 hover:text-blue-500">Europe-City Break</a>
+          <a href="#" className="text-gray-700 hover:text-blue-500">Dubai</a>
+          <a href="#" className="text-gray-700 hover:text-blue-500">Visit Kosova</a>
+
+          {isLoggedIn ? (
+            <button onClick={handleLogout} className="text-gray-700 hover:text-blue-500">
+              Logout
+            </button>
+          ) : (
+            <>
+              <a href="/register" className="text-gray-700 hover:text-blue-500">
+                Register
+              </a>
+              <a href="/login" className="text-gray-700 hover:text-blue-500">
+                Login
+              </a>
+            </>
+          )}
+
+          <a href="#" className="text-gray-700 hover:text-blue-500">Kontakti</a>
         </div>
       </div>
     </nav>
