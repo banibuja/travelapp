@@ -5,14 +5,17 @@ import axios from 'axios';
 function Nav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [role, setRole] = useState('');
   const navigate = useNavigate();
 
 
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await fetch('/check-session', { method: 'GET', credentials: 'include' });
+        const response = await fetch('http://localhost:5000/user', { method: 'GET', credentials: 'include' });
+        const data = await response.json();
         if (response.ok) {
+          setRole(data.user.role)
           setIsLoggedIn(true);
         } else {
           setIsLoggedIn(false);
@@ -43,14 +46,16 @@ function Nav() {
       console.error("Logout failed:", error);
     }
   };
-
+  const handleDashboard = () => {
+    navigate('/dashboard');
+  }
   return (
     <nav className="bg-white shadow-md">
       <div className="container mx-auto flex justify-center items-center py-2 border-b">
         <div className="flex items-center space-x-6">
           <a href="#" className="text-gray-700 hover:text-blue-500">
             <span role="img" aria-label="heart">
-              <a href="/">❤️</a>
+              &#x2764;&#xFE0F;
             </span> Të preferuarat
           </a>
           <input
@@ -70,8 +75,8 @@ function Nav() {
 
             {/* Menuja e dropdown-it */}
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-md w-32">
-                <ul className="py-1 text-sm">
+              <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-md w-32 z-20 ">
+                <ul className="py-1 text-sm ">
                   <li>
                     <a href="#" className="block px-4 py-2 text-gray-700 hover:text-blue-500">
                       SQ
@@ -92,8 +97,8 @@ function Nav() {
       {/* Navigimi kryesor */}
       <div className="container mx-auto flex justify-center items-center py-4">
         <div className="hidden md:flex space-x-6 truncate text-sm font-medium text-black transition-colors hover:text-primary">
-          <a href="/turqi" target="_blank" className="text-gray-700 hover:text-blue-500">Turqi</a>
-          <a href="/bullgari" target="_blank" className="text-gray-700 hover:text-blue-500">Bullgari</a>
+          <a href="/turqi" target="" className="text-gray-700 hover:text-blue-500">Turqi</a>
+          <a href="/bullgari" target="" className="text-gray-700 hover:text-blue-500">Bullgari</a>
           <a href="#" className="text-gray-700 hover:text-blue-500">Festat e fundvitit</a>
           <a href="#" className="text-gray-700 hover:text-blue-500">Maqedoni</a>
           <a href="#" className="text-gray-700 hover:text-blue-500">Greqi</a>
@@ -105,6 +110,7 @@ function Nav() {
             <button onClick={handleLogout} className="text-gray-700 hover:text-blue-500">
               Logout
             </button>
+            
           ) : (
             <>
               <a href="/register" className="text-gray-700 hover:text-blue-500">
@@ -115,7 +121,11 @@ function Nav() {
               </a>
             </>
           )}
-
+          {role == 'admin' ? (
+            <button onClick={handleDashboard} className="text-gray-700 hover:text-blue-500">
+              Dashboard
+            </button>
+          ): (<></>)}
           <a href="#" className="text-gray-700 hover:text-blue-500">Kontakti</a>
         </div>
       </div>

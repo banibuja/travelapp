@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 function HomeTable() {
-  const [selected, setSelected] = useState("Aranzhman");
+  const [selected, setSelected] = useState(0);
   const [departure, setDeparture] = useState("");
   const [destination, setDestination] = useState("");
   const [nights, setNights] = useState("");
   const [startDate, setStartDate] = useState(null);
-
   const airports = [
     "Pristina International Airport (PRN)",
     "Tirana International Airport (TIA)",
@@ -24,7 +23,10 @@ function HomeTable() {
     today.setHours(0, 0, 0, 0);
     return date > today;
   };
-
+  useEffect(() => {
+    const slider = document.getElementById("slider")
+        slider.style.transform = `translateX(${selected * 7}rem)`;
+  }, [selected])
   return (
     <div>
       <div className="relative w-full min-h-[20rem]">
@@ -38,42 +40,46 @@ function HomeTable() {
         <div className="absolute inset-0 flex flex-col items-center justify-center px-2 space-y-3 text-black font-medium">
           {/* Opsionet */}
           <div className="flex bg-[#ffffff4c] shadow-lg rounded-lg overflow-hidden text-[#142347] font-600">
-            <div className="flex space-x-5">
+            <div className="flex  relative">
+
+              <div className="flex absolute top-0 left-0 items-center transition-all duration-200 md:w-28 w-28 h-full px-4 py-2 rounded-lg bg-white text-[#142347] font-600" id="slider"></div>
+
               {/* Butoni Aranzhman */}
               <button
-                className={`flex items-center px-4 py-2 rounded-lg  ${
-                  selected === "Aranzhman" ? "bg-white text-[#142347] font-600" : "bg-transparent"
+                className={`flex items-center justify-center px-4 py-2 rounded-lg w-28  ${
+                  selected === "Aranzhman" //? "bg-white text-[#142347] font-600" : "bg-transparent"
                 }`}
-                onClick={() => setSelected("Aranzhman")}
+                onClick={() => setSelected(0)}
               >
-                Aranzhman
+              <span className="z-10">Aranzhman</span>
+                
               </button>
 
               {/* Butoni Hotel */}
               <button
-                className={`flex items-center px-4 py-2 rounded-lg  ${
-                  selected === "Hotel" ? "bg-white text-[#142347] font-medium" : "bg-transparent"
+                className={`flex items-center justify-center px-4 py-2 rounded-lg w-28 ${
+                  selected === "Hotel" //? "bg-white text-[#142347] font-600" : "bg-transparent"
                 }`}
-                onClick={() => setSelected("Hotel")}
+                onClick={() => setSelected(1)}
               >
-                Hotel
+              <span className="z-10">Hotel</span>
               </button>
 
               {/* Butoni Fluturimi */}
               <button
-                className={`flex items-center px-4 py-2 rounded-lg text-[#142347] font-600 ${
-                  selected === "Fluturimi" ? "bg-white text-blue-600" : "bg-transparent"
+                className={`flex items-center justify-center px-4 py-2 rounded-lg w-28  ${
+                  selected === "Fluturimi" //? "bg-white font-600" : "bg-transparent"
                 }`}
-                onClick={() => setSelected("Fluturimi")}
+                onClick={() => setSelected(2)}
               >
-                Fluturimi
+                <span className="z-10">Fluturimi</span>
               </button>
             </div>
           </div>
 
           {/* Inputet dhe butoni */}
           <div className="flex bg-[#ffffff4c] shadow-lg rounded-lg overflow-hidden p-4 space-x-4 w-full max-w-5xl">
-            {selected === "Hotel" && (
+            {selected === 1 && (
               <>
                 <select
                   className="border rounded-lg p-2 w-auto"
@@ -116,7 +122,7 @@ function HomeTable() {
                 />
               </>
             )}
-            {selected === "Fluturimi" && (
+            {selected === 2 && (
               <>
                 <select
                   className="border rounded-lg p-2 w-[12rem]"
@@ -159,7 +165,7 @@ function HomeTable() {
                 />
               </>
             )}
-            {selected === "Aranzhman" && (
+            {selected === 0 && (
               <>
                 <select
                   className="border rounded-lg p-2 w-[11.5rem]"

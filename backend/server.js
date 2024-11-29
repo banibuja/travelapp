@@ -17,8 +17,21 @@ const { registerUser, loginUser, getUsers, deleteUser, updateUser, verifyRole  }
 const { getAllTravelPlans, addTravelPlan, deleteTravelPlan, updateTravelPlan  } = require('./controllers/travelController');
 const { getAllRoomPrices, addRoomPrice, deleteRoomPrice, updateRoomPrice  } = require('./controllers/roomPricesController');
 
-
 const app = express();
+
+const allowedOrigin = "http://localhost:3000";
+
+const originWhitelistMiddleware = (req, res, next) => {
+  const origin = req.headers.origin;
+
+  if (origin === allowedOrigin) {
+    next(); // Allow the request
+  } else {
+    res.status(403).json({ error: "Forbidden: Invalid origin" });
+  }
+};
+
+app.use(originWhitelistMiddleware);
 
 // Configure session middleware with secure settings
 app.use(session({
