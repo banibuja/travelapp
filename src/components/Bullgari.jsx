@@ -1,12 +1,10 @@
 import React from 'react'
-import Nav from './nav'
 import Footer from './Footer'
 
 function Bullgari() {
   return (
     <div>
 
-        <Nav />
       
         <div className="flex flex-col justify-center mt-[5rem] items-center space-x-4 mx-auto truncate whitespace-break-spaces text-navy text-xl font-bold tracking-tight lg:text-2xl">
         <span>Bankso | Bullgari</span>

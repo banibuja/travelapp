@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 // import { FaPhoneAlt, FaWhatsapp, FaViber, FaHeadset, FaCheckCircle } from 'react-icons/fa';
 import Footer from './Footer';
-import Nav from './nav';
 
 function Turqi() {
   const [roomPrices, setRoomPrices] = useState([]);
@@ -21,7 +20,6 @@ function Turqi() {
   return (
     <>
       <div>
-        <Nav />
         <div className="relative w-full min-h-[20rem]">
           <img
             className="absolute inset-0 h-full w-full object-cover"

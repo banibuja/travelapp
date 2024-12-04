@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';  
-import Nav from './nav';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -31,7 +30,7 @@ const Login = () => {
         { username, password },
         { withCredentials: true }
       );
-      console.log('Login response:', response);
+      // console.log('Login response:', response);
       setMessage('Login ishte i suksesshëm.');
       navigate('/'); // Redirect to dashboard after successful login
     } catch (error) {
@@ -42,7 +41,7 @@ const Login = () => {
 
   return (
 
-    <><Nav /><div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-500 to-blue-600">
+    <><div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-500 to-blue-600">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
         <h2 className="text-3xl font-semibold text-gray-800 text-center mb-6">Hyr në Llogari</h2>
         <form onSubmit={handleSubmit}>

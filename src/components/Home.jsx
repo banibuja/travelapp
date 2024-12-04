@@ -1,7 +1,6 @@
 
 import React, { useState } from "react";
 import { FaPhoneAlt, FaWhatsapp, FaViber, FaHeadset, FaCheckCircle } from 'react-icons/fa';
-import Nav from './nav';
 import HomeTable from "./HomeTable";
 import Footer from "./Footer";
 
@@ -11,7 +10,6 @@ function Home() {
 
   return (
     <div>
-      <Nav />
       <HomeTable />
 
       <div className="flex justify-center items-center space-x-4 p-5 mt-[2rem]">
