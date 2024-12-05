@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Nav from './nav';
 
 
 const Register = () => {
@@ -36,7 +35,7 @@ const Register = () => {
 
   return (
 
-    <><Nav /><div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-400 to-blue-500">
+    <><div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-400 to-blue-500">
       <div className="bg-white p-10 rounded-xl shadow-lg w-full max-w-md">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Regjistrohu</h2>
         <form onSubmit={handleSubmit}>

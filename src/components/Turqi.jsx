@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 // import { FaPhoneAlt, FaWhatsapp, FaViber, FaHeadset, FaCheckCircle } from 'react-icons/fa';
 import Footer from './Footer';
+import Table from './Table';
 
 function Turqi() {
   const [roomPrices, setRoomPrices] = useState([]);
@@ -90,59 +91,12 @@ function Turqi() {
         </div>
       </div>
 
-      <div className="tick bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 p-8 rounded-xl shadow-lg mt-8">
-        <div className="flex justify-center items-start space-x-16 md:space-x-12 lg:space-x-20 p-8">
-          <div className="w-full max-w-sm p-4 bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
-            <h2 className="font-bold text-2xl text-blue-600 mb-6 text-center">Në çmim përfshihet</h2>
-            <ul className="list-none space-y-4">
-              <li className="flex items-center text-lg">
-                <span className="text-green-500 text-xl mr-3">✔️</span>
-                Akomodimi
-              </li>
-              <li className="flex items-center text-lg">
-                <span className="text-green-500 text-xl mr-3">✔️</span>
-                Mëngjesi
-              </li>
-              <li className="flex items-center text-lg">
-                <span className="text-green-500 text-xl mr-3">✔️</span>
-                Spa center
-              </li>
-              <li className="flex items-center text-lg">
-                <span className="text-green-500 text-xl mr-3">✔️</span>
-                Pishina
-              </li>
-              <li className="flex items-center text-lg">
-                <span className="text-green-500 text-xl mr-3">✔️</span>
-                Aqua Park
-              </li>
-              <li className="flex items-center text-lg">
-                <span className="text-green-500 text-xl mr-3">✔️</span>
-                Parking
-              </li>
-              <li className="flex items-center text-lg">
-                <span className="text-green-500 text-xl mr-3">✔️</span>
-                WI-FI
-              </li>
-            </ul>
-          </div>
+      <Table  
+        perfshihet={['Akomodin',"Mëngjesi", "Spa center", "Pishina", "Aqua Park", "Parking", "WI-FI"]} 
+        nukPerfshihet={["Transferi", "Shërbimet shtesë"]}
+      />
 
-          <div className="w-full max-w-sm p-4 bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
-            <h2 className="font-bold text-2xl text-red-600 mb-6 text-center">Në çmim nuk përfshihet</h2>
-            <ul className="list-none space-y-4">
-              <li className="flex items-center text-lg">
-                <span className="text-red-500 text-xl mr-3">✘</span>
-                Transferi
-              </li>
-              <li className="flex items-center text-lg">
-                <span className="text-red-500 text-xl mr-3">✘</span>
-                Shërbimet shtesë
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <Footer />
+      <Footer/>
     </>
   );
 }

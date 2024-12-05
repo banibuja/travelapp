@@ -15,6 +15,7 @@ import ManageUser from './components/dashboard/ManageUser';
 import ManageHomeTable from './components/dashboard/ManageHomeTable';
 import Nav from './components/nav';
 import TurqiTable from './components/dashboard/TurqiTable';
+import Dubai from './components/Dubai';
 
 
 const App = () => {
@@ -38,6 +39,7 @@ const App = () => {
             <Route path="/ManageUser" element={<ManageUser />} />
             <Route path="/ManageHomeTable" element={<ManageHomeTable />} />
             <Route path="/TurqiTable" element={<TurqiTable />} />
+            <Route path="/Dubai" element={<Dubai />} />
             {/* <Route path="/AddRoomPrices" element={<AddRoomPrices />} /> */}
 
 

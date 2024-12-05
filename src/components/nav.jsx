@@ -50,7 +50,7 @@ function Nav() {
     navigate('/dashboard');
   }
   return (
-    <nav className="bg-white shadow-md">
+    <nav className="bg-blue-100 shadow-md">
       <div className="container mx-auto flex justify-center items-center py-2 border-b">
         <div className="flex items-center space-x-6">
           <a href="#" className="text-gray-700 hover:text-blue-500">
@@ -103,7 +103,7 @@ function Nav() {
           <a href="#" className="text-gray-700 hover:text-blue-500">Maqedoni</a>
           <a href="#" className="text-gray-700 hover:text-blue-500">Greqi</a>
           <a href="/EuropeCityBreak" className="text-gray-700 hover:text-blue-500">Europe-City Break</a>
-          <a href="#" className="text-gray-700 hover:text-blue-500">Dubai</a>
+          <a href="/Dubai" className="text-gray-700 hover:text-blue-500">Dubai</a>
           <a href="#" className="text-gray-700 hover:text-blue-500">Visit Kosova</a>
 
           {isLoggedIn ? (

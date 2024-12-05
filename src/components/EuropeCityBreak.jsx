@@ -1,4 +1,5 @@
 import React from 'react'
+import Footer from './Footer';
 
 const EuropeCityBreak = () => {
     const places = [{
@@ -25,35 +26,38 @@ const EuropeCityBreak = () => {
         id:6,
         countryName:'United Kingdom',
         imageUrl:"https://www.focus-info.org/wp-content/uploads/2022/07/london-blog-1.jpg"
-    },{
-        id:7,
-        countryName:'Austria',
-        imageUrl:"https://traveltipzone.com/wp-content/uploads/traveltipzone.com-the-15-most-beautiful-lakes-in-austria-dscf1883-1200x738.jpg"
     }
+    // ,{
+    //     id:7,
+    //     countryName:'Austria',
+    //     imageUrl:"https://traveltipzone.com/wp-content/uploads/traveltipzone.com-the-15-most-beautiful-lakes-in-austria-dscf1883-1200x738.jpg"
+    // }
 ]
   return (
-    <div className="w-3/4 m-auto">
-        <div className="w-full h-96  my-9">
-            <div className="w-full text-center">
-                <h1 className="text-3xl py-5 font-mono">EUROPE CITY BREAK</h1>
+    <>
+        <div className="max-w-7xl m-auto">
+            <div className="w-full h-80 flex flex-col items-center my-9">
+                <div className="w-full text-center">
+                    <h1 className="text-3xl py-5 font-mono">EUROPE CITY BREAK</h1>
+                </div>
+                <div className="p w-[48rem] font-medium text-[#555555] text-[20px] mt-[3rem]">
+                    Një city break është mundësia ideale për të shpëtuar nga rutina dhe për të zbuluar magjinë e një qyteti të ri. Është koha perfekte për të ecur pa nxitim dhe për të eksploruar çdo qoshe të fshehur që mban një histori apo një surprizë të këndshme. Shëtisni nëpër rrugicat me kalldrëm dhe ndaloni në kafene të vogla ku aroma e kafesë ju fton për një pushim relaksues. Vizitoni dyqane të vogla artizanale dhe zbuloni thesare të veçanta që do t’ju rikujtojnë këtë përvojë unike.
+                </div>
             </div>
-            <div className="w-full py-14 text-center">
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quidem quisquam eveniet dolores eligendi. Molestias, nobis. Voluptatum quam necessitatibus eaque, sequi beatae a commodi voluptatibus, et harum laudantium facere. Excepturi, explicabo.</p>
-            </div>
-        </div>
-        <div className='flex flex-wrap gap-10'>
+            <div className='flex flex-wrap gap-10  py-8 justify-center'>
                 {places.map((country) => (
-                    <div key={country.id} className="aspect-[7/4] relative h-60 overflow-hidden">
-                        <img className="object-cover" src={country.imageUrl} alt={country.countryName} />
-                        <div className="absolute top-0 left-0 z-10 w-full h-full flex justify-center items-center">
-                            <span className=" bg-white bg-opacity-80 px-9 py-3 rounded">
+                    <div key={country.id} className="aspect-[7/4] relative h-48 overflow-hidden">
+                        <img className="object-cover transition-transform duration-300 ease-in-out transform hover:scale-105" src={country.imageUrl} alt={country.countryName} />
+                       <span className="text-nowrap transform -translate-x-1/2 -translate-y-1/2 bg-white absolute top-2/4 left-2/4  z-10 bg-opacity-80 px-9 py-3 rounded">
                                 {country.countryName}
                             </span>
-                        </div>
                     </div>
                 ))}
+            </div>
         </div>
-    </div>
+            <hr width="100%" size="2"/>
+        <Footer />
+    </>
   )
 }
 
