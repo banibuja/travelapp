@@ -23,7 +23,7 @@ function Menu() {
       <ul className="space-y-4">
         <li>
           <Link
-            to="/AddUser"
+            to="/dashboard/AddUser"
             className="block text-blue-500 hover:text-blue-700 font-medium"
           >
             Add User
@@ -31,7 +31,7 @@ function Menu() {
         </li>
         <li>
           <Link
-            to="/ManageUser"
+            to="/dashboard/ManageUser"
             className="block text-blue-500 hover:text-blue-700 font-medium"
           >
             Manage User
@@ -40,7 +40,7 @@ function Menu() {
       
         <li>
           <Link
-            to="/managehometable"
+            to="/dashboard/managehometable"
             className="block text-blue-500 hover:text-blue-700 font-medium"
           >
             Manage  Home Table
@@ -51,7 +51,7 @@ function Menu() {
 
         <li>
           <Link
-            to="/turqitable"
+            to="/dashboard/turqitable"
             className="block text-blue-500 hover:text-blue-700 font-medium"
           >
             Turqi Table

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation  } from 'react-router-dom';
 import axios from 'axios';
 import Home from './components/Home';
 import Login from './components/Login';
@@ -20,11 +20,12 @@ import Dubai from './components/Dubai';
 
 const App = () => {
  
+  const location = useLocation();
+  const isHomeroute = !location.pathname.startsWith('/dashboard');
 
   return (
-    <Router>
-    <Nav />
-          <div className='overflow-hidden'>
+    <>
+      {isHomeroute && <Nav />}
       
 
     
@@ -35,10 +36,10 @@ const App = () => {
             <Route path="/bullgari" element={<Bullgari />} />
             <Route path="/europecitybreak" element={<EuropeCityBreak />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/AddUser" element={<AddUser />} />
-            <Route path="/ManageUser" element={<ManageUser />} />
-            <Route path="/ManageHomeTable" element={<ManageHomeTable />} />
-            <Route path="/TurqiTable" element={<TurqiTable />} />
+            <Route path="/dashboard/AddUser" element={<AddUser />} />
+            <Route path="/dashboard/ManageUser" element={<ManageUser />} />
+            <Route path="/dashboard/ManageHomeTable" element={<ManageHomeTable />} />
+            <Route path="/dashboard/TurqiTable" element={<TurqiTable />} />
             <Route path="/Dubai" element={<Dubai />} />
             {/* <Route path="/AddRoomPrices" element={<AddRoomPrices />} /> */}
 
@@ -47,10 +48,13 @@ const App = () => {
             <Route path="/register" element={<Register />} />
 
           </Routes>
-        </div>
-      </div>
-    </Router>
+      </div></>
   );
 };
 
-export default App;
+const AppWrapper = () => (
+  <Router>
+    <App />
+  </Router>
+);
+export default AppWrapper;
