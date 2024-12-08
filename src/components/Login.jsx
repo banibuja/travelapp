@@ -13,7 +13,9 @@ const Login = () => {
       try {
         const response = await axios.get('http://localhost:5000/check-session', { withCredentials: true });
         if (response.status === 200) {
+
           navigate('/');
+
         }
       } catch (error) {
         console.log('User is not logged in');
@@ -33,6 +35,7 @@ const Login = () => {
       // console.log('Login response:', response);
       setMessage('Login ishte i suksesshëm.');
       navigate('/'); // Redirect to dashboard after successful login
+      window.location.reload(); 
     } catch (error) {
       console.error('Login error:', error.response || error.message);
       setMessage('Gabim gjatë login.');

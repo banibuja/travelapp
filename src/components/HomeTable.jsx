@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -8,15 +9,32 @@ function HomeTable() {
   const [destination, setDestination] = useState("");
   const [nights, setNights] = useState("");
   const [startDate, setStartDate] = useState(null);
-  const airports = [
-    "Pristina International Airport (PRN)",
-    "Tirana International Airport (TIA)",
-    "Skopje Alexander the Great Airport (SKP)"
-  ];
+  const [travelPlans, setTravelPlans] = useState([]);
 
-  const hotels = ["Turkish", "Dubai", "Rughai"];
 
-  const nightsOptions = ["1 Night", "2 Nights", "3 Nights", "4 Nights", "5 Nights"];
+
+  const fetchTravelPlans = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/travel-plans"); // Zëvendëso me URL-në e backend-it
+      setTravelPlans(response.data);
+    } catch (error) {
+      console.error("Gabim gjatë marrjes së të dhënave:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTravelPlans();
+  }, []);
+
+  // const airports = [
+  //   "Pristina International Airport (PRN)",
+  //   "Tirana International Airport (TIA)",
+  //   "Skopje Alexander the Great Airport (SKP)"
+  // ];
+
+  // const hotels = ["Turkish", "Dubai", "Rughai"];
+
+  // const nightsOptions = ["1 Night", "2 Nights", "3 Nights", "4 Nights", "5 Nights"];
 
   const isFutureDate = (date) => {
     const today = new Date();
@@ -89,23 +107,23 @@ function HomeTable() {
                   <option value="" disabled hidden>
                     Destinimi ose Hoteli
                   </option>
-                  {hotels.map((hotel) => (
-                    <option key={hotel} value={hotel}>
-                      {hotel}
+                  {travelPlans.map((plan) => (
+                    <option key={plan.id} value={plan.destinimi_hoteli}>
+                      {plan.destinimi_hoteli}
                     </option>
                   ))}
                 </select>
                 <select
-                  className="border rounded-lg p-2 w-auto"
+                  className="border rounded-lg p-2 w-[11rem]"
                   value={nights}
                   onChange={(e) => setNights(e.target.value)}
                 >
                   <option value="" disabled hidden>
                     Opsionet e Netëve
                   </option>
-                  {nightsOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
+                  {travelPlans.map((plan) => (
+                    <option key={plan.id} value={plan.opsionet_neteve}>
+                      {plan.opsionet_neteve}
                     </option>
                   ))}
                 </select>
@@ -124,17 +142,17 @@ function HomeTable() {
             )}
             {selected === 2 && (
               <>
-                <select
-                  className="border rounded-lg p-2 w-[12rem]"
+             <select
+                  className="border rounded-lg p-2 w-[11.5rem]"
                   value={departure}
                   onChange={(e) => setDeparture(e.target.value)}
                 >
                   <option value="" disabled hidden>
                     Nisja Nga
                   </option>
-                  {airports.map((airport) => (
-                    <option key={airport} value={airport}>
-                      {airport}
+                  {travelPlans.map((plan) => (
+                    <option key={plan.id} value={plan.nisja_nga}>
+                      {plan.nisja_nga}
                     </option>
                   ))}
                 </select>
@@ -146,9 +164,9 @@ function HomeTable() {
                   <option value="" disabled hidden>
                     Destinimi ose Hoteli
                   </option>
-                  {hotels.map((hotel) => (
-                    <option key={hotel} value={hotel}>
-                      {hotel}
+                  {travelPlans.map((plan) => (
+                    <option key={plan.id} value={plan.destinimi_hoteli}>
+                      {plan.destinimi_hoteli}
                     </option>
                   ))}
                 </select>
@@ -167,7 +185,7 @@ function HomeTable() {
             )}
             {selected === 0 && (
               <>
-                <select
+               <select
                   className="border rounded-lg p-2 w-[11.5rem]"
                   value={departure}
                   onChange={(e) => setDeparture(e.target.value)}
@@ -175,9 +193,9 @@ function HomeTable() {
                   <option value="" disabled hidden>
                     Nisja Nga
                   </option>
-                  {airports.map((airport) => (
-                    <option key={airport} value={airport}>
-                      {airport}
+                  {travelPlans.map((plan) => (
+                    <option key={plan.id} value={plan.nisja_nga}>
+                      {plan.nisja_nga}
                     </option>
                   ))}
                 </select>
@@ -189,9 +207,9 @@ function HomeTable() {
                   <option value="" disabled hidden>
                     Destinimi ose Hoteli
                   </option>
-                  {hotels.map((hotel) => (
-                    <option key={hotel} value={hotel}>
-                      {hotel}
+                  {travelPlans.map((plan) => (
+                    <option key={plan.id} value={plan.destinimi_hoteli}>
+                      {plan.destinimi_hoteli}
                     </option>
                   ))}
                 </select>
@@ -203,9 +221,9 @@ function HomeTable() {
                   <option value="" disabled hidden>
                     Opsionet e Netëve
                   </option>
-                  {nightsOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
+                  {travelPlans.map((plan) => (
+                    <option key={plan.id} value={plan.opsionet_neteve}>
+                      {plan.opsionet_neteve}
                     </option>
                   ))}
                 </select>

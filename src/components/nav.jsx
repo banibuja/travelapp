@@ -55,7 +55,8 @@ function Nav() {
         <div className="flex items-center space-x-6">
           <a href="#" className="text-gray-700 hover:text-blue-500">
             <span role="img" aria-label="heart">
-              &#x2764;&#xFE0F;
+              <a href="/">
+              &#x2764;&#xFE0F;</a>
             </span> Të preferuarat
           </a>
           <input

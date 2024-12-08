@@ -6,16 +6,23 @@ import Table from './Table';
 
 function Turqi() {
   const [roomPrices, setRoomPrices] = useState([]);
+  const [message, setMessage] = useState('');
+
 
   useEffect(() => {
-    // Fetch room prices from the server
-    axios.get('/room-price')
-      .then(response => {
-        setRoomPrices(response.data); // Assuming response.data contains the room price data
-      })
-      .catch(error => {
-        console.error("There was an error fetching the room prices:", error);
-      });
+    const fetchRoomPrices = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/room-price', {
+          withCredentials: true,
+        });
+        setRoomPrices(response.data);
+      } catch (error) {
+        console.error('Error fetching room prices:', error);
+        setMessage('There was an error fetching room prices.');
+      }
+    };
+
+    fetchRoomPrices();
   }, []);
 
   return (

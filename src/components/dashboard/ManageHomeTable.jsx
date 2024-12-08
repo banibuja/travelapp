@@ -3,7 +3,7 @@ import axios from 'axios';
 import Menu from './Menu';
 
 function ManageHomeTable() {
-  const [homest, setHomes] = useState([]);
+  const [homes, setHomes] = useState([]);
   const [message, setMessage] = useState('');
   const [editingHome, setEditingHome] = useState(null);
   const [updatedFields, setUpdatedFields] = useState({});
@@ -35,7 +35,7 @@ function ManageHomeTable() {
       await axios.delete(`http://localhost:5000/travel-plans/${id}`, {
         withCredentials: true,
       });
-      setHomes(homest.filter((home) => home.id !== id));
+      setHomes(homes.filter((home) => home.id !== id));
       setMessage('Home deleted successfully.');
     } catch (error) {
       setMessage('Error deleting home.');
@@ -62,7 +62,7 @@ function ManageHomeTable() {
         withCredentials: true,
       });
       setHomes(
-        homest.map((home) => (home.id === id ? response.data : home))
+        homes.map((home) => (home.id === id ? response.data : home))
       );
       setEditingHome(null); // Exit edit mode after successful update
       setMessage('Home updated successfully.');
@@ -97,10 +97,12 @@ function ManageHomeTable() {
       const response = await axios.post('http://localhost:5000/travel-plans', newHome, {
         withCredentials: true,
       });
-      // Correcting the state update for newly added home
-      setHomes([...homest, response.data.home]);
+      setHomes([...homes, response.data.home]);
       setMessage('Home added successfully.');
-      setUpdatedFields({});  // Clear the form fields
+      window.location.reload(); 
+
+
+      setUpdatedFields({}); 
     } catch (error) {
       setMessage('Error adding home.');
     }
@@ -177,100 +179,111 @@ function ManageHomeTable() {
             </tr>
           </thead>
           <tbody className="text-gray-700 text-sm font-light">
-            {homest.map((home) => (
-              <tr key={home.id} className="border-b border-gray-200 hover:bg-gray-100">
-                <td className="py-3 px-6 text-left">{home.id}</td>
-                <td className="py-3 px-6 text-left">
-                  {editingHome === home.id ? (
-                    <input
-                      type="text"
-                      value={updatedFields.nisja_nga}
-                      onChange={(e) => handleEditChange(e, 'nisja_nga')}
-                      onBlur={() => updateHome(home.id)}
-                      className="border border-gray-300 rounded px-2 py-1"
-                    />
-                  ) : (
-                    home.nisja_nga
-                  )}
-                </td>
-                <td className="py-3 px-6 text-left">
-                  {editingHome === home.id ? (
-                    <input
-                      type="text"
-                      value={updatedFields.destinimi_hoteli}
-                      onChange={(e) => handleEditChange(e, 'destinimi_hoteli')}
-                      onBlur={() => updateHome(home.id)}
-                      className="border border-gray-300 rounded px-2 py-1"
-                    />
-                  ) : (
-                    home.destinimi_hoteli
-                  )}
-                </td>
-                <td className="py-3 px-6 text-left">
-                  {editingHome === home.id ? (
-                    <input
-                      type="text"
-                      value={updatedFields.opsionet_neteve}
-                      onChange={(e) => handleEditChange(e, 'opsionet_neteve')}
-                      onBlur={() => updateHome(home.id)}
-                      className="border border-gray-300 rounded px-2 py-1"
-                    />
-                  ) : (
-                    home.opsionet_neteve
-                  )}
-                </td>
-                <td className="py-3 px-6 text-left">
-                  {editingHome === home.id ? (
-                    <input
-                      type="date"
-                      value={updatedFields.data}
-                      onChange={(e) => handleEditChange(e, 'data')}
-                      onBlur={() => updateHome(home.id)}
-                      className="border border-gray-300 rounded px-2 py-1"
-                    />
-                  ) : (
-                    home.data
-                  )}
-                </td>
-                <td className="py-3 px-6 text-left">
-                  {editingHome === home.id ? (
-                    <input
-                      type="text"
-                      value={updatedFields.udhetaret}
-                      onChange={(e) => handleEditChange(e, 'udhetaret')}
-                      onBlur={() => updateHome(home.id)}
-                      className="border border-gray-300 rounded px-2 py-1"
-                    />
-                  ) : (
-                    home.udhetaret
-                  )}
-                </td>
-                <td className="py-3 px-6 text-center">
-                  {editingHome === home.id ? (
-                    <button
-                      onClick={() => updateHome(home.id)}
-                      className="bg-blue-500 text-white py-1 px-3 rounded-lg hover:bg-blue-600 transition duration-200"
-                    >
-                      Save
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => startEditing(home)}
-                      className="bg-yellow-500 text-white py-1 px-3 rounded-lg hover:bg-yellow-600 transition duration-200"
-                    >
-                      Edit
-                    </button>
-                  )}
-                  <button
-                    onClick={() => deleteHome(home.id)}
-                    className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200 ml-2"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+  {Array.isArray(homes) && homes.length > 0 ? (
+    homes
+      .filter((home) => home && home.id) 
+      .map((home) => (
+        <tr key={home.id} className="border-b border-gray-200 hover:bg-gray-100">
+          <td className="py-3 px-6 text-left">{home.id}</td>
+          <td className="py-3 px-6 text-left">
+            {editingHome === home.id ? (
+              <input
+                type="text"
+                value={updatedFields.nisja_nga || ""}
+                onChange={(e) => handleEditChange(e, "nisja_nga")}
+                onBlur={() => updateHome(home.id)}
+                className="border border-gray-300 rounded px-2 py-1"
+              />
+            ) : (
+              home.nisja_nga
+            )}
+          </td>
+          <td className="py-3 px-6 text-left">
+            {editingHome === home.id ? (
+              <input
+                type="text"
+                value={updatedFields.destinimi_hoteli || ""}
+                onChange={(e) => handleEditChange(e, "destinimi_hoteli")}
+                onBlur={() => updateHome(home.id)}
+                className="border border-gray-300 rounded px-2 py-1"
+              />
+            ) : (
+              home.destinimi_hoteli
+            )}
+          </td>
+          <td className="py-3 px-6 text-left">
+            {editingHome === home.id ? (
+              <input
+                type="text"
+                value={updatedFields.opsionet_neteve || ""}
+                onChange={(e) => handleEditChange(e, "opsionet_neteve")}
+                onBlur={() => updateHome(home.id)}
+                className="border border-gray-300 rounded px-2 py-1"
+              />
+            ) : (
+              home.opsionet_neteve
+            )}
+          </td>
+          <td className="py-3 px-6 text-left">
+            {editingHome === home.id ? (
+              <input
+                type="date"
+                value={updatedFields.data || ""}
+                onChange={(e) => handleEditChange(e, "data")}
+                onBlur={() => updateHome(home.id)}
+                className="border border-gray-300 rounded px-2 py-1"
+              />
+            ) : (
+              home.data
+            )}
+          </td>
+          <td className="py-3 px-6 text-left">
+            {editingHome === home.id ? (
+              <input
+                type="text"
+                value={updatedFields.udhetaret || ""}
+                onChange={(e) => handleEditChange(e, "udhetaret")}
+                onBlur={() => updateHome(home.id)}
+                className="border border-gray-300 rounded px-2 py-1"
+              />
+            ) : (
+              home.udhetaret
+            )}
+          </td>
+          <td className="py-3 px-6 text-center">
+            {editingHome === home.id ? (
+              <button
+                onClick={() => updateHome(home.id)}
+                className="bg-blue-500 text-white py-1 px-3 rounded-lg hover:bg-blue-600 transition duration-200"
+              >
+                Save
+              </button>
+            ) : (
+              <button
+                onClick={() => startEditing(home)}
+                className="bg-yellow-500 text-white py-1 px-3 rounded-lg hover:bg-yellow-600 transition duration-200"
+              >
+                Edit
+              </button>
+            )}
+            <button
+              onClick={() => deleteHome(home.id)}
+              className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200 ml-2"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      ))
+  ) : (
+    <tr>
+      <td colSpan="7" className="text-center py-3">
+        No data available
+      </td>
+    </tr>
+  )}
+</tbody>
+
         </table>
       </div>
       {/* Menu */}
