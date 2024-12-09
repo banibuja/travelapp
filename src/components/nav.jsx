@@ -49,14 +49,14 @@ function Nav() {
   }
   return (
     <nav className="bg-blue-100 shadow-md">
-      <div className="container mx-auto flex justify-center items-center py-2 border-b">
-        <div className="flex items-center space-x-6">
-          <a href="#" className="text-gray-700 hover:text-blue-500">
-            <span role="img" aria-label="heart">
-              <a href="/">
-              &#x2764;&#xFE0F;</a>
-            </span> Të preferuarat
-          </a>
+  <div className="container mx-auto flex justify-center items-center py-2 border-b">
+    <div className="flex items-center space-x-6">
+      <a href="#" className="text-gray-700 hover:text-blue-500">
+        <span role="img" aria-label="heart">
+          &#x2764;&#xFE0F;
+        </span>
+        Të preferuarat
+      </a>
           <input
             type="text"
             placeholder="Destinacioni"
@@ -103,7 +103,7 @@ function Nav() {
           <a href="#" className="text-gray-700 hover:text-blue-500">Greqi</a>
           <a href="/EuropeCityBreak" className="text-gray-700 hover:text-blue-500">Europe-City Break</a>
           <a href="/Dubai" className="text-gray-700 hover:text-blue-500">Dubai</a>
-          <a href="#" className="text-gray-700 hover:text-blue-500">Visit Kosova</a>
+          <a href="/VisitKosova" className="text-gray-700 hover:text-blue-500">Visit Kosova</a>
 
           {isLoggedIn ? (
             <button onClick={handleLogout} className="text-gray-700 hover:text-blue-500">

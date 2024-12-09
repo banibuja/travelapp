@@ -18,6 +18,7 @@ import TurqiTable from './components/dashboard/tables/TurqiTable';
 import DubaiTable from './components/dashboard/tables/DubaiPricesTable';
 import Dubai from './components/Dubai';
 import Aranzhman from './components/Aranzhman';
+import VisitKosova from './components/VisitKosova';
 
 
 const App = () => {
@@ -45,6 +46,7 @@ const App = () => {
             <Route path="/dashboard/DubaiTable" element={<DubaiTable />} />
             <Route path="/Dubai" element={<Dubai />} />
             <Route path="/Aranzhman" element={<Aranzhman />} />
+            <Route path="/VisitKosova" element={<VisitKosova />} />
 
             {/* <Route path="/AddRoomPrices" element={<AddRoomPrices />} /> */}
 
