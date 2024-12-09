@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Menu from './Menu';
+import Menu from '../Menu';
 
 function AddUser() {
   const [formData, setFormData] = useState({
@@ -146,9 +146,7 @@ function AddUser() {
         </div>
       </div>
 
-      <div className="w-64 bg-gray-200 p-4">
         <Menu />
-      </div>
     </div>
   );
 }

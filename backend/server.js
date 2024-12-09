@@ -16,6 +16,7 @@ const User = require('./models/user');
 const { registerUser, loginUser, getUsers, deleteUser, updateUser, verifyRole  } = require('./controllers/userController');
 const { getAllTravelPlans, addTravelPlan, deleteTravelPlan, updateTravelPlan  } = require('./controllers/travelController');
 const { getAllRoomPrices, addRoomPrice, deleteRoomPrice, updateRoomPrice  } = require('./controllers/roomPricesController');
+const { getAllDubaiPrices, addDubaiPrice, deleteDubaiPrice, updateDubaiPrice  } = require('./controllers/dubaiPricesController');
 
 const app = express();
 
@@ -172,6 +173,11 @@ app.post('/add-room-price', addRoomPrice);
 app.get('/room-price', getAllRoomPrices);
 app.delete('/room-prices-delete/:id', deleteRoomPrice);
 app.put('/room-prices-update/:id', updateRoomPrice);
+
+app.post('/add-dubai-price', addDubaiPrice);
+app.get('/dubai-price', getAllDubaiPrices);
+app.delete('/dubai-prices-delete/:id', deleteDubaiPrice);
+app.put('/dubai-prices-update/:id', updateDubaiPrice);
 
 
 

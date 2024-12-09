@@ -10,11 +10,12 @@ import Dashboard from './components/dashboard/Dashboard';
 import Turqi from './components/Turqi';
 import Bullgari from './components/Bullgari';
 import EuropeCityBreak from './components/EuropeCityBreak';
-import AddUser from './components/dashboard/AddUser';
-import ManageUser from './components/dashboard/ManageUser';
-import ManageHomeTable from './components/dashboard/ManageHomeTable';
+import AddUser from './components/dashboard/users/AddUser';
+import ManageUser from './components/dashboard/users/ManageUser';
+import ManageHomeTable from './components/dashboard/tables/ManageHomeTable';
 import Nav from './components/nav';
-import TurqiTable from './components/dashboard/TurqiTable';
+import TurqiTable from './components/dashboard/tables/TurqiTable';
+import DubaiTable from './components/dashboard/tables/DubaiPricesTable';
 import Dubai from './components/Dubai';
 import Aranzhman from './components/Aranzhman';
 
@@ -41,6 +42,7 @@ const App = () => {
             <Route path="/dashboard/ManageUser" element={<ManageUser />} />
             <Route path="/dashboard/ManageHomeTable" element={<ManageHomeTable />} />
             <Route path="/dashboard/TurqiTable" element={<TurqiTable />} />
+            <Route path="/dashboard/DubaiTable" element={<DubaiTable />} />
             <Route path="/Dubai" element={<Dubai />} />
             <Route path="/Aranzhman" element={<Aranzhman />} />
 

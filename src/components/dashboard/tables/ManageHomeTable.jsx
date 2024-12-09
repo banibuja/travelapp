@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Menu from './Menu';
+import Menu from '../Menu';
 
 function ManageHomeTable() {
   const [homes, setHomes] = useState([]);

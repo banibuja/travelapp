@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Menu from './Menu';
+import Menu from '../Menu';
 
 function ManageRoomPricesTable() {
   const [roomPrices, setRoomPrices] = useState([]);
@@ -237,10 +237,7 @@ function ManageRoomPricesTable() {
         </table>
       </div>
 
-      {/* Menu on the right */}
-      <div className="w-64 bg-white shadow-lg p-4">
         <Menu />
-      </div>
     </div>
   );
 }
