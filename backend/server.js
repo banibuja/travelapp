@@ -13,12 +13,24 @@ const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const sequelize = require('./db');
 const User = require('./models/user');
+// const axios = require('axios');
+
+// const multer = require('multer');
+// const storage = multer.memoryStorage();
+// const upload = multer({ limits: { fileSize: 50 * 1024 * 1024 } }); 
+
 const { registerUser, loginUser, getUsers, deleteUser, updateUser, verifyRole  } = require('./controllers/userController');
 const { getAllTravelPlans, addTravelPlan, deleteTravelPlan, updateTravelPlan  } = require('./controllers/travelController');
 const { getAllRoomPrices, addRoomPrice, deleteRoomPrice, updateRoomPrice  } = require('./controllers/roomPricesController');
 const { getAllDubaiPrices, addDubaiPrice, deleteDubaiPrice, updateDubaiPrice  } = require('./controllers/dubaiPricesController');
+const { getAllImages, addImage, deleteImage, updateImage  } = require('./controllers/sliderHomeController');
+
+const { getAllHotels, addCard, deleteHotel, updateCard  } = require('./controllers/stambollCardsController');
+
 
 const app = express();
+
+
 
 const allowedOrigin = "http://localhost:3000";
 
@@ -34,7 +46,6 @@ const originWhitelistMiddleware = (req, res, next) => {
 
 app.use(originWhitelistMiddleware);
 
-// Configure session middleware with secure settings
 app.use(session({
   secret: process.env.SESSION_SECRET || 'supersecret', 
   resave: false,
@@ -46,32 +57,39 @@ app.use(session({
   }
 }));
 
-app.use(cookieParser());
 
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-// Configure Helmet  extra security headers
 app.use(helmet());
 
-// Configure rate limiting for DDoS protection
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
-  max: 100, // Limit each IP to 100 requests per windowMs
+  max: 100, 
 });
 app.use(limiter);
 
 app.use(cors({
   origin: 'http://localhost:3000', 
-  credentials: true 
+  methods: 'GET,POST,PUT,DELETE',
+  credentials: true,
 }));
+
+
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
+
 app.use(bodyParser.json());
+app.use(cookieParser());
+
+
+
 
 // Logging middleware to debug session and user
 app.use((req, res, next) => {
-  console.log('Session:', req.session);
-  console.log('User:', req.user);
+  // console.log('Session:', req.session);
+  // console.log('User:', req.user);
   next();
 });
 
@@ -155,6 +173,7 @@ app.get('/check-session', (req, res) => {
 });
 
 
+
 app.post('/register', registerUser);
 app.post('/login', (req, res, next) => loginUser(req, res, next));
 app.get('/users-get', isAuthenticated, getUsers);
@@ -163,21 +182,31 @@ app.put('/users/:id', isAuthenticated, updateUser);
 // app.use('/manage-user', verifyRole('admin'));
 
 
-app.post('/travel-plans', addTravelPlan);
+app.post('/travel-plans', isAuthenticated ,  addTravelPlan);
 app.get('/travel-plans', getAllTravelPlans);
-app.delete('/travel-plans/:id', deleteTravelPlan);
-app.put('/travel-plans/:id', updateTravelPlan);
+app.delete('/travel-plans/:id', isAuthenticated , deleteTravelPlan);
+app.put('/travel-plans/:id', isAuthenticated , updateTravelPlan);
 
 
-app.post('/add-room-price', addRoomPrice);
-app.get('/room-price', getAllRoomPrices);
-app.delete('/room-prices-delete/:id', deleteRoomPrice);
-app.put('/room-prices-update/:id', updateRoomPrice);
+app.post('/add-images', addImage);
+app.get('/images', isAuthenticated , getAllImages);
+app.delete('/images-delete/:id', isAuthenticated , deleteImage);
+app.put('/images-update/:id', isAuthenticated , updateImage);
 
-app.post('/add-dubai-price', addDubaiPrice);
-app.get('/dubai-price', getAllDubaiPrices);
-app.delete('/dubai-prices-delete/:id', deleteDubaiPrice);
-app.put('/dubai-prices-update/:id', updateDubaiPrice);
+app.post('/add-cards', addCard);
+app.get('/cards', isAuthenticated , getAllHotels);
+app.delete('/cards-delete/:id', isAuthenticated , deleteHotel);
+app.put('/cards-update/:id', isAuthenticated , updateCard);
+
+app.post('/add-room-price', isAuthenticated , addRoomPrice);
+app.get('/room-price', isAuthenticated , getAllRoomPrices);
+app.delete('/room-prices-delete/:id', isAuthenticated , deleteRoomPrice);
+app.put('/room-prices-update/:id', isAuthenticated , updateRoomPrice);
+
+app.post('/add-dubai-price', isAuthenticated , addDubaiPrice);
+app.get('/dubai-price', isAuthenticated , getAllDubaiPrices);
+app.delete('/dubai-prices-delete/:id', isAuthenticated , deleteDubaiPrice);
+app.put('/dubai-prices-update/:id', isAuthenticated , updateDubaiPrice);
 
 
 

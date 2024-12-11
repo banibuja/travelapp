@@ -19,7 +19,8 @@ import DubaiTable from './components/dashboard/tables/DubaiPricesTable';
 import Dubai from './components/Dubai';
 import Aranzhman from './components/Aranzhman';
 import VisitKosova from './components/VisitKosova';
-
+import SliderManage from './components/dashboard/tables/SliderManage';
+import ManageCardsStamboll from './components/dashboard/tables/CardsStamboll';
 
 const App = () => {
  
@@ -44,6 +45,9 @@ const App = () => {
             <Route path="/dashboard/ManageHomeTable" element={<ManageHomeTable />} />
             <Route path="/dashboard/TurqiTable" element={<TurqiTable />} />
             <Route path="/dashboard/DubaiTable" element={<DubaiTable />} />
+            <Route path="/dashboard/SliderManage" element={<SliderManage />} />
+            <Route path="/dashboard/ManageCardsStamboll" element={<ManageCardsStamboll />} />
+
             <Route path="/Dubai" element={<Dubai />} />
             <Route path="/Aranzhman" element={<Aranzhman />} />
             <Route path="/VisitKosova" element={<VisitKosova />} />

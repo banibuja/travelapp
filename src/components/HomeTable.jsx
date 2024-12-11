@@ -15,7 +15,7 @@ function HomeTable() {
 
   const fetchTravelPlans = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/travel-plans"); // Zëvendëso me URL-në e backend-it
+      const response = await axios.get("http://localhost:5000/travel-plans");
       setTravelPlans(response.data);
     } catch (error) {
       console.error("Gabim gjatë marrjes së të dhënave:", error);

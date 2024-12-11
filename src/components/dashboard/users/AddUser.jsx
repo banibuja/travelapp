@@ -24,7 +24,7 @@ function AddUser() {
       await axios.post('http://localhost:5000/register', formData);
       setMessage('Regjistrimi ishte i suksesshëm.');
       setTimeout(() => {
-        window.location.href = '/manageuser';
+        window.location.href = '/dashboard/ManageUser';
       }, 3000);
     } catch (error) {
       setMessage('Gabim gjatë regjistrimit.');

@@ -28,7 +28,13 @@ const createDatabase = async () => {
     await sequelize.authenticate();
     console.log('Lidhja me bazën e të dhënave është e suksesshme.');
 
+    const SliderHome = require('./models/SliderHome');
+
+
     // Krijo tabelat menjehere pas krijimit te databazes
+    // await sequelize.sync({ force: true });  // Drops and re-creates the tables
+    // await sequelize.sync({ alter: true }) // Krijon ose përditëson tabelën sipas modelit
+
     await sequelize.sync();
     console.log('Tabela(t) janë krijuar në MySQL.');
   } catch (error) {

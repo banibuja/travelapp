@@ -1,6 +1,6 @@
 // models/TravelPlan.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../db'); // Përdorni konfigurimin e databazës tuaj
+const sequelize = require('../db'); 
 
 const TravelPlan = sequelize.define('TravelPlan', {
   nisja_nga: {

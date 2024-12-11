@@ -5,9 +5,13 @@ const TravelPlan = require('../models/TravelPlan');
 
 
 const getAllTravelPlans = async (req, res) => {
+
+  console.log(req.body)
   try {
     const travelPlans = await TravelPlan.findAll();
     res.json(travelPlans);
+    console.log(req.body)
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
