@@ -98,7 +98,7 @@ function Nav() {
         <div className="hidden md:flex space-x-6 truncate text-sm font-medium text-black transition-colors hover:text-primary">
           <a href="/turqi" target="" className="text-gray-700 hover:text-blue-500">Turqi</a>
           <a href="/bullgari" target="" className="text-gray-700 hover:text-blue-500">Bullgari</a>
-          <a href="#" className="text-gray-700 hover:text-blue-500">Festat e fundvitit</a>
+          <a href="/FestateFundVitit" className="text-gray-700 hover:text-blue-500">Festat e fundvitit</a>
           <a href="#" className="text-gray-700 hover:text-blue-500">Maqedoni</a>
           <a href="/Greqi" className="text-gray-700 hover:text-blue-500">Greqi</a>
           <a href="/EuropeCityBreak" className="text-gray-700 hover:text-blue-500">Europe-City Break</a>

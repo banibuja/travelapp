@@ -10,6 +10,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import Turqi from './components/Turqi';
 import Bullgari from './components/Bullgari';
 import Greqi from './components/Greqi';
+import FestateFundvitit from './components/FestateFundvitit';
 import EuropeCityBreak from './components/EuropeCityBreak';
 import AddUser from './components/dashboard/users/AddUser';
 import ManageUser from './components/dashboard/users/ManageUser';
@@ -32,7 +33,7 @@ const App = () => {
     <>
       {isHomeroute && <Nav />}
       
-
+      
     
         <div>
           <Routes>
@@ -40,6 +41,7 @@ const App = () => {
             <Route path="/turqi" element={<Turqi />} />
             <Route path="/bullgari" element={<Bullgari />} />
             <Route path="/greqi" element={<Greqi />} />
+            <Route path="/festateFundvitit" element={<FestateFundvitit />} />
             <Route path="/europecitybreak" element={<EuropeCityBreak />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/dashboard/AddUser" element={<AddUser />} />
