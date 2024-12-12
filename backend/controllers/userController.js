@@ -112,6 +112,15 @@ const loginUser = (req, res, next) => {
       });
     };
   };
+
+  const countUsers = async (req, res) => {
+    try {
+      const userCount = await User.count(); 
+      res.status(200).json({ count: userCount });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };
   
-  module.exports = { registerUser, loginUser, getUsers, deleteUser, updateUser, verifyRole };
+  module.exports = { registerUser, loginUser, getUsers, deleteUser, updateUser, verifyRole, countUsers };
 

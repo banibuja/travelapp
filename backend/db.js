@@ -26,7 +26,7 @@ const createDatabase = async () => {
     console.log('Databaza është krijuar ose ekziston.');
 
     await sequelize.authenticate();
-    console.log('Lidhja me bazën e të dhënave është e suksesshme.');
+    // console.log('Lidhja me bazën e të dhënave është e suksesshme.');
 
     const SliderHome = require('./models/SliderHome');
 

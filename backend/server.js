@@ -13,87 +13,46 @@ const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const sequelize = require('./db');
 const User = require('./models/user');
-// const axios = require('axios');
-
-// const multer = require('multer');
-// const storage = multer.memoryStorage();
-// const upload = multer({ limits: { fileSize: 50 * 1024 * 1024 } }); 
-
-const { registerUser, loginUser, getUsers, deleteUser, updateUser, verifyRole  } = require('./controllers/userController');
-const { getAllTravelPlans, addTravelPlan, deleteTravelPlan, updateTravelPlan  } = require('./controllers/travelController');
-const { getAllRoomPrices, addRoomPrice, deleteRoomPrice, updateRoomPrice  } = require('./controllers/roomPricesController');
-const { getAllDubaiPrices, addDubaiPrice, deleteDubaiPrice, updateDubaiPrice  } = require('./controllers/dubaiPricesController');
-const { getAllImages, addImage, deleteImage, updateImage  } = require('./controllers/sliderHomeController');
-
-const { getAllHotels, addCard, deleteHotel, updateCard  } = require('./controllers/stambollCardsController');
-
+const routes = require('./routes/routes-all'); 
 
 const app = express();
 
-
-
-const allowedOrigin = "http://localhost:3000";
-
-const originWhitelistMiddleware = (req, res, next) => {
-  const origin = req.headers.origin;
-
-  if (origin === allowedOrigin) {
-    next(); // Allow the request
-  } else {
-    res.status(403).json({ error: "Forbidden: Invalid origin" });
-  }
-};
-
-app.use(originWhitelistMiddleware);
-
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'supersecret', 
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true, 
-    secure: process.env.NODE_ENV === 'production', 
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
-  }
-}));
-
-
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
-
-app.use(helmet());
-
+// Rate limiter for enhanced security
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, 
-  max: 100, 
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
 });
 app.use(limiter);
 
+// Set security headers
+app.use(helmet());
+
+// CORS setup
 app.use(cors({
-  origin: 'http://localhost:3000', 
+  origin: 'http://localhost:3000',
   methods: 'GET,POST,PUT,DELETE',
-  credentials: true,
+  credentials: true, 
 }));
 
-
+// Middleware for parsing request bodies
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 
-app.use(bodyParser.json());
+// Middleware for handling cookies, sessions, and flash messages
 app.use(cookieParser());
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'supersecret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+  },
+}));
+app.use(flash());
 
-
-
-
-// Logging middleware to debug session and user
-app.use((req, res, next) => {
-  // console.log('Session:', req.session);
-  // console.log('User:', req.user);
-  next();
-});
-
-// Configure passport for local authentication
+// Passport.js setup for authentication
 passport.use(new LocalStrategy(async (username, password, done) => {
   try {
     const user = await User.findOne({ where: { username } });
@@ -123,7 +82,19 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-// Middleware to ensure the user is authenticated
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use((req, res, next) => {
+  if (req.headers.origin && req.headers.origin !== 'http://localhost:3000') {
+    return res.status(403).json({ error: "Forbidden: Invalid origin" });
+  }
+  next();
+});
+
+// Routes
+app.use('/api', routes);
+
 const isAuthenticated = (req, res, next) => {
   const token = req.cookies['ubtsecured'];
   if (!token) {
@@ -138,22 +109,16 @@ const isAuthenticated = (req, res, next) => {
   });
 };
 
-
-
-// Route to get the logged-in user's information
+// Example routes
 app.get('/user', isAuthenticated, (req, res) => {
   res.json({ user: req.user });
 });
 
-
-
-
-// Logout route
 app.post('/logout', (req, res) => {
   res.clearCookie('ubtsecured', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict'
+    sameSite: 'strict',
   });
   req.logout((err) => {
     if (err) {
@@ -163,59 +128,15 @@ app.post('/logout', (req, res) => {
   });
 });
 
-// Check session or authentication status
-app.get('/check-session', (req, res) => {
-  if (req.isAuthenticated()) {
-    return res.status(200).json({ message: 'User is logged in' });
-  } else {
-    return res.status(401).json({ message: 'User not logged in' });
-  }
-});
 
 
 
-app.post('/register', registerUser);
-app.post('/login', (req, res, next) => loginUser(req, res, next));
-app.get('/users-get', isAuthenticated, getUsers);
-app.delete('/users/:id', isAuthenticated, deleteUser);
-app.put('/users/:id', isAuthenticated, updateUser);
-// app.use('/manage-user', verifyRole('admin'));
-
-
-app.post('/travel-plans', isAuthenticated ,  addTravelPlan);
-app.get('/travel-plans', getAllTravelPlans);
-app.delete('/travel-plans/:id', isAuthenticated , deleteTravelPlan);
-app.put('/travel-plans/:id', isAuthenticated , updateTravelPlan);
-
-
-app.post('/add-images', addImage);
-app.get('/images', isAuthenticated , getAllImages);
-app.delete('/images-delete/:id', isAuthenticated , deleteImage);
-app.put('/images-update/:id', isAuthenticated , updateImage);
-
-app.post('/add-cards', addCard);
-app.get('/cards', isAuthenticated , getAllHotels);
-app.delete('/cards-delete/:id', isAuthenticated , deleteHotel);
-app.put('/cards-update/:id', isAuthenticated , updateCard);
-
-app.post('/add-room-price', isAuthenticated , addRoomPrice);
-app.get('/room-price', isAuthenticated , getAllRoomPrices);
-app.delete('/room-prices-delete/:id', isAuthenticated , deleteRoomPrice);
-app.put('/room-prices-update/:id', isAuthenticated , updateRoomPrice);
-
-app.post('/add-dubai-price', isAuthenticated , addDubaiPrice);
-app.get('/dubai-price', isAuthenticated , getAllDubaiPrices);
-app.delete('/dubai-prices-delete/:id', isAuthenticated , deleteDubaiPrice);
-app.put('/dubai-prices-update/:id', isAuthenticated , updateDubaiPrice);
-
-
-
-// Initialize server and ensure database and table creation
 const initializeDatabase = async () => {
   try {
     await sequelize.sync();
-    app.listen(process.env.PORT, () => {
-      console.log(`Serveri po punon në portin ${process.env.PORT}`);
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`Serveri po punon në portin ${PORT}`);
     });
   } catch (error) {
     console.error('Gabim gjatë inicializimit të databazës:', error);

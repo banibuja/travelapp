@@ -1,28 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation  } from 'react-router-dom';
 import axios from 'axios';
-import Home from './components/Home';
-import Login from './components/Login';
-import Register from './components/Register';
+
+
+//Components import
+import Home from './components/Home/Home';
+import Login from './components/LoginRegister/Login';
+import Register from './components/LoginRegister/Register';
 import './App.css';
-import Header from './components/Header';
-import Dashboard from './components/dashboard/Dashboard';
-import Turqi from './components/Turqi';
-import Bullgari from './components/Bullgari';
-import Greqi from './components/Greqi';
-import FestateFundvitit from './components/FestateFundvitit';
-import EuropeCityBreak from './components/EuropeCityBreak';
-import AddUser from './components/dashboard/users/AddUser';
-import ManageUser from './components/dashboard/users/ManageUser';
-import ManageHomeTable from './components/dashboard/tables/ManageHomeTable';
-import Nav from './components/nav';
-import TurqiTable from './components/dashboard/tables/TurqiTable';
-import DubaiTable from './components/dashboard/tables/DubaiPricesTable';
-import Dubai from './components/Dubai';
+import Turqi from './components/Turqi/Turqi';
+import Bullgari from './components/Bullgari/Bullgari';
+import Greqi from './components/Greqi/Greqi';
+import FestateFundvitit from './components/FestaFundVitit/FestateFundvitit';
+import EuropeCityBreak from './components/EuropeCity/EuropeCityBreak';
+import Nav from './components/layout/nav';
+import Dubai from './components/Dubai/Dubai';
 import Aranzhman from './components/Aranzhman';
-import VisitKosova from './components/VisitKosova';
-import SliderManage from './components/dashboard/tables/SliderManage';
-import ManageCardsStamboll from './components/dashboard/tables/CardsStamboll';
+import VisitKosova from './components/VisitKosova/VisitKosova';
+
+
+
+//Dashboard import
+import Dashboard from './aDashboard/Dashboard';
+import AddUser from './aDashboard/users/AddUser';
+import ManageUser from './aDashboard/users/ManageUser';
+import ManageHomeTable from './aDashboard/tables/ManageHomeTable';
+import TurqiTable from './aDashboard/tables/TurqiTable';
+import DubaiTable from './aDashboard/tables/DubaiPricesTable';
+import SliderManage from './aDashboard/tables/SliderManage';
+import ManageCardsStamboll from './aDashboard/tables/CardsStamboll';
 
 const App = () => {
  
