@@ -191,28 +191,28 @@ function Home() {
         <div className="flex justify-center items-center space-x-4 mx-auto truncate whitespace-break-spaces text-navy text-xl font-bold tracking-tight lg:text-2xl">
           <span>Rekomandimet</span>
         </div>
-        <div className="rekomandimet grid place-items-center py-10">
+        <div className="rekomandimet  place-items-center py-10">
           <div className="a group relative block overflow-hidden rounded-lg col-span-2">
             <img
               width={400}
               height={400}
-              className="h-[400px] w-[900px] rounded-lg object-cover transition-all group-hover:scale-105"
+              className=" h-96 w-[57rem] w- rounded-lg object-cover transition-all group-hover:scale-105"
               src="https://images.ctfassets.net/pzootm7d2s0g/2BqWwB1eTDPZCiprij3mGi/10bf974ef68fe2f9a30ad5a73662f126/dimri.jpg"
               alt="aaa"
             />
           </div>
 
-          <div className="grid  grid-cols-2 gap-4  justify-center items-center ml-[19.1rem] py-3">
+          <div className="flex gap-4 justify-center items-center mx-auto py-3">
             <div className="im1 group rounded-lg overflow-hidden">
               <img
-                className="w-[500px] h-auto rounded-lg object-cover transition-all group-hover:scale-105"
+                className="w-[28rem] h-auto rounded-lg object-cover transition-all group-hover:scale-105"
                 src="https://images.ctfassets.net/pzootm7d2s0g/4a0lfKENlzoNyN9yJy3r7V/3db03110eba2f273b42ac809efefa42a/pexels-asadphoto-1430676.jpg"
                 alt="bb"
               />
             </div>
             <div className="im1 group rounded-lg overflow-hidden">
               <img
-                className="w-[500px] h-auto rounded-lg object-cover transition-all group-hover:scale-105"
+                className="w-[28rem] h-auto rounded-lg object-cover transition-all group-hover:scale-105"
                 src="https://images.ctfassets.net/pzootm7d2s0g/54r5Al6TKR7Sf7TdYv4tr9/10900d0e2733316bad53b80d214dc90d/exotic.jpg"
                 alt="cc"
               />

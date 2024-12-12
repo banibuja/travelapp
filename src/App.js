@@ -18,6 +18,7 @@ import Dubai from './components/Dubai/Dubai';
 import Aranzhman from './components/Aranzhman';
 import VisitKosova from './components/VisitKosova/VisitKosova';
 
+import Search from './components/Search/Search';
 
 
 //Dashboard import
@@ -57,6 +58,8 @@ const App = () => {
             <Route path="/dashboard/DubaiTable" element={<DubaiTable />} />
             <Route path="/dashboard/SliderManage" element={<SliderManage />} />
             <Route path="/dashboard/ManageCardsStamboll" element={<ManageCardsStamboll />} />
+
+            <Route path="/Search" element={<Search />} />
 
             <Route path="/Dubai" element={<Dubai />} />
             <Route path="/Aranzhman" element={<Aranzhman />} />

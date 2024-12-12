@@ -8,7 +8,7 @@ const Dubai = () => {
 
   useEffect(() => {
     // Fetch room prices from the server
-    axios.get('http://localhost:5000/dubai-price')
+    axios.get('http://localhost:5000/api/dubai-price')
       .then(response => {
         setRoomPrices(response.data); // Assuming response.data contains the room price data
       })
@@ -20,7 +20,7 @@ const Dubai = () => {
   
   return (
   <>
-  <div className="overflow-x-auto max-w-4xl m-auto">
+  <div className=" max-w-4xl m-auto">
     
     <div className="w-full flex flex-col items-center my-9">
       <div className="w-full text-center mb-14">

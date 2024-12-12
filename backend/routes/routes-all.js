@@ -20,6 +20,7 @@ const {
 
 const router = express.Router();
 const { isAuthenticated } = require('../middlewares/authMiddleware');
+const { getAllAranzhmanet } = require('../controllers/aranzhmanetController');
 
 // User routes
 router.post('/register', registerUser);
@@ -58,5 +59,8 @@ router.post('/add-dubai-price', isAuthenticated, addDubaiPrice);
 router.get('/dubai-price', getAllDubaiPrices);
 router.delete('/dubai-prices-delete/:id', isAuthenticated, deleteDubaiPrice);
 router.put('/dubai-prices-update/:id', isAuthenticated, updateDubaiPrice);
+
+
+router.get('/aranzhmanet', getAllAranzhmanet);
 
 module.exports = router;

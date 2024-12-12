@@ -1,6 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --primary: 24.6 95% 53.1%;
+}
 html {
   scroll-behavior: smooth;
+}
+
+.text-primary {
+  color: hsl(var(--primary));
 }

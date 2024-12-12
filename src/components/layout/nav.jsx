@@ -47,6 +47,16 @@ function Nav() {
   const handleDashboard = () => {
     navigate('/dashboard');
   }
+  const handleKeyInput = (key) => {
+    let query = ''
+    const value = key.target.value;
+    if(value) query = `?s=${value}`
+    if (key.keyCode === 13) navigate(`/search${query}`) 
+  }
+
+
+
+
   return (
     <nav className="bg-blue-100 shadow-md">
   <div className="container mx-auto flex justify-center items-center py-2 border-b">
@@ -61,6 +71,7 @@ function Nav() {
             type="text"
             placeholder="Destinacioni"
             className="border rounded px-3 py-1 text-sm"
+            onKeyDown={handleKeyInput}
           />
           
           <div className="relative">
