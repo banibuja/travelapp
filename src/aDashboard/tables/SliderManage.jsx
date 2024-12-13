@@ -7,9 +7,6 @@ function SliderManage() {
   const [message, setMessage] = useState('');
   const [newImage, setNewImage] = useState({ title: '', file: null });
 
-
-
-
   // Fetch all images
   useEffect(() => {
     const fetchImages = async () => {
@@ -33,21 +30,20 @@ function SliderManage() {
       setMessage('Please select a file.');
       return;
     }
-  
-    // Convert file to Base64
+
     const reader = new FileReader();
     reader.onload = async () => {
       const base64String = reader.result.split(',')[1];
-  
+
       try {
         const response = await axios.post(
           'http://localhost:5000/api/add-images',
           { imageBase64: base64String, title: newImage.title },
           {
-              withCredentials: true,
-              headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' },
           }
-      );
+        );
         setImages([...images, response.data.image]);
         setMessage('Image added successfully.');
         setNewImage({ title: '', file: null });
@@ -56,7 +52,7 @@ function SliderManage() {
         setMessage('Error adding image.');
       }
     };
-  
+
     reader.readAsDataURL(newImage.file);
   };
 
@@ -75,81 +71,83 @@ function SliderManage() {
   };
 
   return (
-    <div className="">
+    <div className="flex h-screen">
+      {/* Content Section */}
+      <div className="flex-1 p-4 overflow-y-auto">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Manage Images</h2>
+        {message && (
+          <p
+            className={`mb-4 ${
+              message.includes('successfully') ? 'text-green-500' : 'text-red-500'
+            }`}
+          >
+            {message}
+          </p>
+        )}
 
-    <div className="p-4">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Manage Images</h2>
-      {message && (
-        <p
-          className={`mb-4 ${message.includes('successfully') ? 'text-green-500' : 'text-red-500'}`}
-        >
-          {message}
-        </p>
-      )}
+        {/* Add new image form */}
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Image Title"
+            value={newImage.title}
+            onChange={(e) => setNewImage({ ...newImage, title: e.target.value })}
+            className="border border-gray-300 rounded px-2 py-1 mr-2"
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setNewImage({ ...newImage, file: e.target.files[0] })}
+            className="border border-gray-300 rounded px-2 py-1 mr-2"
+          />
+          <button
+            onClick={addImage}
+            className="bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-600 transition duration-200"
+          >
+            Add Image
+          </button>
+        </div>
 
-      {/* Add new image form */}
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Image Title"
-          value={newImage.title}
-          onChange={(e) => setNewImage({ ...newImage, title: e.target.value })}
-          className="border border-gray-300 rounded px-2 py-1 mr-2"
-        />
-      <input
-  type="file"
-  accept="image/*"
-  onChange={(e) => setNewImage({ ...newImage, file: e.target.files[0] })}
-  className="border border-gray-300 rounded px-2 py-1 mr-2"
-/>
-
-        <button
-          onClick={addImage}
-          className="bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-600 transition duration-200"
-        >
-          Add Image
-        </button>
-      </div>
-
-      {/* Images Table */}
-      <table className="min-w-full bg-white border border-gray-300">
-        <thead>
-          <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-            <th className="py-3 px-6 text-left">ID</th>
-            <th className="py-3 px-6 text-left">Title</th>
-            <th className="py-3 px-6 text-left">Image</th>
-            <th className="py-3 px-6 text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody className="text-gray-700 text-sm font-light">
-          {images.map((image) => (
-            <tr key={image.id} className="border-b border-gray-200 hover:bg-gray-100">
-              <td className="py-3 px-6 text-left">{image.id}</td>
-              <td className="py-3 px-6 text-left">{image.title}</td>
-              <td className="py-3 px-6 text-left">
-                {/* <img src={image.url} alt={image.title} className="w-16 h-16 object-cover rounded" /> */}
-                <img src={`data:image/jpeg;base64,${image.imageBase64}`} alt={image.title} className="w-16 h-16 object-cover rounded" />
-
-              </td>
-
-
-              <td className="py-3 px-6 text-center">
-                <button
-                  onClick={() => deleteImage(image.id)}
-                  className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
-                >
-                  Delete
-                </button>
-              </td>
+        {/* Images Table */}
+        <table className="min-w-full bg-white border border-gray-300">
+          <thead>
+            <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+              <th className="py-3 px-6 text-left">ID</th>
+              <th className="py-3 px-6 text-left">Title</th>
+              <th className="py-3 px-6 text-left">Image</th>
+              <th className="py-3 px-6 text-center">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-
+          </thead>
+          <tbody className="text-gray-700 text-sm font-light">
+            {images.map((image) => (
+              <tr key={image.id} className="border-b border-gray-200 hover:bg-gray-100">
+                <td className="py-3 px-6 text-left">{image.id}</td>
+                <td className="py-3 px-6 text-left">{image.title}</td>
+                <td className="py-3 px-6 text-left">
+                  <img
+                    src={`data:image/jpeg;base64,${image.imageBase64}`}
+                    alt={image.title}
+                    className="w-16 h-16 object-cover rounded"
+                  />
+                </td>
+                <td className="py-3 px-6 text-center">
+                  <button
+                    onClick={() => deleteImage(image.id)}
+                    className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
-      {/* <Menu /> */}
-
+      {/* Sidebar Menu */}
+      <div className="w-64 bg-gray-100 border-l border-gray-300 shadow-lg">
+        <Menu />
+      </div>
     </div>
   );
 }
