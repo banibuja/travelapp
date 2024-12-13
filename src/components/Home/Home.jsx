@@ -14,6 +14,9 @@ function Home() {
   const [images, setImages] = useState([]);
   const [message, setMessage] = useState('');
   const [hotels, setHotels] = useState([]);
+  const [hotelsHurghada, setHotelsHughada] = useState([]);
+  const [kapodakia, setKapodakia] = useState([]);
+
 
 
 
@@ -49,10 +52,38 @@ function Home() {
     fetchImages();
   }, []);
 
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/hurghada/cards', {
+          withCredentials: true,
+        });
+        setHotelsHughada(response.data);
+      } catch (error) {
+        console.error('Error fetching images:', error);
+        setMessage('There was an error fetching images.');
+      }
+    };
 
+    fetchImages();
+  }, []);
 
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/kapodakia/cards', {
+          withCredentials: true,
+        });
+        setKapodakia(response.data);
+      } catch (error) {
+        console.error('Error fetching images:', error);
+        setMessage('There was an error fetching images.');
+      }
+    };
 
-  // const [selected, setSelected] = useState("Aranzhman");
+    fetchImages();
+  }, []);
+
 
   const settings = {
     dots: true, 
@@ -64,6 +95,85 @@ function Home() {
     autoplaySpeed: 3000, 
     arrows: false, 
   };
+
+
+
+
+  const settings1 = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4, 
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    arrows: true,
+    responsive: [
+      {
+        breakpoint: 1024, 
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 768, 
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 480, 
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+
+  const hotelss = [
+    {
+      id: 1,
+      image: "https://media.dev.paximum.com/hotelimages/479240/1.jpg",
+      name: "Ramada by Wyndham Cappadocia",
+      stars: 5,
+      location: "Ortahisar, Turkey",
+      price: "125",
+    },
+    {
+      id: 2,
+      image: "https://photos.hotelbeds.com/giata/xl/28/284333/284333a_hb_a_001.jpg",
+      name: "Hotel Cave Konak",
+      stars: 3,
+      location: "Ürgüp merkez, Turkey",
+      price: "155",
+    },
+    {
+      id: 3,
+      image: "https://photos.hotelbeds.com/giata/xl/37/370942/370942a_hb_ro_039.jpg",
+      name: "Rox Cappadocia",
+      stars: 4,
+      location: "Uçhisar, Turkey",
+      price: "160",
+    },
+    {
+      id: 4,
+      image: "https://photos.hotelbeds.com/giata/xl/15/157370/157370a_hb_l_001.jpg",
+      name: "Kale Konak Hotel",
+      stars: 4,
+      location: "Uçhisar, Turkey",
+      price: "167",
+    },
+    {
+      id: 5,
+      image: "https://photos.hotelbeds.com/giata/xl/15/157370/157370a_hb_l_001.jpg",
+      name: "Ban Konak Hotel",
+      stars: 4,
+      location: "Uçhisar, Turkey",
+      price: "167",
+    },
+  ];
+
+
 
   return (
     <div>
@@ -248,112 +358,65 @@ function Home() {
       </div>
     </div>
 
-        <div className="Hurghada p-10">
+    <div className="hughada p-10">
+      <div className="flex justify-center items-center space-x-4 mx-auto truncate whitespace-break-spaces text-navy text-xl font-bold tracking-tight lg:text-2xl">
+        <span>Oferta Hurghada</span>
+      </div>
+      <div className="flex flex-wrap justify-center gap-8">
+        {hotelsHurghada.map((hotel, index) => (
+          <div key={index} className="stamboll bg-white shadow-md rounded-lg flex p-6 w-[30rem]">
+            <div className="flex flex-col justify-center">
+              <h3 className="text-2xl font-bold mb-2">{hotel.name}</h3>
+              <p className="text-gray-600 mb-1 flex items-center">
+          {"⭐".repeat(Math.min(4))} 
+        <span className="ml-2">{hotel.location}</span>
+          </p>
+              <p className="text-gray-600 mb-1">All Inclusive</p>
+              <p className="text-blue-600 font-bold">nga PP €{hotel.price}</p>
+            </div>
+            <div className="ml-auto">
+        
 
-          <div className="flex justify-center items-center space-x-4 mx-auto truncate whitespace-break-spaces text-navy text-xl font-bold tracking-tight lg:text-2xl">
-            <span>Hurghada hotele</span>
+        <img src={`data:image/jpeg;base64,${hotel.imageBase64}`} alt={hotel.title} 
+        className="w-32 h-32 object-cover rounded-lg" />
+
+            </div>
           </div>
-          <div className="flex flex-wrap justify-center gap-8">
-            {/* Kartela 1 */}
-            <div className=" bg-white shadow-md rounded-lg flex p-6 w-[30rem]">
-              <div className="flex flex-col justify-center">
-                <h3 className="text-2xl font-bold mb-2">Royal Lagoons Aqua Park Resort</h3>
-                <p className="text-gray-600 mb-1">⭐⭐⭐⭐ Hurghada, Egypt</p>
-                <p className="text-gray-600 mb-1">All Inclusive</p>
-                <p className="text-blue-600 font-bold">nga PP €320</p>
-              </div>
-              <div className="ml-auto">
-                <img
-                  className="w-32 h-32 object-cover rounded-lg"
-                  src="https://diq6z0fqx8xxr.cloudfront.net/images/product/1/8/0/2/2/202996/royal_lagoons_aqua_park_resort_-_el_memsha__hurgada_202996.jpg?width=1024&height=768&mode=min"
-                  alt="The Byzantium"
-                />
-              </div>
-            </div>
+        ))}
+      </div>
+    </div>
 
-            {/* Kartela 2 */}
-            <div className=" bg-white shadow-md rounded-lg flex p-6 w-[30rem]">
-              <div className="flex flex-col justify-center">
-                <h3 className="text-2xl font-bold mb-2">SUNRISE Holidays Resort</h3>
-                <p className="text-gray-600 mb-1">⭐⭐⭐⭐ Hurghada, Egypt</p>
-                <p className="text-gray-600 mb-1">All Inclusive</p>
-                <p className="text-blue-600 font-bold">nga PP €320</p>
+    
+    <div className="kapodakia">
+  <h2 className="text-3xl font-bold text-center mb-6">Kapadokia hotele</h2>
+  <div className="max-w-6xl mx-auto"> 
+    <Slider {...settings1}>
+      {kapodakia.map((hotel, index) => (
+        <div key={index} className="p-2">
+          <div className="bg-white shadow-md rounded-lg overflow-hidden w-60 mx-auto"> 
+          <img src={`data:image/jpeg;base64,${hotel.imageBase64}`} alt={hotel.name}
+              className="w-full h-40 object-cover"
+            />
+            <div className="p-4">
+              <h3 className="text-lg font-bold">{hotel.name}</h3>
+              <div className="flex items-center space-x-1">
+                {[...Array(hotel.stars)].map((_, i) => (
+                  <span key={i} className="text-orange-500">★</span>
+                ))}
               </div>
-              <div className="ml-auto">
-                <img
-                  className="w-32 h-32 object-cover rounded-lg"
-                  src="https://media.dev.paximum.com/hotelimages/310041/3fe79b2285ebe8d9c613dfbe57987eec.jpg"
-                  alt="The Byzantium"
-                />
-              </div>
-            </div>
-
-            {/* Kartela 3 */}
-            <div className=" bg-white shadow-md rounded-lg flex p-6 w-[30rem]">
-              <div className="flex flex-col justify-center">
-                <h3 className="text-2xl font-bold mb-2">Caves Beach Resort</h3>
-                <p className="text-gray-600 mb-1">⭐⭐⭐⭐ Hurghada, Egypt</p>
-                <p className="text-gray-600 mb-1">All Inclusive</p>
-                <p className="text-blue-600 font-bold">nga PP €320</p>
-              </div>
-              <div className="ml-auto">
-                <img
-                  className="w-32 h-32 object-cover rounded-lg"
-                  src="https://service.fibula.ro/media/images/product/1/8/0/2/2/103812/caves_beach_resort_-_al_ahyaa__hurgada_103812.jpg?width=1024&height=768&mode=min"
-                  alt="The Byzantium"
-                />
-              </div>
-            </div>
-
-            {/* Kartela 4 */}
-            <div className=" bg-white shadow-md rounded-lg flex p-6 w-[30rem]">
-              <div className="flex flex-col justify-center">
-                <h3 className="text-2xl font-bold mb-2">Minamark Resort</h3>
-                <p className="text-gray-600 mb-1">⭐⭐⭐⭐ Hurghada, Egypt</p>
-                <p className="text-gray-600 mb-1">All Inclusive</p>
-                <p className="text-blue-600 font-bold">nga PP €320</p>
-              </div>
-              <div className="ml-auto">
-                <img
-                  className="w-32 h-32 object-cover rounded-lg"
-                  src="https://diq6z0fqx8xxr.cloudfront.net/images/product/1/8/0/2/2/202809/minamark_resort_-_sakkala__hurgada_202809.jpg?width=1024&height=768&mode=min"
-                  alt="The Byzantium"
-                />
-              </div>
-            </div>
-
-            <div className=" bg-white shadow-md rounded-lg flex p-6 w-[30rem]">
-              <div className="flex flex-col justify-center">
-                <h3 className="text-2xl font-bold mb-2">SUNRISE Aqua Joy Resort</h3>
-                <p className="text-gray-600 mb-1">⭐⭐⭐⭐ Hurghada, Egypt</p>
-                <p className="text-gray-600 mb-1">All Inclusive</p>
-                <p className="text-blue-600 font-bold">nga PP €320</p>
-              </div>
-              <div className="ml-auto">
-                <img
-                  className="w-32 h-32 object-cover rounded-lg"
-                  src="https://diq6z0fqx8xxr.cloudfront.net/images/product/1/6/0/2/2/137329/sunrise_aqua_joy_resort_137329.jpg"
-                  alt="The Byzantium"
-                />
-              </div>
-            </div>
-            <div className=" bg-white shadow-md rounded-lg flex p-6 w-[30rem]">
-              <div className="flex flex-col justify-center">
-                <h3 className="text-2xl font-bold mb-2">Albatros Citadel Sahl Hashsih</h3>
-                <p className="text-gray-600 mb-1">⭐⭐⭐⭐ Hurghada, Egypt</p>
-                <p className="text-gray-600 mb-1">All Inclusive</p>
-                <p className="text-blue-600 font-bold">nga PP €320</p>
-              </div>
-              <div className="ml-auto">
-                <img
-                  className="w-32 h-32 object-cover rounded-lg"
-                  src="https://images.fibula.rs/HotelImage/1/7127/96156_L.jpg"
-                  alt="The Byzantium"
-                />
+              <p className="text-sm text-gray-500">{hotel.location}</p>
+              <div className="text-lg font-semibold mt-2">
+                nga PP €{hotel.price}
               </div>
             </div>
           </div>
         </div>
+      ))}
+    </Slider>
+  </div>
+</div>
+
+     
         <Footer />
     </div>
   );

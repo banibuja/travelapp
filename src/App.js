@@ -30,6 +30,8 @@ import TurqiTable from './aDashboard/tables/TurqiTable';
 import DubaiTable from './aDashboard/tables/DubaiPricesTable';
 import SliderManage from './aDashboard/tables/SliderManage';
 import ManageCardsStamboll from './aDashboard/tables/CardsStamboll';
+import HurghadaCards from './aDashboard/tables/HurghadaCards';
+import KapodakiaCards from './aDashboard/tables/KapodakiaCards';
 
 import AddAranzhmanet from './aDashboard/aranzhmanet/AddAranzhmanet';
 import ManageAranzhmanet from './aDashboard/aranzhmanet/ManageAranzhmanet';
@@ -67,6 +69,8 @@ const App = () => {
             <Route path="/dashboard/DubaiTable" element={<DubaiTable />} />
             <Route path="/dashboard/SliderManage" element={<SliderManage />} />
             <Route path="/dashboard/ManageCardsStamboll" element={<ManageCardsStamboll />} />
+            <Route path="/dashboard/HurghadaCards" element={<HurghadaCards />} />
+            <Route path="/dashboard/KapodakiaCards" element={<KapodakiaCards />} />
 
             <Route path="/dashboard/AddAranzhmanet" element={<AddAranzhmanet />} />
             <Route path="/dashboard/ManageAranzhmanet" element={<ManageAranzhmanet />} />
