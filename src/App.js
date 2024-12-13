@@ -45,7 +45,7 @@ import ManageShtetet from './aDashboard/shtetet/ManageShtetet';
 const App = () => {
  
   const location = useLocation();
-  const isHomeroute = !location.pathname.startsWith('/dashboard');
+  const isHomeroute = !location.pathname.startsWith('/dashboard') || !location.pathname.startsWith('/api');
 
   return (
     <>

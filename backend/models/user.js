@@ -30,8 +30,11 @@ const User = sequelize.define('User', {
   },
   role: {
     type: DataTypes.STRING,
-    defaultValue: 'user', // Default role as 'user'
+    defaultValue: 'user', 
   },
+}, {
+  tableName: 'users',
+  timestamps: false,
 });
 
 module.exports = User;
