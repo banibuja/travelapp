@@ -17,10 +17,18 @@ const {
 const { 
   getAllHotels, addCard, deleteHotel, updateCard 
 } = require('../controllers/stambollCardsController');
+const { 
+  getAllAranzhmanet, updateAranzhmani, deleteAranzhmanet, addAranzhmanet
+} = require('../controllers/aranzhmanetController');
+const { 
+  getAllAirports, addAirports, deleteAirport, updateAirport
+} = require('../controllers/airportsController');
+const { 
+  getAllShtetet, addShtetet, deleteShtetet, updateShteti
+} = require('../controllers/shtetetController');
 
 const router = express.Router();
 const { isAuthenticated } = require('../middlewares/authMiddleware');
-const { getAllAranzhmanet } = require('../controllers/aranzhmanetController');
 
 // User routes
 router.post('/register', registerUser);
@@ -59,8 +67,21 @@ router.post('/add-dubai-price', isAuthenticated, addDubaiPrice);
 router.get('/dubai-price', getAllDubaiPrices);
 router.delete('/dubai-prices-delete/:id', isAuthenticated, deleteDubaiPrice);
 router.put('/dubai-prices-update/:id', isAuthenticated, updateDubaiPrice);
+router.post('/add-dubai-price', isAuthenticated, addDubaiPrice);
 
-
+router.post('/add-Aranzhmani', addAranzhmanet);
+router.delete('/Aranzhmani-delete/:id', isAuthenticated, deleteAranzhmanet);
+router.put('/Aranzhmani-update/:id', isAuthenticated, updateAranzhmani);
 router.get('/aranzhmanet', getAllAranzhmanet);
+
+router.post('/add-airports', addAirports);
+router.delete('/airports-delete/:id', isAuthenticated, deleteAirport);
+router.put('/airports-update/:id', isAuthenticated, updateAirport);
+router.get('/airports', getAllAirports);
+
+router.post('/add-shtetin', addShtetet);
+router.delete('/shtetin-delete/:id', isAuthenticated, deleteShtetet);
+router.put('/shtetin-update/:id', isAuthenticated, updateShteti);
+router.get('/shtetet', getAllShtetet);
 
 module.exports = router;

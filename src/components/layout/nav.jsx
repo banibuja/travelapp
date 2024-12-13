@@ -51,7 +51,10 @@ function Nav() {
     let query = ''
     const value = key.target.value;
     if(value) query = `?s=${value}`
-    if (key.keyCode === 13) navigate(`/search${query}`) 
+    if (key.keyCode === 13) {
+      
+    key.target.value = '';
+      navigate(`/search${query}`) }
   }
 
 

@@ -31,6 +31,15 @@ import DubaiTable from './aDashboard/tables/DubaiPricesTable';
 import SliderManage from './aDashboard/tables/SliderManage';
 import ManageCardsStamboll from './aDashboard/tables/CardsStamboll';
 
+import AddAranzhmanet from './aDashboard/aranzhmanet/AddAranzhmanet';
+import ManageAranzhmanet from './aDashboard/aranzhmanet/ManageAranzhmanet';
+
+import AddAirport from './aDashboard/airports/AddAirport';
+import ManageAirports from './aDashboard/airports/ManageAirports';
+
+import AddShtetin from './aDashboard/shtetet/AddShtetin';
+import ManageShtetet from './aDashboard/shtetet/ManageShtetet';
+
 const App = () => {
  
   const location = useLocation();
@@ -58,6 +67,15 @@ const App = () => {
             <Route path="/dashboard/DubaiTable" element={<DubaiTable />} />
             <Route path="/dashboard/SliderManage" element={<SliderManage />} />
             <Route path="/dashboard/ManageCardsStamboll" element={<ManageCardsStamboll />} />
+
+            <Route path="/dashboard/AddAranzhmanet" element={<AddAranzhmanet />} />
+            <Route path="/dashboard/ManageAranzhmanet" element={<ManageAranzhmanet />} />
+
+            <Route path="/dashboard/AddAirport" element={<AddAirport />} />
+            <Route path="/dashboard/ManageAirports" element={<ManageAirports />} />
+
+            <Route path="/dashboard/AddShtetin" element={<AddShtetin />} />
+            <Route path="/dashboard/ManageShtetet" element={<ManageShtetet />} />
 
             <Route path="/Search" element={<Search />} />
 

@@ -28,76 +28,81 @@ const getAllAranzhmanet = async (req, res) => {
         sherbimi: aranzhmani.sherbimi,
         dataNisjes: aranzhmani.dataNisjes,
         dataKthimit: aranzhmani.dataKthimit,
+        airportId: aranzhmani.airportId,
         airport : `${aranzhmani.airport.emri} (${aranzhmani.airport.akronimi})`,
         cmimi: aranzhmani.cmimi,
         rating: aranzhmani.rating,
+        shtetiId: aranzhmani.shtetiId,
         shteti: aranzhmani.shtetet.emri
       }
       ))
     );
   } catch (err) {
-    //     res.status(500).json({ error: err.message });
+        res.status(500).json({ error: err.message });
   }
 };
 
-// // Add new dubai price
-// const addDubaiPrice = async (req, res) => {
-//   const { nisja, tipi_dhomes, udhetimi, cmimi, sherbimi } = req.body;
+// Add new Aranzhmanet price
+const addAranzhmanet = async (req, res) => {
+  const { titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airportId, cmimi, rating, shtetiId } = req.body;
+  try {
+    const newAranzhmani = await Aranzhmanet.create({
+      titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airportId, cmimi, rating, shtetiId
+    });
+    res.status(201).json({
+      message: 'Aranzhmanet added successfully',
+      Aranzhmani: newAranzhmani
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error adding Aranzhmani', error: error.message });
+  }
+};
 
-//   try {
-//     const newDubaiPrice = await DubaiPrices.create({
-//       nisja, 
-//       tipi_dhomes, 
-//       udhetimi, 
-//       cmimi, 
-//       sherbimi
-//     });
 
-//     res.status(201).json({
-//       message: 'Dubai price added successfully',
-//       dubaiPrice: newDubaiPrice
-//     });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Error adding dubai price', error: error.message });
-//   }
-// };
 
-// // Delete dubai price
-// const deleteDubaiPrice = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const dubaiPrice = await DubaiPrices.findByPk(id);
-//     if (!dubaiPrice) {
-//       return res.status(404).json({ error: 'Dubai price not found' });
-//     }
-//     await dubaiPrice.destroy();
-//     res.status(200).json({ message: 'Dubai price deleted successfully' });
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
 
-// // Update dubai price
-// const updateDubaiPrice = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { nisja, tipi_dhomes, udhetimi, cmimi, sherbimi} = req.body;
-//     const dubaiPrice = await DubaiPrices.findByPk(id);
-//     if (!dubaiPrice) {
-//       return res.status(404).json({ error: 'Dubai price not found' });
-//     }
+// Delete Aranzhmani
+const deleteAranzhmanet= async (req, res) => {
+  try {
+    const { id } = req.params;
+    const Aranzhmani= await Aranzhmanet.findByPk(id);
+    if (!Aranzhmani) {
+      return res.status(404).json({ error: 'Aranzhmani not found' });
+    }
+    await Aranzhmani();
+    res.status(200).json({ message: 'Aranzhmani deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-//     dubaiPrice.nisja = nisja || dubaiPrice.nisja;
-//     dubaiPrice.tipi_dhomes = tipi_dhomes || dubaiPrice.tipi_dhomes;
-//     dubaiPrice.udhetimi = udhetimi || dubaiPrice.udhetimi;
-//     dubaiPrice.cmimi = cmimi || dubaiPrice.cmimi;
-//     dubaiPrice.sherbimi = sherbimi || dubaiPrice.sherbimi;
+// Update Aranzhmani
+const updateAranzhmani = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airport, cmimi, rating, shteti} = req.body;
+    const Aranzhmani = await Aranzhmanet.findByPk(id);
+    if (!Aranzhmani) {
+      return res.status(404).json({ error: 'Aranzhmani not found' });
+    }
 
-//     await dubaiPrice.save();
-//     res.status(200).json(dubaiPrice);
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
+    Aranzhmani.titulli = titulli || Aranzhmani.titulli;
+    Aranzhmani.nrPersonave = nrPersonave || Aranzhmani.nrPersonave;
+    Aranzhmani.nrNeteve = nrNeteve || Aranzhmani.nrNeteve;
+    Aranzhmani.llojiDhomes = llojiDhomes || Aranzhmani.llojiDhomes;
+    Aranzhmani.dataNisjes = dataNisjes || Aranzhmani.dataNisjes;
+    Aranzhmani.dataKthimit = dataKthimit || Aranzhmani.dataKthimit;
+    Aranzhmani.airport = airport || Aranzhmani.airport;
+    Aranzhmani.rating = rating || Aranzhmani.rating;
+    Aranzhmani.shteti = shteti || Aranzhmani.shteti;
+    Aranzhmani.cmimi = cmimi || Aranzhmani.cmimi;
+    Aranzhmani.sherbimi = sherbimi || Aranzhmani.sherbimi;
 
-module.exports = { getAllAranzhmanet};
+    await Aranzhmani.save();
+    res.status(200).json(Aranzhmani);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = { getAllAranzhmanet, updateAranzhmani, deleteAranzhmanet, addAranzhmanet};

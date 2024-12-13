@@ -36,9 +36,9 @@ const SearchItem = ({data}) => {
             className="w-full h-48 object-cover"
             />
 
-            <div className="p-4">
+            <div className="p-4 border border-black border-t-0 rounded-bl-lg rounded-br-lg">
                 <div className="flex justify-between items-center">
-                    <h3 className="text-xl font-semibold text-gray-800">{item.titulli}</h3>
+                    <h3 className="text-xl font-semibold text-gray-800  h-7 text-ellipsis overflow-hidden whitespace-nowrap">{item.titulli}</h3>
                     <span className="text-yellow-500 text-lg flex">
                         {
                             Array.from({ length: item.rating }, (_, index) => (

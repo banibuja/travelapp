@@ -44,13 +44,17 @@ const Search = () => {
         console.error("There was an error fetching the room prices:", error);
       });
   }, []);
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const searchTerm = queryParams.get('s') || '';
-    filterBySearch(searchTerm)
 
 
-}, [aranzhmanet]);
+    useEffect(() => {
+      const queryParams = new URLSearchParams(location.search);
+      const searchTerm = queryParams.get('s') || '';
+      filterBySearch(searchTerm)
+
+
+  }, [aranzhmanet]);
+
+
   const sortByPrice = (ascending = true) => {
     const sortedAranzhmanet = [...displayedAranzhmanet].sort((a, b) => {
       return ascending ? a.cmimi - b.cmimi : b.cmimi - a.cmimi;
@@ -84,7 +88,6 @@ const Search = () => {
 
   const filterBySearch = (searchTerm) => {
     if (searchTerm.length < 1) {
-        console.log(aranzhmanet);
         setDisplayedAranzhmanet(aranzhmanet);
     } else{
         
@@ -111,9 +114,9 @@ const Search = () => {
         </div>
         <div className="flex gap-10">
             <div className="w-64 border border-black h-96">
-                <input type="text" className='border border-2 border-black m-5' onInput={handleInput}/>
+                <input type="text" className=' border-2 border-black m-5' onInput={handleInput}/>
             </div>
-            <div className="w-full border border border-black">
+            <div className="w-full border border-black">
                 <div className="p-3 flex">
                     <div>
                         {displayedAranzhmanet.length} te kerkuara
@@ -157,6 +160,8 @@ const Search = () => {
                         )}
                     </div>
                 </div>
+                <div className="">
+                  
                 <div className="flex gap-5 flex-wrap  justify-center">
                  {displayedAranzhmanet && (
                     displayedAranzhmanet.map((aranzhmani, index) => {
@@ -164,6 +169,7 @@ const Search = () => {
 
                     })
                  )}   
+                </div>
                 </div>
             </div>
         </div>
