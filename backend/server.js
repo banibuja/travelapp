@@ -17,7 +17,6 @@ const routes = require('./routes/routes-all');
 
 const app = express();
 
-// Rate limiter for enhanced security
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
@@ -29,9 +28,8 @@ app.use(helmet());
 
 // CORS setup
 app.use(cors({
-  origin: 'http://localhost:3000',
-  methods: 'GET,POST,PUT,DELETE',
-  credentials: true, 
+  origin: ['http://localhost:3000', 'https://travelapp-virid.vercel.app/'],
+  credentials: true, // Enable cookies and other credentials
 }));
 
 // Middleware for parsing request bodies
@@ -114,6 +112,10 @@ app.get('/user', isAuthenticated, (req, res) => {
   res.json({ user: req.user });
 });
 
+app.get('/', (req, res) => {
+  res.json('user');
+});
+
 app.post('/logout', (req, res) => {
   res.clearCookie('ubtsecured', {
     httpOnly: true,
@@ -134,7 +136,7 @@ app.post('/logout', (req, res) => {
 const initializeDatabase = async () => {
   try {
     await sequelize.sync();
-    const PORT = process.env.PORT || 5000;
+    const PORT = 5000;
     app.listen(PORT, () => {
       console.log(`Serveri po punon në portin ${PORT}`);
     });
