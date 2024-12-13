@@ -11,7 +11,7 @@ function FestateFundvitit() {
             <div className="country-card w-1/3 text-center">
               <img
                 className="rounded-lg object-cover w-full h-auto"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/New_York_City_at_night_HDR_edit1.jpg/1200px-New_York_City_at_night_HDR_edit1.jpg"
+                src="https://media.timeout.com/images/105730957/750/422/image.jpg"
                 alt="New York"
               />
               <p className="font-semibold mt-2">New York</p>
@@ -19,7 +19,7 @@ function FestateFundvitit() {
             <div className="country-card w-1/3 text-center">
               <img
                 className="rounded-lg object-cover w-full h-auto"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Las_Vegas_%2813699175984%29.jpg/1200px-Las_Vegas_%2813699175984%29.jpg"
+                src="https://ktla.com/wp-content/uploads/sites/4/2020/12/AP20365030764895.jpg?strip=1"
                 alt="Las Vegas"
               />
               <p className="font-semibold mt-2">Las Vegas</p>
@@ -27,7 +27,7 @@ function FestateFundvitit() {
             <div className="country-card w-1/3 text-center">
               <img
                 className="rounded-lg object-cover w-full h-auto"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/San_Francisco_%28cropped%29.jpg/1200px-San_Francisco_%28cropped%29.jpg"
+                src="https://miro.medium.com/v2/resize:fit:1200/1*CGvTjTOr6_h40pllQA2ATw.png"
                 alt="San Francisco"
               />
               <p className="font-semibold mt-2">San Francisco</p>
@@ -41,7 +41,7 @@ function FestateFundvitit() {
             <div className="country-card w-1/3 text-center">
               <img
                 className="rounded-lg object-cover w-full h-auto"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Eiffel_Tower_%28cropped%29.jpg/1200px-Eiffel_Tower_%28cropped%29.jpg"
+                src="https://www.bvjhostelparis.com/wp-content/uploads/2017/07/FIRE-WORKS-PARIS-14-JULY.jpg"
                 alt="Paris"
               />
               <p className="font-semibold mt-2">Paris</p>
@@ -49,7 +49,7 @@ function FestateFundvitit() {
             <div className="country-card w-1/3 text-center">
               <img
                 className="rounded-lg object-cover w-full h-auto"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Vienna_-_Ringstrasse_and_Rathaus_%28cropped%29.jpg/1200px-Vienna_-_Ringstrasse_and_Rathaus_%28cropped%29.jpg"
+                src="https://www.wien.info/resource/image/309314/19x10/1200/630/6e921a41966756ab2b894918a4fb557e/B78CB8E009BF476058916BD62BC65D8F/silvester-silvesterpfad-graben.jpg"
                 alt="Vienna"
               />
               <p className="font-semibold mt-2">Vienna</p>
@@ -57,7 +57,7 @@ function FestateFundvitit() {
             <div className="country-card w-1/3 text-center">
               <img
                 className="rounded-lg object-cover w-full h-auto"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Budapest_Buda_Castle_Panorama.jpg/1200px-Budapest_Buda_Castle_Panorama.jpg"
+                src="https://cdn-imgix.headout.com/microbrands-content-image/image/505c0f8d8d05ad0ddc6fb6da463ca924-Budapest%201.jpg?auto=format&w=1222.3999999999999&h=687.6&q=90&fit=crop&ar=16%3A9&crop=faceshttps://cdn-imgix.headout.com/microbrands-content-image/image/505c0f8d8d05ad0ddc6fb6da463ca924-Budapest%201.jpg?auto=format&w=1222.3999999999999&h=687.6&q=90&fit=crop&ar=16%3A9&crop=faces"
                 alt="Budapest"
               />
               <p className="font-semibold mt-2">Budapest</p>
