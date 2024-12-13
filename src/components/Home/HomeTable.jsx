@@ -241,7 +241,7 @@ function HomeTable() {
               </>
             )}
             <button className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600">
-              KËRKO
+            <a href="/search">  KËRKO </a>
             </button>
           </div>
         </div>
