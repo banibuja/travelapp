@@ -97,6 +97,22 @@ function Menu() {
               ManageCardsStamboll
             </Link>
           </li>
+          <li>
+            <Link
+              to="/dashboard/HurghadaCards"
+              className="block px-4 py-2 text-blue-500 font-bold hover:text-blue-700 hover:bg-gray-100"
+            >
+              Manage Hurghada Cards
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/dashboard/KapodakiaCards"
+              className="block px-4 py-2 text-blue-500 font-bold hover:text-blue-700 hover:bg-gray-100"
+            >
+              Manage Kapodakia Cards
+            </Link>
+          </li>
         </ul>
       )}
     </div>

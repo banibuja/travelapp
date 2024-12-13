@@ -29,7 +29,13 @@ const createDatabase = async () => {
     // console.log('Lidhja me bazën e të dhënave është e suksesshme.');
 
     const SliderHome = require('./models/SliderHome');
+    const Hurghada = require('./models/HurghadaCards');
+    const Kapodakia = require('./models/Kapodakia');
+    const StambollCards = require('./models/StambollCards');
 
+    
+
+    
 
     // Krijo tabelat menjehere pas krijimit te databazes
     // await sequelize.sync({ force: true });  // Drops and re-creates the tables
