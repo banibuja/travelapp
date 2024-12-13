@@ -26,6 +26,14 @@ const {
 const { 
   getAllShtetet, addShtetet, deleteShtetet, updateShteti
 } = require('../controllers/shtetetController');
+const { 
+  getAllHurghada, addCardHurgada, deleteHurgada, updateCardHurgada 
+} = require('../controllers/hurghadasController');
+const { 
+  getAllKapodakia, addCardKapodakia, deleteKapodakia, updateCardKapodakia 
+} = require('../controllers/kapodakiaCards');
+
+
 
 const router = express.Router();
 const { isAuthenticated } = require('../middlewares/authMiddleware');
@@ -50,11 +58,24 @@ router.get('/images', getAllImages);
 router.delete('/images-delete/:id', isAuthenticated, deleteImage);
 router.put('/images-update/:id', isAuthenticated, updateImage);
 
-// Cards routes
+// stamboll Cards routes
 router.post('/add-cards', addCard);
 router.get('/cards', getAllHotels);
 router.delete('/cards-delete/:id', isAuthenticated, deleteHotel);
 router.put('/cards-update/:id', isAuthenticated, updateCard);
+
+//hurghada cards routes
+router.post('/hurghada/add-cards', addCardHurgada);
+router.get('/hurghada/cards', getAllHurghada);
+router.delete('/hurghada/cards-delete/:id', isAuthenticated, deleteHurgada);
+router.put('/hurghada/cards-update/:id', isAuthenticated, updateCardHurgada);
+
+//kapodakia cards routes
+router.post('/kapodakia/add-cards', addCardKapodakia);
+router.get('/kapodakia/cards', getAllKapodakia);
+router.delete('/kapodakia/cards-delete/:id', isAuthenticated, deleteKapodakia);
+router.put('/kapodakia/cards-update/:id', isAuthenticated, updateCardKapodakia);
+
 
 // Room prices routes
 router.post('/add-room-price', isAuthenticated, addRoomPrice);

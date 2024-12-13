@@ -1,12 +1,8 @@
-// models/Hotel.js
+// models/Hurghada.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
-const Hotel = sequelize.define('Hotel', {
-  OfertaName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
+const Hurghada = sequelize.define('Hurghada', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -29,4 +25,4 @@ const Hotel = sequelize.define('Hotel', {
   },
 });
 
-module.exports = Hotel;
+module.exports = Hurghada;
