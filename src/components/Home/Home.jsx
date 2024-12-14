@@ -103,11 +103,11 @@ function Home() {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 4, 
+    slidesToShow: 4, // Shfaq 4 karta njëkohësisht
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    arrows: true,
+    arrows: true, 
     responsive: [
       {
         breakpoint: 1024, 
@@ -389,12 +389,14 @@ function Home() {
     
     <div className="kapodakia">
   <h2 className="text-3xl font-bold text-center mb-6">Kapadokia hotele</h2>
-  <div className="max-w-6xl mx-auto"> 
+  <div className="max-w-6xl mx-auto">
     <Slider {...settings1}>
-      {kapodakia.map((hotel, index) => (
+      {hotelss.map((hotel, index) => (
         <div key={index} className="p-2">
-          <div className="bg-white shadow-md rounded-lg overflow-hidden w-60 mx-auto"> 
-          <img src={`data:image/jpeg;base64,${hotel.imageBase64}`} alt={hotel.name}
+          <div className="bg-white shadow-md rounded-lg overflow-hidden w-60 mx-auto"> {/* Karta të vogla */}
+            <img
+              src={hotel.image}
+              alt={hotel.name}
               className="w-full h-40 object-cover"
             />
             <div className="p-4">
@@ -415,6 +417,8 @@ function Home() {
     </Slider>
   </div>
 </div>
+
+
 
      
         <Footer />

@@ -64,7 +64,7 @@ const deleteHurgada = async (req, res) => {
 const updateCardHurgada = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, price, imageBase64 } = req.body;
+    const { name, location, price, imageBase64 } = req.body;
 
     // Find the card in the database
     const card = await Hurghada.findByPk(id);
@@ -73,8 +73,8 @@ const updateCardHurgada = async (req, res) => {
     }
 
     // Update the card details
-    card.name = title;
-    card.location = description;
+    card.name = name;
+    card.location = location;
     card.price = price;  
     if (imageBase64) {
       card.imageBase64 = imageBase64;

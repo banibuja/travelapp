@@ -3,10 +3,6 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
 const Hotel = sequelize.define('Hotel', {
-  OfertaName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
  
   name: {
     type: DataTypes.STRING,
