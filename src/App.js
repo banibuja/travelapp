@@ -41,6 +41,9 @@ import ManageAirports from './aDashboard/airports/ManageAirports';
 import AddShtetin from './aDashboard/shtetet/AddShtetin';
 import ManageShtetet from './aDashboard/shtetet/ManageShtetet';
 
+import AddQytetet from './aDashboard/qytetet/AddQytetet';
+import ManageQytetet from './aDashboard/qytetet/ManageQytetet';
+
 const App = () => {
  
   const location = useLocation();
@@ -79,6 +82,9 @@ const App = () => {
 
             <Route path="/dashboard/AddShtetin" element={<AddShtetin />} />
             <Route path="/dashboard/ManageShtetet" element={<ManageShtetet />} />
+
+            <Route path="/dashboard/AddQytetet" element={<AddQytetet />} />
+            <Route path="/dashboard/ManageQytetet" element={<ManageQytetet />} />
 
             <Route path="/Search" element={<Search />} />
 

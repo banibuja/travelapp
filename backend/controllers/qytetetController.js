@@ -50,11 +50,11 @@ const addQytetet = async (req, res) => {
 const deleteQytetet= async (req, res) => {
   try {
     const { id } = req.params;
-    const Qytetet = await Qytetet.findByPk(id);
-    if (!Qytetet) {
+    const qytetet = await Qytetet.findByPk(id);
+    if (!qytetet) {
       return res.status(404).json({ error: 'Qytetet not found' });
     }
-    await Qytetet.destroy();
+    await qytetet.destroy();
     res.status(200).json({ message: 'Qytetet deleted successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -66,16 +66,16 @@ const updateQytetet = async (req, res) => {
   try {
     const { id } = req.params;
     const { emri, shtetiId } = req.body;
-    const Qytetet = await Qytetet.findByPk(id);
-    if (!Qytetet) {
+    const qytetet = await Qytetet.findByPk(id);
+    if (!qytetet) {
       return res.status(404).json({ error: 'Qytetet not found' });
     }
 
-    Qytetet.emri = emri || Qytetet.emri;
-    Qytetet.shtetiId = shtetiId || Qytetet.shtetiId;
+    qytetet.emri = emri || qytetet.emri;
+    qytetet.shtetiId = shtetiId || qytetet.shtetiId;
 
-    await Qytetet.save();
-    res.status(200).json(Qytetet);
+    await qytetet.save();
+    res.status(200).json(qytetet);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

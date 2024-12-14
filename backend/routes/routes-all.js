@@ -32,6 +32,9 @@ const {
 const { 
   getAllKapodakia, addCardKapodakia, deleteKapodakia, updateCardKapodakia 
 } = require('../controllers/kapodakiaCards');
+const { 
+  getAllQytetet, addQytetet, deleteQytetet, updateQytetet
+} = require('../controllers/qytetetController');
 
 const router = express.Router();
 const { isAuthenticated } = require('../middlewares/authMiddleware');
@@ -102,5 +105,11 @@ router.post('/add-shtetin', addShtetet);
 router.delete('/shtetin-delete/:id', isAuthenticated, deleteShtetet);
 router.put('/shtetin-update/:id', isAuthenticated, updateShteti);
 router.get('/shtetet', getAllShtetet);
+
+router.post('/add-qytetet', addQytetet);
+router.delete('/qytetet-delete/:id', isAuthenticated, deleteQytetet);
+router.put('/qytetet-update/:id', isAuthenticated, updateQytetet);
+router.get('/qytetet', getAllQytetet);
+
 
 module.exports = router;
