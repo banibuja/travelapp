@@ -15,7 +15,7 @@ function Dashboard() {
       try {
         const response = await axios.get('http://localhost:5000/user', { withCredentials: true });
         setRole(response.data.user.role)
-        if (response.status === 200 && response.data.user.role === 'admin') {
+        if (response.status === 200 ) {
             setIsLoggedIn(true);
         }else {throw Error}
       } catch (error) {

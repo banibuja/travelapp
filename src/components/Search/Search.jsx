@@ -54,7 +54,7 @@ const Search = () => {
       
 
     // Fetch room prices from the server
-    axios.get('https://travelapp-m7smszahr-xentoros-projects.vercel.app/api/aranzhmanet')
+    axios.get('http://localhost:5000/api/aranzhmanet')
       .then(response => {
         setAranzhmanet(response.data);
       })

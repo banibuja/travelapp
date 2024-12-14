@@ -12,6 +12,9 @@ function Menu() {
   const [isAranzhmanetOpen, setIsAranzhmanetOpen] = useState(false);
   const elementsRef = useRef([]); // Array to store refs
 
+
+
+
   useEffect(() => {
     // Function to check for outside clicks
     const handleClickOutside = (event) => {

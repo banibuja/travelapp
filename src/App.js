@@ -19,6 +19,7 @@ import VisitKosova from './components/VisitKosova/VisitKosova';
 
 import Search from './components/Search/Search';
 
+import ProtectedRoute from './aDashboard/ProtectedRoute';
 
 //Dashboard import
 import Dashboard from './aDashboard/Dashboard';
@@ -47,14 +48,12 @@ import ManageQytetet from './aDashboard/qytetet/ManageQytetet';
 const App = () => {
  
   const location = useLocation();
-  const isHomeroute = !location.pathname.startsWith('/dashboard') || !location.pathname.startsWith('/api');
-
+  const isHomeroute = !location.pathname.startsWith('/dashboard') 
   return (
     <>
       {isHomeroute && <Nav />}
       
       
-    
         <div>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -63,25 +62,25 @@ const App = () => {
             <Route path="/greqi" element={<Greqi />} />
             <Route path="/festateFundvitit" element={<FestateFundvitit />} />
             <Route path="/europecitybreak" element={<EuropeCityBreak />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/dashboard/AddUser" element={<AddUser />} />
-            <Route path="/dashboard/ManageUser" element={<ManageUser />} />
-            <Route path="/dashboard/ManageHomeTable" element={<ManageHomeTable />} />
-            <Route path="/dashboard/TurqiTable" element={<TurqiTable />} />
-            <Route path="/dashboard/DubaiTable" element={<DubaiTable />} />
-            <Route path="/dashboard/SliderManage" element={<SliderManage />} />
-            <Route path="/dashboard/ManageCardsStamboll" element={<ManageCardsStamboll />} />
-            <Route path="/dashboard/HurghadaCards" element={<HurghadaCards />} />
-            <Route path="/dashboard/KapodakiaCards" element={<KapodakiaCards />} />
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /> </ProtectedRoute>} />
+            <Route path="/dashboard/AddUser" element={<ProtectedRoute><AddUser /></ProtectedRoute>} />
+            <Route path="/dashboard/ManageUser" element={<ProtectedRoute><ManageUser /></ProtectedRoute>} />
+            <Route path="/dashboard/ManageHomeTable" element={<ProtectedRoute><ManageHomeTable /></ProtectedRoute>} />
+            <Route path="/dashboard/TurqiTable" element={<ProtectedRoute><TurqiTable /></ProtectedRoute>} />
+            <Route path="/dashboard/DubaiTable" element={<ProtectedRoute><DubaiTable /></ProtectedRoute>} />
+            <Route path="/dashboard/SliderManage" element={<ProtectedRoute><SliderManage /></ProtectedRoute>} />
+            <Route path="/dashboard/ManageCardsStamboll" element={<ProtectedRoute><ManageCardsStamboll /></ProtectedRoute>} />
+            {/* <Route path="/dashboard/HurghadaCards" element={<ProtectedRoute><HurghadaCards /></ProtectedRoute>} /> */}
+            <Route path="/dashboard/KapodakiaCards" element={<ProtectedRoute><KapodakiaCards /></ProtectedRoute>} />
 
-            <Route path="/dashboard/AddAranzhmanet" element={<AddAranzhmanet />} />
-            <Route path="/dashboard/ManageAranzhmanet" element={<ManageAranzhmanet />} />
+            <Route path="/dashboard/AddAranzhmanet" element={<ProtectedRoute><AddAranzhmanet /></ProtectedRoute>} />
+            <Route path="/dashboard/ManageAranzhmanet" element={<ProtectedRoute><ManageAranzhmanet /></ProtectedRoute>} />
 
-            <Route path="/dashboard/AddAirport" element={<AddAirport />} />
-            <Route path="/dashboard/ManageAirports" element={<ManageAirports />} />
+            <Route path="/dashboard/AddAirport" element={<ProtectedRoute><AddAirport /></ProtectedRoute>} />
+            <Route path="/dashboard/ManageAirports" element={<ProtectedRoute><ManageAirports /></ProtectedRoute>} />
 
-            <Route path="/dashboard/AddShtetin" element={<AddShtetin />} />
-            <Route path="/dashboard/ManageShtetet" element={<ManageShtetet />} />
+            <Route path="/dashboard/AddShtetin" element={<ProtectedRoute><AddShtetin /></ProtectedRoute>} />
+            <Route path="/dashboard/ManageShtetet" element={<ProtectedRoute><ManageShtetet /></ProtectedRoute>} />
 
             <Route path="/dashboard/AddQytetet" element={<AddQytetet />} />
             <Route path="/dashboard/ManageQytetet" element={<ManageQytetet />} />
