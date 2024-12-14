@@ -8,6 +8,7 @@ function Menu() {
   const [isUsersOpen, setIsUsersOpen] = useState(false);
   const [isAirportsOpen, setIsAirportsOpen] = useState(false);
   const [isShtetetOpen, setIsShtetetOpen] = useState(false);
+  const [isQytetetOpen, setIsQytetetOpen] = useState(false);
   const [isAranzhmanetOpen, setIsAranzhmanetOpen] = useState(false);
   const elementsRef = useRef([]); // Array to store refs
 
@@ -20,6 +21,7 @@ function Menu() {
         setIsUsersOpen(false); 
         setIsAirportsOpen(false); 
         setIsShtetetOpen(false); 
+        setIsQytetetOpen(false); 
         setIsAranzhmanetOpen(false); 
       }
     };
@@ -228,6 +230,34 @@ function Menu() {
               className="block px-4 py-2 text-blue-700 font-bold hover:text-blue-700 hover:bg-gray-100"
             >
               Manage Shtetet
+            </Link>
+          </li>
+        </ul>
+      )}
+    </div>
+    <div className="relative inline-block text-left  pb-4" >
+      <button
+        onClick={() => setIsQytetetOpen(!isQytetetOpen)}
+        className="block text-blue-500 hover:text-blue-700 font-medium"
+      >
+        Qytetet
+      </button>
+      {isQytetetOpen && (
+        <ul className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-10" ref={(el) => elementsRef.current.push(el)}>
+          <li>
+            <Link
+              to="/dashboard/AddQytetet"
+              className="block px-4 py-2 text-blue-700 font-bold hover:text-blue-700 hover:bg-gray-100"
+            >
+              Add Qytetet
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/dashboard/ManageQytetet"
+              className="block px-4 py-2 text-blue-700 font-bold hover:text-blue-700 hover:bg-gray-100"
+            >
+              Manage Qytetet
             </Link>
           </li>
         </ul>
