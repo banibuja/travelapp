@@ -9,10 +9,32 @@ function Menu() {
   const [isAirportsOpen, setIsAirportsOpen] = useState(false);
   const [isShtetetOpen, setIsShtetetOpen] = useState(false);
   const [isAranzhmanetOpen, setIsAranzhmanetOpen] = useState(false);
-  const tablesRef = useRef(null);
-  const usersRef = useRef(null);
+  const elementsRef = useRef([]); // Array to store refs
 
-  
+  useEffect(() => {
+    // Function to check for outside clicks
+    const handleClickOutside = (event) => {
+      // Check if the clicked element is outside of all elements in the refs array
+      if (!elementsRef.current.some((ref) => ref && ref.contains(event.target))) {
+        setIsTablesOpen(false); 
+        setIsUsersOpen(false); 
+        setIsAirportsOpen(false); 
+        setIsShtetetOpen(false); 
+        setIsAranzhmanetOpen(false); 
+      }
+    };
+
+    // Add event listener for click events on the document
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+
+
   const handleLogout = async () => {
     try {
       const response = await axios.post('http://localhost:5000/logout', {}, { withCredentials: true });
@@ -25,32 +47,12 @@ function Menu() {
     }
   };
 
-  const handleClickOutside = (event) => {
-    if (
-      tablesRef.current &&
-      !tablesRef.current.contains(event.target)
-    ) {
-      setIsTablesOpen(false);
-    }
-    if (
-      usersRef.current &&
-      !usersRef.current.contains(event.target)
-    ) {
-      setIsUsersOpen(false);
-    }
-  };
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   return (
     <div className="w-64 bg-white shadow-lg p-4 h-screen flex flex-col">
   <h2 className="text-xl font-semibold text-gray-800 mb-6">Menu</h2>
   <div className="flex flex-col flex-grow">
-    <div className="relative inline-block text-left pb-4" ref={tablesRef}>
+    <div className="relative inline-block text-left pb-4">
       <button
         onClick={() => setIsTablesOpen(!isTablesOpen)}
         className="block text-blue-500 hover:text-blue-700 font-medium"
@@ -58,7 +60,7 @@ function Menu() {
         Tables
       </button>
       {isTablesOpen && (
-        <ul className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-10">
+        <ul className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-10" ref={(el) => elementsRef.current.push(el)}>
           <li>
             <Link
               to="/dashboard/managehometable"
@@ -119,7 +121,7 @@ function Menu() {
         </ul>
       )}
     </div>
-    <div className="relative inline-block text-left pb-4" ref={usersRef}>
+    <div className="relative inline-block text-left pb-4"  ref={(el) => elementsRef.current.push(el)}>
       <button
         onClick={() => setIsUsersOpen(!isUsersOpen)}
         className="block text-blue-500 hover:text-blue-700 font-medium"
@@ -155,7 +157,7 @@ function Menu() {
         Aranzhmanet
       </button>
       {isAranzhmanetOpen && (
-        <ul className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-10">
+        <ul className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-10" ref={(el) => elementsRef.current.push(el)}>
           <li>
             <Link
               to="/dashboard/AddAranzhmanet"
@@ -183,7 +185,7 @@ function Menu() {
         Airports
       </button>
       {isAirportsOpen && (
-        <ul className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-10">
+        <ul className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-10" ref={(el) => elementsRef.current.push(el)}>
           <li>
             <Link
               to="/dashboard/AddAirport"
@@ -211,7 +213,7 @@ function Menu() {
         Shtetet
       </button>
       {isShtetetOpen && (
-        <ul className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-10">
+        <ul className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-10" ref={(el) => elementsRef.current.push(el)}>
           <li>
             <Link
               to="/dashboard/AddShtetin"

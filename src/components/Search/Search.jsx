@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef } from 'react'
 import axios from 'axios';
 import SvgIcons from '../icons/svgs'
 import SearchItem from './SearchItem'
@@ -12,7 +12,25 @@ const Search = () => {
     const [aranzhmanet, setAranzhmanet] = useState([]);
     const toggleDropdown = () => setIsOpen(!isOpen);
     const [displayedAranzhmanet, setDisplayedAranzhmanet] = useState([]);
+    const ref = useRef(null);
 
+    useEffect(() => {
+      // Function to check for outside clicks
+      const handleClickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setIsOpen(false); // Close the element if clicked outside
+        }
+      };
+  
+      // Add event listener for click events on the document
+      document.addEventListener('mousedown', handleClickOutside);
+  
+      // Cleanup the event listener on component unmount
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
+  
 
     const selectOrder = (order) => {
         switch (order) {
@@ -36,7 +54,7 @@ const Search = () => {
       
 
     // Fetch room prices from the server
-    axios.get('http://localhost:5000/api/aranzhmanet')
+    axios.get('https://travelapp-m7smszahr-xentoros-projects.vercel.app/api/aranzhmanet')
       .then(response => {
         setAranzhmanet(response.data);
       })
@@ -134,7 +152,7 @@ const Search = () => {
                             <span className="ml-auto text-sm">▼</span>
                         </button>
                         {isOpen && (
-                            <ul className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg">
+                            <ul className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg"  ref={ref} >
                             <li
                                 onClick={() => selectOrder("Price")}
                                 className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
