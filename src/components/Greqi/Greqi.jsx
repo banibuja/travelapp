@@ -32,7 +32,7 @@ const Greqi = () => {
                   Athina është një qytet që bashkon historinë dhe modernitetin. Akropoli dhe Partenoni janë atraksionet kryesore, ndërsa lagjet e vjetra dhe plazhet përreth ofrojnë një përvojë të pasur kulturore dhe natyrore.
                 </p>
                 <a
-                  href=""
+                  href="/search?s=athin"
                   className="bg-blue-500 text-white py-2 px-4 rounded-md mt-4 text-center hover:bg-blue-600"
                 >
                   Ofertat për Athin

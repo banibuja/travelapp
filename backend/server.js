@@ -28,8 +28,6 @@ app.use(helmet());
 
 // CORS setup
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://travelapp-virid.vercel.app/'],
-  credentials: true, // Enable cookies and other credentials
   origin: ['http://localhost:3000', 'https://travelapp-virid.vercel.app'], 
   methods: 'GET,POST,PUT,DELETE',
   credentials: true, 

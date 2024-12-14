@@ -33,17 +33,6 @@ const {
   getAllKapodakia, addCardKapodakia, deleteKapodakia, updateCardKapodakia 
 } = require('../controllers/kapodakiaCards');
 
-
-
-const {
-    getAllHurghada, addCardHurgada, deleteHurgada, updateCardHurgada 
-} = require('../controllers/hurghadasController');
-const { 
-  getAllKapodakia, addCardKapodakia, deleteKapodakia, updateCardKapodakia 
-} = require('../controllers/kapodakiaCards');
-
-
-
 const router = express.Router();
 const { isAuthenticated } = require('../middlewares/authMiddleware');
 

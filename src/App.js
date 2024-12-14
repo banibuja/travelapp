@@ -15,7 +15,6 @@ import FestateFundvitit from './components/FestaFundVitit/FestateFundvitit';
 import EuropeCityBreak from './components/EuropeCity/EuropeCityBreak';
 import Nav from './components/layout/nav';
 import Dubai from './components/Dubai/Dubai';
-import Aranzhman from './components/Aranzhman';
 import VisitKosova from './components/VisitKosova/VisitKosova';
 
 import Search from './components/Search/Search';
@@ -84,7 +83,6 @@ const App = () => {
             <Route path="/Search" element={<Search />} />
 
             <Route path="/Dubai" element={<Dubai />} />
-            <Route path="/Aranzhman" element={<Aranzhman />} />
             <Route path="/VisitKosova" element={<VisitKosova />} />
 
             {/* <Route path="/AddRoomPrices" element={<AddRoomPrices />} /> */}
