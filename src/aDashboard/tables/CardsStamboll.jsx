@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Menu from '../Menu';
+
 
 function ManageCardsStamboll() {
   const [cards, setCards] = useState([]);
@@ -67,14 +69,21 @@ function ManageCardsStamboll() {
 
   // Start editing card
   const startEditingCard = (card) => {
-    setEditingCard(card);
+    setEditingCard({
+      id: card.id,
+      name: card.name || '', 
+      location: card.location || '', 
+      price: card.price || '',
+      image: null, 
+    });
   };
+
 
   // Save edited card
   const saveCard = async () => {
     if (!editingCard) return;
   
-    const { title, description, price, image } = editingCard;
+    const { name, location, price, image } = editingCard; 
     let imageBase64 = null;
   
     if (image) {
@@ -85,11 +94,15 @@ function ManageCardsStamboll() {
         try {
           const response = await axios.put(
             `http://localhost:5000/api/cards-update/${editingCard.id}`,
-            { title, description, price, imageBase64 },
+            { name, location, price, imageBase64 }, 
             { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
           );
   
-          setCards(cards.map(card => card.id === editingCard.id ? response.data.card : card));
+          setCards((prevCards) =>
+            prevCards.map((card) =>
+              card.id === editingCard.id ? response.data.card : card
+            )
+          );
           setEditingCard(null);
           setMessage('Card updated successfully.');
         } catch (error) {
@@ -103,11 +116,15 @@ function ManageCardsStamboll() {
       try {
         const response = await axios.put(
           `http://localhost:5000/api/cards-update/${editingCard.id}`,
-          { title, description, price },
+          { name, location, price }, // Dërgoni të dhënat me emrat e saktë
           { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
         );
   
-        setCards(cards.map(card => card.id === editingCard.id ? response.data.card : card));
+        setCards((prevCards) =>
+          prevCards.map((card) =>
+            card.id === editingCard.id ? response.data.card : card
+          )
+        );
         setEditingCard(null);
         setMessage('Card updated successfully.');
       } catch (error) {
@@ -119,7 +136,10 @@ function ManageCardsStamboll() {
   
 
   return (
-    <div className="p-4">
+
+    <div className="flex">
+    <div className="flex-grow p-4 overflow-auto max-h-screen">
+      
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Manage Cards</h2>
       {message && (
         <p className={`mb-4 ${message.includes('successfully') ? 'text-green-500' : 'text-red-500'}`}>
@@ -170,22 +190,22 @@ function ManageCardsStamboll() {
     <h3 className="text-xl font-bold mb-2">Edit Card</h3>
     <input
       type="text"
-      placeholder="Card Title"
-      value={editingCard.title}
-      onChange={(e) => setEditingCard({ ...editingCard, title: e.target.value })}
+      placeholder="Card Name"
+      value={editingCard.name || ''} 
+      onChange={(e) => setEditingCard({ ...editingCard, name: e.target.value })}
       className="border border-gray-300 rounded px-2 py-1 mr-2"
     />
     <input
       type="text"
-      placeholder="Card Description"
-      value={editingCard.description}
-      onChange={(e) => setEditingCard({ ...editingCard, description: e.target.value })}
+      placeholder="Card Location"
+      value={editingCard.location || ''} 
+      onChange={(e) => setEditingCard({ ...editingCard, location: e.target.value })}
       className="border border-gray-300 rounded px-2 py-1 mr-2"
     />
     <input
       type="text"
       placeholder="Price"
-      value={editingCard.price}
+      value={editingCard.price || ''}
       onChange={(e) => setEditingCard({ ...editingCard, price: e.target.value })}
       className="border border-gray-300 rounded px-2 py-1 mr-2"
     />
@@ -245,6 +265,8 @@ function ManageCardsStamboll() {
           ))}
         </tbody>
       </table>
+    </div>
+    <Menu />
     </div>
   );
 }

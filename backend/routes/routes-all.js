@@ -26,6 +26,14 @@ const {
 const { 
   getAllShtetet, addShtetet, deleteShtetet, updateShteti
 } = require('../controllers/shtetetController');
+const { 
+  getAllHurghada, addCardHurgada, deleteHurgada, updateCardHurgada 
+} = require('../controllers/hurghadasController');
+const { 
+  getAllKapodakia, addCardKapodakia, deleteKapodakia, updateCardKapodakia 
+} = require('../controllers/kapodakiaCards');
+
+
 
 const {
     getAllHurghada, addCardHurgada, deleteHurgada, updateCardHurgada 

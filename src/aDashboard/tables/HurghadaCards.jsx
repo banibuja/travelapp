@@ -69,12 +69,22 @@ function ManageCardsHurghada() {
   const startEditingCard = (card) => {
     setEditingCard(card);
   };
+    setEditingCard({
+      id: card.id,
+      name: card.name || '', 
+      location: card.location || '', 
+      price: card.price || '',
+      image: null, 
+    });
+  };
+  
 
   // Save edited card
   const saveCard = async () => {
     if (!editingCard) return;
   
     const { title, description, price, image } = editingCard;
+    const { name, location, price, image } = editingCard; 
     let imageBase64 = null;
   
     if (image) {
@@ -90,6 +100,15 @@ function ManageCardsHurghada() {
           );
   
           setCards(cards.map(card => card.id === editingCard.id ? response.data.card : card));
+            { name, location, price, imageBase64 }, 
+            { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
+          );
+  
+          setCards((prevCards) =>
+            prevCards.map((card) =>
+              card.id === editingCard.id ? response.data.card : card
+            )
+          );
           setEditingCard(null);
           setMessage('Card updated successfully.');
         } catch (error) {
@@ -108,6 +127,16 @@ function ManageCardsHurghada() {
         );
   
         setCards(cards.map(card => card.id === editingCard.id ? response.data.card : card));
+          `http://localhost:5000/api/hurghada/cards-update/${editingCard.id}`,
+          { name, location, price }, // Dërgoni të dhënat me emrat e saktë
+          { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
+        );
+  
+        setCards((prevCards) =>
+          prevCards.map((card) =>
+            card.id === editingCard.id ? response.data.card : card
+          )
+        );
         setEditingCard(null);
         setMessage('Card updated successfully.');
       } catch (error) {
@@ -116,6 +145,8 @@ function ManageCardsHurghada() {
       }
     }
   };
+  
+  
   
 
   return (
@@ -173,6 +204,9 @@ function ManageCardsHurghada() {
       placeholder="Card Title"
       value={editingCard.title}
       onChange={(e) => setEditingCard({ ...editingCard, title: e.target.value })}
+      placeholder="Card Name"
+      value={editingCard.name || ''} 
+      onChange={(e) => setEditingCard({ ...editingCard, name: e.target.value })}
       className="border border-gray-300 rounded px-2 py-1 mr-2"
     />
     <input
@@ -180,12 +214,16 @@ function ManageCardsHurghada() {
       placeholder="Card Description"
       value={editingCard.description}
       onChange={(e) => setEditingCard({ ...editingCard, description: e.target.value })}
+      placeholder="Card Location"
+      value={editingCard.location || ''} 
+      onChange={(e) => setEditingCard({ ...editingCard, location: e.target.value })}
       className="border border-gray-300 rounded px-2 py-1 mr-2"
     />
     <input
       type="text"
       placeholder="Price"
       value={editingCard.price}
+      value={editingCard.price || ''}
       onChange={(e) => setEditingCard({ ...editingCard, price: e.target.value })}
       className="border border-gray-300 rounded px-2 py-1 mr-2"
     />
@@ -203,6 +241,8 @@ function ManageCardsHurghada() {
     </button>
   </div>
 )}
+
+
 
 
       {/* Cards Table */}
