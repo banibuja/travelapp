@@ -1,6 +1,8 @@
 const Qytetet= require('../models/qytetet');
 const Shtetet = require('../models/shtetet');
 
+
+
 // Get all Qytetet
 const getAllQytetet = async (req, res) => {
   try {
@@ -13,10 +15,10 @@ const getAllQytetet = async (req, res) => {
       ],
     });
     res.json(
-      airports.map(qytetet => (
+      qytetet.map(qytetet => (
        {
         id: qytetet.id,
-        emri: airport.emri,
+        emri: qytetet.emri,
         shtetiId: qytetet.shtetiId,
         shteti: qytetet.shtetet.emri
       }

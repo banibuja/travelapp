@@ -16,6 +16,7 @@ const User = require('./models/user');
 const routes = require('./routes/routes-all'); 
 
 const app = express();
+app.set('trust proxy', 1);
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -28,7 +29,7 @@ app.use(helmet());
 
 // CORS setup
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://travelapp-virid.vercel.app'], 
+  origin: ['http://localhost:3000', 'https://travelapp-virid.vercel.app', 'https://backend-c4qy.onrender.com/' ], 
   methods: 'GET,POST,PUT,DELETE',
   credentials: true, 
 }));

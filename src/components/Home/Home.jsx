@@ -23,7 +23,7 @@ function Home() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/images', {
+        const response = await axios.get('https://backend-c4qy.onrender.com/api/images', {
           withCredentials: true,
         });
         setImages(response.data);
@@ -39,7 +39,7 @@ function Home() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/cards', {
+        const response = await axios.get('https://backend-c4qy.onrender.com/api/cards', {
           withCredentials: true,
         });
         setHotels(response.data);
@@ -55,7 +55,7 @@ function Home() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/hurghada/cards', {
+        const response = await axios.get('https://backend-c4qy.onrender.com/api/hurghada/cards', {
           withCredentials: true,
         });
         setHotelsHughada(response.data);
@@ -71,7 +71,7 @@ function Home() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/kapodakia/cards', {
+        const response = await axios.get('https://backend-c4qy.onrender.com/api/kapodakia/cards', {
           withCredentials: true,
         });
         setKapodakia(response.data);
@@ -83,6 +83,8 @@ function Home() {
 
     fetchImages();
   }, []);
+
+
 
 
   const settings = {
@@ -391,12 +393,11 @@ function Home() {
   <h2 className="text-3xl font-bold text-center mb-6">Kapadokia hotele</h2>
   <div className="max-w-6xl mx-auto">
     <Slider {...settings1}>
-      {hotelss.map((hotel, index) => (
+      {kapodakia.map((hotel, index) => (
         <div key={index} className="p-2">
           <div className="bg-white shadow-md rounded-lg overflow-hidden w-60 mx-auto"> {/* Karta të vogla */}
-            <img
-              src={hotel.image}
-              alt={hotel.name}
+          <img src={`data:image/jpeg;base64,${hotel.imageBase64}`} alt={hotel.title} 
+
               className="w-full h-40 object-cover"
             />
             <div className="p-4">

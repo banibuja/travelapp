@@ -12,7 +12,7 @@ function Turqi() {
   useEffect(() => {
     const fetchRoomPrices = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/room-price', {
+        const response = await axios.get('https://backend-c4qy.onrender.com/api/room-price', {
           withCredentials: true,
         });
         setRoomPrices(response.data);
