@@ -12,7 +12,7 @@ function ManageShtetet() {
   useEffect(() => {
     const fetchShtetet = async () => {
       try {
-        const response = await axios.get('https://backend-c4qy.onrender.com/api/shtetet', {
+        const response = await axios.get('http://localhost:5000/api/shtetet', {
           withCredentials: true,
         });
         setShtetet(response.data);
@@ -26,7 +26,7 @@ function ManageShtetet() {
   // Delete Shtetet
   const deleteShtetet = async (id) => {
     try {
-      await axios.delete(`https://backend-c4qy.onrender.com/api/shtetin-delete/${id}`, {
+      await axios.delete(`http://localhost:5000/api/shtetin-delete/${id}`, {
         withCredentials: true,
       });
       setShtetet(shtetet.filter((shteti) => shteti.id !== id));
@@ -52,7 +52,7 @@ function ManageShtetet() {
     };
 
     try {
-      const response = await axios.put(`https://backend-c4qy.onrender.com/api/shtetin-update/${id}`, updatedShteti, {
+      const response = await axios.put(`http://localhost:5000/api/shtetin-update/${id}`, updatedShteti, {
         withCredentials: true,
       });
       setShtetet(shtetet.map((shteti) => (shteti.id === id ? response.data : shteti)));
@@ -109,12 +109,13 @@ function ManageShtetet() {
 
 
                 <td className="py-3 px-6 text-center">
-                  <button
-                    onClick={() => deleteShtetet(shteti.id)}
-                    className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
-                  >
-                    Fshi
-                  </button>
+                <Modal onConfirm={ () => deleteShtetet(shteti.id)}>
+                    <button
+                      className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
+                    >
+                      Fshi
+                    </button>
+                </Modal>
                   <button
                     onClick={() => startEditing(shteti.id)}
                     className="bg-blue-500 text-white py-1 px-3 rounded-lg hover:bg-blue-600 ml-2 transition duration-200"

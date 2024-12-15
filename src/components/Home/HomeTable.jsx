@@ -15,7 +15,7 @@ function HomeTable() {
 
   const fetchTravelPlans = async () => {
     try {
-      const response = await axios.get("https://backend-c4qy.onrender.com/api/travel-plans");
+      const response = await axios.get("http://localhost:5000/api/travel-plans");
       setTravelPlans(response.data);
     } catch (error) {
       console.error("Gabim gjatë marrjes së të dhënave:", error);

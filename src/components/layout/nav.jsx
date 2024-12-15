@@ -12,7 +12,7 @@ function Nav() {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await fetch('https://backend-c4qy.onrender.com/user', { method: 'GET', credentials: 'include' });
+        const response = await fetch('http://localhost:5000/user', { method: 'GET', credentials: 'include' });
         const data = await response.json();
         if (response.ok) {
           setRole(data.user.role)
@@ -33,7 +33,7 @@ function Nav() {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post('https://backend-c4qy.onrender.com/logout', {}, { withCredentials: true });
+      const response = await axios.post('http://localhost:5000/logout', {}, { withCredentials: true });
 
       if (response.status === 200) {
         window.location.reload(); 

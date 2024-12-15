@@ -11,7 +11,7 @@ function SliderManage() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('https://backend-c4qy.onrender.com/api/images', {
+        const response = await axios.get('http://localhost:5000/api/images', {
           withCredentials: true,
         });
         setImages(response.data);
@@ -37,7 +37,7 @@ function SliderManage() {
 
       try {
         const response = await axios.post(
-          'https://backend-c4qy.onrender.com/api/add-images',
+          'http://localhost:5000/api/add-images',
           { imageBase64: base64String, title: newImage.title },
           {
             withCredentials: true,
@@ -59,7 +59,7 @@ function SliderManage() {
   // Delete image
   const deleteImage = async (id) => {
     try {
-      await axios.delete(`https://backend-c4qy.onrender.com/api/images-delete/${id}`, {
+      await axios.delete(`http://localhost:5000/api/images-delete/${id}`, {
         withCredentials: true,
       });
       setImages(images.filter((image) => image.id !== id));
@@ -131,12 +131,13 @@ function SliderManage() {
                   />
                 </td>
                 <td className="py-3 px-6 text-center">
-                  <button
-                    onClick={() => deleteImage(image.id)}
-                    className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
-                  >
-                    Delete
-                  </button>
+                  <Modal onConfirm={ () => deleteImage(image.id)}>
+                    <button
+                      className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
+                    >
+                      Fshi
+                    </button>
+                  </Modal>
                 </td>
               </tr>
             ))}

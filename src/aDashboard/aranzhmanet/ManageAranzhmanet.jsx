@@ -13,7 +13,7 @@ function ManageAranzhmanet() {
   useEffect(() => {
     const fetchAranzhmanet = async () => {
       try {
-        const response = await axios.get('https://backend-c4qy.onrender.com/api/aranzhmanet', {
+        const response = await axios.get('http://localhost:5000/api/aranzhmanet', {
           withCredentials: true,
         });
         setAranzhmanet(response.data);
@@ -27,7 +27,7 @@ function ManageAranzhmanet() {
   // Delete aranzhman
   const deleteAranzhman = async (id) => {
     try {
-      await axios.delete(`https://backend-c4qy.onrender.com/api/Aranzhmani-delete/${id}`, {
+      await axios.delete(`http://localhost:5000/api/Aranzhmani-delete/${id}`, {
         withCredentials: true,
       });
       setAranzhmanet(aranzhmanet.filter((aranzhmani) => aranzhmani.id !== id));
@@ -53,7 +53,7 @@ function ManageAranzhmanet() {
     };
 
     try {
-      const response = await axios.put(`https://backend-c4qy.onrender.com/api/Aranzhmani-update/${id}`, updatedAranzhmani, {
+      const response = await axios.put(`http://localhost:5000/api/Aranzhmani-update/${id}`, updatedAranzhmani, {
         withCredentials: true,
       });
       setAranzhmanet(aranzhmanet.map((aranzhman) => (aranzhman.id === id ? response.data : aranzhman)));
@@ -260,12 +260,13 @@ function ManageAranzhmanet() {
 
 
                 <td className="py-3 px-6 text-center">
-                  <button
-                    onClick={() => deleteAranzhman(aranzhman.id)}
-                    className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
-                  >
-                    Fshi
-                  </button>
+                  <Modal onConfirm={ () => deleteAranzhman(aranzhman.id)}>
+                      <button
+                        className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
+                      >
+                        Fshi
+                      </button>
+                  </Modal>
                   <button
                     onClick={() => startEditing(aranzhman)}
                     className="bg-blue-500 text-white py-1 px-3 rounded-lg hover:bg-blue-600 ml-2 transition duration-200"

@@ -12,7 +12,7 @@ function ManageHomeTable() {
   useEffect(() => {
     const fetchHomes = async () => {
       try {
-        const response = await axios.get('https://backend-c4qy.onrender.com/api/travel-plans', {
+        const response = await axios.get('http://localhost:5000/api/travel-plans', {
           withCredentials: true,
         });
         if (Array.isArray(response.data)) {
@@ -32,7 +32,7 @@ function ManageHomeTable() {
   // Delete home
   const deleteHome = async (id) => {
     try {
-      await axios.delete(`https://backend-c4qy.onrender.com/api/travel-plans/${id}`, {
+      await axios.delete(`http://localhost:5000/api/travel-plans/${id}`, {
         withCredentials: true,
       });
       setHomes(homes.filter((home) => home.id !== id));
@@ -58,7 +58,7 @@ function ManageHomeTable() {
     };
 
     try {
-      const response = await axios.put(`https://backend-c4qy.onrender.com/api/travel-plans/${id}`, updatedHome, {
+      const response = await axios.put(`http://localhost:5000/api/travel-plans/${id}`, updatedHome, {
         withCredentials: true,
       });
       setHomes(
@@ -94,7 +94,7 @@ function ManageHomeTable() {
     };
 
     try {
-      const response = await axios.post('https://backend-c4qy.onrender.com/api/travel-plans', newHome, {
+      const response = await axios.post('http://localhost:5000/api/travel-plans', newHome, {
         withCredentials: true,
       });
       setHomes([...homes, response.data.home]);
@@ -266,12 +266,13 @@ function ManageHomeTable() {
                 Edit
               </button>
             )}
-            <button
-              onClick={() => deleteHome(home.id)}
-              className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200 ml-2"
-            >
-              Delete
-            </button>
+            <Modal onConfirm={ () => deleteHome(home.id)}>
+                    <button
+                      className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
+                    >
+                      Fshi
+                    </button>
+            </Modal>
           </td>
         </tr>
       ))

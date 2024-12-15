@@ -8,7 +8,7 @@ const Dubai = () => {
 
   useEffect(() => {
     // Fetch room prices from the server
-    axios.get('https://backend-c4qy.onrender.com/api/dubai-price')
+    axios.get('http://localhost:5000/api/dubai-price')
       .then(response => {
         setRoomPrices(response.data); // Assuming response.data contains the room price data
       })

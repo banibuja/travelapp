@@ -42,7 +42,7 @@ function Menu() {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post('https://backend-c4qy.onrender.com/logout', {}, { withCredentials: true });
+      const response = await axios.post('http://localhost:5000/logout', {}, { withCredentials: true });
 
       if (response.status === 200) {
         navigate('/login');

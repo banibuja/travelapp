@@ -12,7 +12,7 @@ function ManageQytetet() {
   useEffect(() => {
     const fetchQytetet = async () => {
       try {
-        const response = await axios.get('https://backend-c4qy.onrender.com/api/qytetet', {
+        const response = await axios.get('http://localhost:5000/api/qytetet', {
           withCredentials: true,
         });
         setQytetet(response.data);
@@ -26,7 +26,7 @@ function ManageQytetet() {
   // Delete Qytetet
   const deleteQytetet = async (id) => {
     try {
-      await axios.delete(`https://backend-c4qy.onrender.com/api/qytetet-delete/${id}`, {
+      await axios.delete(`http://localhost:5000/api/qytetet-delete/${id}`, {
         withCredentials: true,
       });
       setQytetet(qytetet.filter((Qytetet) => Qytetet.id !== id));
@@ -52,7 +52,7 @@ function ManageQytetet() {
     };
 
     try {
-      const response = await axios.put(`https://backend-c4qy.onrender.com/api/qytetet-update/${id}`, updatedQytetet, {
+      const response = await axios.put(`http://localhost:5000/api/qytetet-update/${id}`, updatedQytetet, {
         withCredentials: true,
       });
       setQytetet(qytetet.map((qyteti) => (qyteti.id === id ? response.data : qyteti)));
@@ -124,12 +124,13 @@ function ManageQytetet() {
 
 
                 <td className="py-3 px-6 text-center">
-                  <button
-                    onClick={() => deleteQytetet(qyteti.id)}
-                    className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
-                  >
-                    Fshi
-                  </button>
+                  <Modal onConfirm={ () => deleteQytetet(qyteti.id)}>
+                      <button
+                        className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
+                      >
+                        Fshi
+                      </button>
+                  </Modal>
                   <button
                     onClick={() => startEditing(qyteti.id)}
                     className="bg-blue-500 text-white py-1 px-3 rounded-lg hover:bg-blue-600 ml-2 transition duration-200"

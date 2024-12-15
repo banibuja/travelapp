@@ -31,7 +31,7 @@ app.use(helmet());
 const allowedOrigins = [
   'http://localhost:3000',
   'https://travelapp-virid.vercel.app',
-  'https://backend-c4qy.onrender.com',
+  'http://localhost:5000',
 ];
 
 app.use(

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Menu from '../Menu';
+import Modal from '../Modal';
 
 function ManageUser() {
   const [users, setUsers] = useState([]);
@@ -12,7 +13,7 @@ function ManageUser() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('https://backend-c4qy.onrender.com/api/users-get', {
+        const response = await axios.get('http://localhost:5000/api/users-get', {
           withCredentials: true,
         });
         setUsers(response.data);
@@ -26,7 +27,7 @@ function ManageUser() {
   // Delete user
   const deleteUser = async (id) => {
     try {
-      const response = await axios.delete(`https://backend-c4qy.onrender.com/api/users/${id}`, {
+      const response = await axios.delete(`http://localhost:5000/api/users/${id}`, {
         withCredentials: true,
       });
       setUsers(users.filter((user) => user.id !== id));
@@ -52,7 +53,7 @@ function ManageUser() {
     };
 
     try {
-      const response = await axios.put(`https://backend-c4qy.onrender.com/api/users/${id}`, updatedUser, {
+      const response = await axios.put(`http://localhost:5000/api/users/${id}`, updatedUser, {
         withCredentials: true,
       });
       setUsers(users.map((user) => (user.id === id ? response.data : user)));
@@ -137,12 +138,13 @@ function ManageUser() {
                   )}
                 </td>
                 <td className="py-3 px-6 text-center">
-                  <button
-                    onClick={() => deleteUser(user.id)}
-                    className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
-                  >
-                    Fshi
-                  </button>
+                  <Modal onConfirm={ () => deleteUser(user.id)}>
+                    <button
+                      className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
+                    >
+                      Fshi
+                    </button>
+                  </Modal>
                   <button
                     onClick={() => startEditing(user)}
                     className="bg-blue-500 text-white py-1 px-3 rounded-lg hover:bg-blue-600 ml-2 transition duration-200"

@@ -16,7 +16,7 @@ function AddAirport() {
       
       const fetchShtetet = async () => {
         try {
-          const response = await axios.get('https://backend-c4qy.onrender.com/api/shtetet', {
+          const response = await axios.get('http://localhost:5000/api/shtetet', {
             withCredentials: true,
           });
           setShtetet(response.data);
@@ -38,7 +38,7 @@ function AddAirport() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://backend-c4qy.onrender.com/api/add-Airports', formData);
+      await axios.post('http://localhost:5000/api/add-Airports', formData);
       setMessage('Regjistrimi ishte i suksesshëm.');
       setTimeout(() => {
         window.location.href = '/dashboard/ManageAirports';

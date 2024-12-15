@@ -25,7 +25,7 @@ function AddAranzhmanet() {
       
       const fetchShtetet = async () => {
         try {
-          const response = await axios.get('https://backend-c4qy.onrender.com/api/shtetet', {
+          const response = await axios.get('http://localhost:5000/api/shtetet', {
             withCredentials: true,
           });
           setShtetet(response.data);
@@ -41,7 +41,7 @@ function AddAranzhmanet() {
       
     const fetchAirports = async () => {
       try {
-        const response = await axios.get('https://backend-c4qy.onrender.com/api/airports', {
+        const response = await axios.get('http://localhost:5000/api/airports', {
           withCredentials: true,
         });
         setAirports(response.data);
@@ -61,7 +61,7 @@ function AddAranzhmanet() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://backend-c4qy.onrender.com/api/add-Aranzhmani', formData);
+      await axios.post('http://localhost:5000/api/add-Aranzhmani', formData);
       setMessage('Regjistrimi ishte i suksesshëm.');
       setTimeout(() => {
         window.location.href = '/dashboard/ManageAranzhmanet';

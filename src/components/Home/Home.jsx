@@ -23,7 +23,7 @@ function Home() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('https://backend-c4qy.onrender.com/api/images', {
+        const response = await axios.get('http://localhost:5000/api/images', {
           withCredentials: true,
         });
         setImages(response.data);
@@ -39,7 +39,7 @@ function Home() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('https://backend-c4qy.onrender.com/api/cards', {
+        const response = await axios.get('http://localhost:5000/api/cards', {
           withCredentials: true,
         });
         setHotels(response.data);
@@ -55,7 +55,7 @@ function Home() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('https://backend-c4qy.onrender.com/api/hurghada/cards', {
+        const response = await axios.get('http://localhost:5000/api/hurghada/cards', {
           withCredentials: true,
         });
         setHotelsHughada(response.data);
@@ -71,7 +71,7 @@ function Home() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('https://backend-c4qy.onrender.com/api/kapodakia/cards', {
+        const response = await axios.get('http://localhost:5000/api/kapodakia/cards', {
           withCredentials: true,
         });
         setKapodakia(response.data);

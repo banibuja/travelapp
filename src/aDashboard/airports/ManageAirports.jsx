@@ -12,7 +12,7 @@ function ManageAirports() {
   useEffect(() => {
     const fetchAirports = async () => {
       try {
-        const response = await axios.get('https://backend-c4qy.onrender.com/api/airports', {
+        const response = await axios.get('http://localhost:5000/api/airports', {
           withCredentials: true,
         });
         setAirports(response.data);
@@ -26,7 +26,7 @@ function ManageAirports() {
   // Delete Airport
   const deleteAirport = async (id) => {
     try {
-      await axios.delete(`https://backend-c4qy.onrender.com/api/airports-delete/${id}`, {
+      await axios.delete(`http://localhost:5000/api/airports-delete/${id}`, {
         withCredentials: true,
       });
       setAirports(airports.filter((Airport) => Airport.id !== id));
@@ -52,7 +52,7 @@ function ManageAirports() {
     };
 
     try {
-      const response = await axios.put(`https://backend-c4qy.onrender.com/api/airports-update/${id}`, updatedAirport, {
+      const response = await axios.put(`http://localhost:5000/api/airports-update/${id}`, updatedAirport, {
         withCredentials: true,
       });
       setAirports(airports.map((airport) => (airport.id === id ? response.data : airport)));
@@ -139,12 +139,13 @@ function ManageAirports() {
 
 
                 <td className="py-3 px-6 text-center">
-                  <button
-                    onClick={() => deleteAirport(airport.id)}
-                    className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
-                  >
-                    Fshi
-                  </button>
+                  <Modal onConfirm={ () => deleteAirport(airport.id)}>
+                      <button
+                        className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
+                      >
+                        Fshi
+                      </button>
+                  </Modal>
                   <button
                     onClick={() => startEditing(airport.id)}
                     className="bg-blue-500 text-white py-1 px-3 rounded-lg hover:bg-blue-600 ml-2 transition duration-200"

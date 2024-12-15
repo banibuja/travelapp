@@ -13,7 +13,7 @@ function ManageCardsStamboll() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const response = await axios.get('https://backend-c4qy.onrender.com/api/cards', { withCredentials: true });
+        const response = await axios.get('http://localhost:5000/api/cards', { withCredentials: true });
         setCards(response.data);
       } catch (error) {
         console.error('Error fetching cards:', error);
@@ -38,7 +38,7 @@ function ManageCardsStamboll() {
 
       try {
         const response = await axios.post(
-          'https://backend-c4qy.onrender.com/api/add-cards',
+          'http://localhost:5000/api/add-cards',
           { title: newCard.title, description: newCard.description, price: newCard.price, imageBase64: base64String },
           { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
         );
@@ -58,7 +58,7 @@ function ManageCardsStamboll() {
   // Delete card
   const deleteCard = async (id) => {
     try {
-      await axios.delete(`https://backend-c4qy.onrender.com/api/cards-delete/${id}`, { withCredentials: true });
+      await axios.delete(`http://localhost:5000/api/cards-delete/${id}`, { withCredentials: true });
       setCards(cards.filter((card) => card.id !== id));
       setMessage('Card deleted successfully.');
     } catch (error) {
@@ -93,7 +93,7 @@ function ManageCardsStamboll() {
   
         try {
           const response = await axios.put(
-            `https://backend-c4qy.onrender.com/api/cards-update/${editingCard.id}`,
+            `http://localhost:5000/api/cards-update/${editingCard.id}`,
             { name, location, price, imageBase64 }, 
             { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
           );
@@ -115,7 +115,7 @@ function ManageCardsStamboll() {
     } else {
       try {
         const response = await axios.put(
-          `https://backend-c4qy.onrender.com/api/cards-update/${editingCard.id}`,
+          `http://localhost:5000/api/cards-update/${editingCard.id}`,
           { name, location, price }, // Dërgoni të dhënat me emrat e saktë
           { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
         );
@@ -254,12 +254,13 @@ function ManageCardsStamboll() {
                 >
                   Edit
                 </button>
-                <button
-                  onClick={() => deleteCard(card.id)}
-                  className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200 ml-2"
-                >
-                  Delete
-                </button>
+                <Modal onConfirm={ () => deleteCard(card.id)}>
+                    <button
+                      className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
+                    >
+                      Fshi
+                    </button>
+                </Modal>
               </td>
             </tr>
           ))}

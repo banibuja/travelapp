@@ -12,7 +12,7 @@ function DubaiPricesTable() {
   useEffect(() => {
     const fetchDubaiPrices = async () => {
       try {
-        const response = await axios.get('https://backend-c4qy.onrender.com/api/dubai-price', {
+        const response = await axios.get('http://localhost:5000/api/dubai-price', {
           withCredentials: true,
         });
         setDubaiPrices(response.data);
@@ -28,7 +28,7 @@ function DubaiPricesTable() {
   // Delete dubai price
   const deleteDubaiPrice = async (id) => {
     try {
-      await axios.delete(`https://backend-c4qy.onrender.com/api/dubai-prices-delete/${id}`, {
+      await axios.delete(`http://localhost:5000/api/dubai-prices-delete/${id}`, {
         withCredentials: true,
       });
       setDubaiPrices(dubaiPrices.filter((price) => price.id !== id));
@@ -54,7 +54,7 @@ function DubaiPricesTable() {
     };
 
     try {
-      const response = await axios.put(`https://backend-c4qy.onrender.com/api/dubai-prices-update/${id}`, updatedPrice, {
+      const response = await axios.put(`http://localhost:5000/api/dubai-prices-update/${id}`, updatedPrice, {
         withCredentials: true,
       });
       setDubaiPrices(
@@ -90,7 +90,7 @@ function DubaiPricesTable() {
     };
 
     try {
-      const response = await axios.post('https://backend-c4qy.onrender.com/api/add-dubai-price', newPrice, {
+      const response = await axios.post('http://localhost:5000/api/add-dubai-price', newPrice, {
         withCredentials: true,
       });
       setDubaiPrices([...dubaiPrices, response.data.dubaiPrice]);
@@ -245,12 +245,13 @@ function DubaiPricesTable() {
                   )}
                 </td>
                 <td className="py-3 px-6 text-center">
-                  <button
-                    onClick={() => deleteDubaiPrice(price.id)}
-                    className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
-                  >
-                    Delete
-                  </button>
+                <Modal onConfirm={ () => deleteDubaiPrice(price.id)}>
+                    <button
+                      className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
+                    >
+                      Fshi
+                    </button>
+                </Modal>
                   <button
                     onClick={() => startEditing(price)}
                     className="bg-blue-500 text-white py-1 px-3 rounded-lg hover:bg-blue-600 ml-2 transition duration-200"

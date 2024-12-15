@@ -11,7 +11,7 @@ const Login = () => {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await axios.get('https://backend-c4qy.onrender.com/check-session', { withCredentials: true });
+        const response = await axios.get('http://localhost:5000/check-session', { withCredentials: true });
         if (response.status === 200) {
 
           navigate('/');
@@ -30,7 +30,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'https://backend-c4qy.onrender.com/api/login',
+        'http://localhost:5000/api/login',
         { username, password },
         { withCredentials: true }
       );
