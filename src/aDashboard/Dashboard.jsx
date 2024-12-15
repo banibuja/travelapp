@@ -13,7 +13,7 @@ function Dashboard() {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/user', { withCredentials: true });
+        const response = await axios.get('https://backend-c4qy.onrender.com/user', { withCredentials: true });
         setRole(response.data.user.role)
         if (response.status === 200 ) {
             setIsLoggedIn(true);
@@ -31,7 +31,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchUserCount = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users-count', { withCredentials: true });
+        const response = await axios.get('https://backend-c4qy.onrender.com/api/users-count', { withCredentials: true });
         setUserCount(response.data.count); 
       } catch (error) {
         console.error('Error fetching user count:', error);

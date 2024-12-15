@@ -28,19 +28,38 @@ app.use(limiter);
 app.use(helmet());
 
 // CORS setup
-app.use(cors({
-  origin: ['http://localhost:3000', 'https://travelapp-virid.vercel.app', 'https://backend-c4qy.onrender.com/' ], 
-  methods: 'GET,POST,PUT,DELETE',
-  credentials: true, 
-}));
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://travelapp-virid.vercel.app',
+  'https://backend-c4qy.onrender.com',
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: 'GET,POST,PUT,DELETE',
+    credentials: true, // Kjo i lejon cookies dhe headers
+  })
+);
+
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
   next();
 });
+
 
 app.options('*', cors()); 
 

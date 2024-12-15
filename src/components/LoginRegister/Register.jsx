@@ -21,7 +21,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/register', formData, { withCredentials: true });
+      await axios.post('https://backend-c4qy.onrender.com/api/register', formData, { withCredentials: true });
       setMessage('Regjistrimi ishte i suksesshëm.');
       setTimeout(() => {
         window.location.href = '/';
