@@ -12,7 +12,7 @@ function ManageRoomPricesTable() {
   useEffect(() => {
     const fetchRoomPrices = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/room-price', {
+        const response = await axios.get('https://backend-c4qy.onrender.com/api/room-price', {
           withCredentials: true,
         });
         setRoomPrices(response.data);
@@ -28,7 +28,7 @@ function ManageRoomPricesTable() {
   // Delete room price
   const deleteRoomPrice = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/room-prices-delete/${id}`, {
+      await axios.delete(`https://backend-c4qy.onrender.com/api/room-prices-delete/${id}`, {
         withCredentials: true,
       });
       setRoomPrices(roomPrices.filter((price) => price.id !== id));
@@ -54,7 +54,7 @@ function ManageRoomPricesTable() {
     };
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/room-prices-update/${id}`, updatedPrice, {
+      const response = await axios.put(`https://backend-c4qy.onrender.com/api/room-prices-update/${id}`, updatedPrice, {
         withCredentials: true,
       });
       setRoomPrices(
@@ -88,7 +88,7 @@ function ManageRoomPricesTable() {
     };
 
     try {
-      const response = await axios.post('http://localhost:5000/api/add-room-price', newPrice, {
+      const response = await axios.post('https://backend-c4qy.onrender.com/api/add-room-price', newPrice, {
         withCredentials: true,
       });
       setRoomPrices([...roomPrices, response.data.roomPrice]);

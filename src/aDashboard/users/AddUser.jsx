@@ -21,7 +21,7 @@ function AddUser() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/register', formData);
+      await axios.post('https://backend-c4qy.onrender.com/api/register', formData);
       setMessage('Regjistrimi ishte i suksesshëm.');
       setTimeout(() => {
         window.location.href = '/dashboard/ManageUser';

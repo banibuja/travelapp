@@ -11,7 +11,7 @@ function ManageCardsKapodakia() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/kapodakia/cards', { withCredentials: true });
+        const response = await axios.get('https://backend-c4qy.onrender.com/api/kapodakia/cards', { withCredentials: true });
         setCards(response.data);
       } catch (error) {
         console.error('Error fetching cards:', error);
@@ -36,7 +36,7 @@ function ManageCardsKapodakia() {
 
       try {
         const response = await axios.post(
-          'http://localhost:5000/api/kapodakia/add-cards',
+          'https://backend-c4qy.onrender.com/api/kapodakia/add-cards',
           { title: newCard.title, description: newCard.description, price: newCard.price, imageBase64: base64String },
           { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
         );
@@ -56,7 +56,7 @@ function ManageCardsKapodakia() {
   // Delete card
   const deleteCard = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/kapodakia/cards-delete/${id}`, { withCredentials: true });
+      await axios.delete(`https://backend-c4qy.onrender.com/api/kapodakia/cards-delete/${id}`, { withCredentials: true });
       setCards(cards.filter((card) => card.id !== id));
       setMessage('Card deleted successfully.');
     } catch (error) {
@@ -84,7 +84,7 @@ function ManageCardsKapodakia() {
   
         try {
           const response = await axios.put(
-            `http://localhost:5000/api/kapodakia/cards-update/${editingCard.id}`,
+            `https://backend-c4qy.onrender.com/api/kapodakia/cards-update/${editingCard.id}`,
             { title, description, price, imageBase64 },
             { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
           );
@@ -102,7 +102,7 @@ function ManageCardsKapodakia() {
     } else {
       try {
         const response = await axios.put(
-          `http://localhost:5000/api/kapodakia/cards-update/${editingCard.id}`,
+          `https://backend-c4qy.onrender.com/api/kapodakia/cards-update/${editingCard.id}`,
           { title, description, price },
           { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
         );

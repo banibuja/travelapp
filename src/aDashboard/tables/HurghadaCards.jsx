@@ -11,7 +11,7 @@ function ManageCardsHurghada() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/hurghada/cards', { withCredentials: true });
+        const response = await axios.get('https://backend-c4qy.onrender.com/api/hurghada/cards', { withCredentials: true });
         setCards(response.data);
       } catch (error) {
         console.error('Error fetching cards:', error);
@@ -36,7 +36,7 @@ function ManageCardsHurghada() {
 
       try {
         const response = await axios.post(
-          'http://localhost:5000/api/hurghada/add-cards',
+          'https://backend-c4qy.onrender.com/api/hurghada/add-cards',
           { title: newCard.title, description: newCard.description, price: newCard.price, imageBase64: base64String },
           { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
         );
@@ -56,7 +56,7 @@ function ManageCardsHurghada() {
   // Delete card
   const deleteCard = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/hurghada/cards-delete/${id}`, { withCredentials: true });
+      await axios.delete(`https://backend-c4qy.onrender.com/api/hurghada/cards-delete/${id}`, { withCredentials: true });
       setCards(cards.filter((card) => card.id !== id));
       setMessage('Card deleted successfully.');
     } catch (error) {
@@ -91,7 +91,7 @@ function ManageCardsHurghada() {
   
         try {
           const response = await axios.put(
-            `http://localhost:5000/api/hurghada/cards-update/${editingCard.id}`,
+            `https://backend-c4qy.onrender.com/api/hurghada/cards-update/${editingCard.id}`,
             { name, location, price, imageBase64 }, 
             { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
           );
@@ -113,7 +113,7 @@ function ManageCardsHurghada() {
     } else {
       try {
         const response = await axios.put(
-          `http://localhost:5000/api/hurghada/cards-update/${editingCard.id}`,
+          `https://backend-c4qy.onrender.com/api/hurghada/cards-update/${editingCard.id}`,
           { name, location, price }, // Dërgoni të dhënat me emrat e saktë
           { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
         );

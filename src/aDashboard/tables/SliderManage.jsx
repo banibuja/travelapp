@@ -11,7 +11,7 @@ function SliderManage() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/images', {
+        const response = await axios.get('https://backend-c4qy.onrender.com/api/images', {
           withCredentials: true,
         });
         setImages(response.data);
@@ -37,7 +37,7 @@ function SliderManage() {
 
       try {
         const response = await axios.post(
-          'http://localhost:5000/api/add-images',
+          'https://backend-c4qy.onrender.com/api/add-images',
           { imageBase64: base64String, title: newImage.title },
           {
             withCredentials: true,
@@ -59,7 +59,7 @@ function SliderManage() {
   // Delete image
   const deleteImage = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/images-delete/${id}`, {
+      await axios.delete(`https://backend-c4qy.onrender.com/api/images-delete/${id}`, {
         withCredentials: true,
       });
       setImages(images.filter((image) => image.id !== id));

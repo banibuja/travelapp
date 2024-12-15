@@ -39,7 +39,7 @@ const Login = () => {
       navigate('/'); // Redirect to dashboard after successful login
       window.location.reload(); 
     } catch (error) {
-      console.error('Login error:', error.response || error.message);
+      console.error('Login error:', error);
       setMessage('Gabim gjatë login.');
     }
   };

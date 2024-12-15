@@ -17,7 +17,7 @@ function AddShtetin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/add-shtetin', formData);
+      await axios.post('https://backend-c4qy.onrender.com/api/add-shtetin', formData);
       setMessage('Regjistrimi ishte i suksesshëm.');
       setTimeout(() => {
         window.location.href = '/dashboard/ManageShtetet';
