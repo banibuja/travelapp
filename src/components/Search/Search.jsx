@@ -54,7 +54,7 @@ const Search = () => {
       
 
     // Fetch room prices from the server
-    axios.get('http://localhost:5000/api/aranzhmanet')
+    axios.get('https://backend-c4qy.onrender.com/api/aranzhmanet')
       .then(response => {
         setAranzhmanet(response.data);
       })
