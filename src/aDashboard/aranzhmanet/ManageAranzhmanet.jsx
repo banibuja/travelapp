@@ -16,7 +16,6 @@ function ManageAranzhmanet() {
         const response = await axios.get('http://localhost:5000/api/aranzhmanet', {
           withCredentials: true,
         });
-        console.log(response.data);
         setAranzhmanet(response.data);
       } catch (error) {
         console.error('Gabim gjatë marrjes së përdoruesve:', error);

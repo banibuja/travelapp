@@ -66,7 +66,6 @@ function ManageAirports() {
   // Enable editing mode
   const startEditing = (airport) => {
     setEditingAirport(airport);
-    console.log(airport.id);
     setUpdatedFields({
       emri: airport.emri,
       akronimi: airport.akronimi,

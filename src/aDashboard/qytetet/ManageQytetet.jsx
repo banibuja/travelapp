@@ -66,7 +66,6 @@ function ManageQytetet() {
   // Enable editing mode
   const startEditing = (qyteti) => {
     setEditingQytetet(qyteti);
-    console.log(qyteti.id);
     setUpdatedFields({
       emri: qyteti.emri,
       shtetiId: qyteti.shtetiId,

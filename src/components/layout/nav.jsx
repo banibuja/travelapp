@@ -61,7 +61,8 @@ function Nav() {
 
 
   return (
-    <nav className="bg-blue-100 shadow-md">
+    
+   <nav className={role === 'gey' ? "bg-gradient-to-r from-purple-500 to-pink-500 shadow-md" : "bg-blue-100 shadow-md"}>
   <div className="container mx-auto flex justify-center items-center py-2 border-b">
     <div className="flex items-center space-x-6">
       <a href="#" className="text-gray-700 hover:text-blue-500">

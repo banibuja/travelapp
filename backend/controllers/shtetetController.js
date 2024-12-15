@@ -20,7 +20,6 @@ const getAllShtetet = async (req, res) => {
 // Add new Shtetet
 const addShtetet = async (req, res) => {
   const { emri } = req.body;
-  console.log(emri);
   try {
     const newShtet = await Shtetet.create({
       emri

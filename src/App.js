@@ -70,8 +70,12 @@ const App = () => {
             <Route path="/dashboard/DubaiTable" element={<ProtectedRoute><DubaiTable /></ProtectedRoute>} />
             <Route path="/dashboard/SliderManage" element={<ProtectedRoute><SliderManage /></ProtectedRoute>} />
             <Route path="/dashboard/ManageCardsStamboll" element={<ProtectedRoute><ManageCardsStamboll /></ProtectedRoute>} />
-            {/* <Route path="/dashboard/HurghadaCards" element={<ProtectedRoute><HurghadaCards /></ProtectedRoute>} /> */}
-            <Route path="/dashboard/KapodakiaCards" element={<ProtectedRoute><KapodakiaCards /></ProtectedRoute>} />
+            <Route path="/dashboard/HurghadaCards" element={<ProtectedRoute><HurghadaCards /></ProtectedRoute>} />
+            <Route path="/dashboard/KapodakiaCards" element={
+            <ProtectedRoute>
+              <KapodakiaCards />
+            </ProtectedRoute>
+          } />
 
             <Route path="/dashboard/AddAranzhmanet" element={<ProtectedRoute><AddAranzhmanet /></ProtectedRoute>} />
             <Route path="/dashboard/ManageAranzhmanet" element={<ProtectedRoute><ManageAranzhmanet /></ProtectedRoute>} />

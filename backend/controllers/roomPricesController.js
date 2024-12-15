@@ -2,7 +2,6 @@ const RoomPrices = require('../models/RoomPrices');
 
 // Get all room prices
 const getAllRoomPrices = async (req, res) => {
-    console.log(req.body)
   try {
     const roomPrices = await RoomPrices.findAll();
     res.json(roomPrices);

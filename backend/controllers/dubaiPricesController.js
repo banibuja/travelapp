@@ -2,7 +2,6 @@ const DubaiPrices = require('../models/DubaiPrices');
 
 // Get all dubai prices
 const getAllDubaiPrices = async (req, res) => {
-    console.log(req.body)
   try {
     const dubaiPrices = await DubaiPrices.findAll();
     res.json(dubaiPrices);

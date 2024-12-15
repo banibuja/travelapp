@@ -5,11 +5,9 @@ const Hotel = require('../models/StambollCards');
 
 const getAllHotels = async (req, res) => {
 
-  console.log(req.body)
   try {
     const hotels = await Hotel.findAll();
     res.json(hotels);
-    console.log(req.body)
 
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -4,12 +4,9 @@ const Kapodakia = require('../models/Kapodakia');
 
 
 const getAllKapodakia = async (req, res) => {
-
-  console.log(req.body)
   try {
     const kapodakia = await Kapodakia.findAll();
     res.json(kapodakia);
-    console.log(req.body)
 
   } catch (err) {
     res.status(500).json({ error: err.message });
