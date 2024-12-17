@@ -67,7 +67,7 @@ function AddAranzhmanet() {
         window.location.href = '/dashboard/ManageAranzhmanet';
       }, 3000);
     } catch (error) {
-      console.log(error);
+      console.log("error" + error);
     }
   };
 

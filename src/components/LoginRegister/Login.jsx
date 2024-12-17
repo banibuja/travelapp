@@ -11,7 +11,7 @@ const Login = () => {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/check-session', { withCredentials: true });
+        const response = await axios.get('http://localhost:5000/user', { withCredentials: true });
         if (response.status === 200) {
 
           navigate('/');
@@ -31,8 +31,7 @@ const Login = () => {
     try {
       const response = await axios.post(
         'http://localhost:5000/api/login',
-        { username, password },
-        { withCredentials: true }
+        { username, password }
       );
       // console.log('Login response:', response);
       setMessage('Login ishte i suksesshëm.');

@@ -135,11 +135,11 @@ function Nav() {
               </a>
             </>
           )}
-          {role == 'admin' ? (
+          {(role === 'admin' || role === 'owner') ? (
             <button onClick={handleDashboard} className="text-gray-700 hover:text-blue-500">
               Dashboard
             </button>
-          ): (<></>)}
+          ): null}
           <a href="#" className="text-gray-700 hover:text-blue-500">Kontakti</a>
         </div>
       </div>

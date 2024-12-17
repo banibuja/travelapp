@@ -7,18 +7,83 @@ import { useLocation } from 'react-router-dom';
 
 const Search = () => {
     const location = useLocation();
+    const [searchPrompts, setSearchPrompts] = useState({
+      from: 
+        {
+          id: null,
+          emri: ''
+        }
+      ,
+      to: 
+        {
+          id: null,
+          emri: '',
+          qyteti: 
+            {
+              id: null,
+              emri: ''
+            }
+          
+        }
+      ,
+      DepartureDate:new Date().toLocaleDateString('en-CA'),
+      nrPersonave: 2,
+      nrNeteve: [0,5]
+    });
+    
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState("Price");
     const [aranzhmanet, setAranzhmanet] = useState([]);
     const toggleDropdown = () => setIsOpen(!isOpen);
     const [displayedAranzhmanet, setDisplayedAranzhmanet] = useState([]);
     const ref = useRef(null);
+    const [isAirportDropdownOpen, setIsAirportDropdownOpen] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [shtetet, setShtetet] = useState([]);
+    const [airports, setAirports] = useState([]);
+    const today = new Date().toISOString().split('T')[0];
 
-    useEffect(() => {
-      // Function to check for outside clicks
+    useEffect( () => {
+      const checkSession = async () => {
+      
+      try {
+        const getAirports = await fetch('http://localhost:5000/api/airports', { method: 'GET', credentials: 'include' });
+        const airportsData = await getAirports.json();
+        if (getAirports.ok) {
+          setAirports(airportsData)
+        } 
+      } catch (error) {
+        console.error('Error checking session:', error);
+      }
+      try {
+        const getShtetet = await fetch('http://localhost:5000/api/shtetet', { method: 'GET', credentials: 'include' });
+        const shtetetData = await getShtetet.json();
+        if (getShtetet.ok) {
+          const getQyetet = await fetch('http://localhost:5000/api/qytetet', { method: 'GET', credentials: 'include' });
+          const qytetetData = await getQyetet.json();
+          const mergedData = shtetetData.map((state) => {
+            // Filter and map to extract only id and emri
+            const cities = qytetetData
+              .filter((city) => city.shtetiId === state.id)
+              .map(({ id, emri }) => ({ id, emri })); // Extract id and emri only
+            
+            return {
+              ...state,
+              qytetet: cities,
+            };
+          });
+          setShtetet(mergedData);
+        } 
+      } catch (error) {
+        console.error('Error checking session:', error);
+      }
+    }
+    checkSession();
+
       const handleClickOutside = (event) => {
         if (ref.current && !ref.current.contains(event.target)) {
-          setIsOpen(false); // Close the element if clicked outside
+          setIsOpen(false); 
         }
       };
   
@@ -31,7 +96,55 @@ const Search = () => {
       };
     }, []);
   
+  
+    const filteredCountries = shtetet.filter((country) => {
+      const matchesCountry = country.emri.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCity = country.qytetet.some((city) =>
+        city.emri.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      return matchesCountry || matchesCity;
+    });
+  
 
+  
+    const handleAirportClick = (airport) => {      
+      if (!airport) {
+        setSearchPrompts({...searchPrompts, from: {id:null, emri: ''}});
+        
+      }else{
+
+        setSearchPrompts({...searchPrompts, from: {id:airport.id, emri: airport.emri}});
+      }
+      setIsAirportDropdownOpen(false);
+    };
+  
+    const handleCountryClick = (country) => {  
+      if (!country) {
+        setSearchPrompts({...searchPrompts, to: { id:null, emri: '', qyteti: {id:null, emri:''}}});
+        
+      }else{   
+      setSearchPrompts({...searchPrompts, to: {...searchPrompts.to, id:country.id, emri: country.emri}});
+    }
+      setSearchTerm('');
+      setIsDropdownOpen(false);
+    };
+  
+    const handleCityClick = (city) => {
+      setSearchPrompts({...searchPrompts, to: {...searchPrompts.to, qyteti: {id:city.id, emri: city.emri}}});
+      setSearchTerm('');
+      setIsDropdownOpen(false);
+    };
+    const handleDepartureDate = (e) => {
+      setSearchPrompts({...searchPrompts, DepartureDate: e.target.value});
+    };
+    const handleNrNeteve = (e) => {
+      const selectedValue = e.target.value;
+      const parsedValue = JSON.parse(selectedValue);
+      setSearchPrompts({...searchPrompts, nrNeteve: [parsedValue.start, parsedValue.end]});
+      console.log([parsedValue.start, parsedValue.end]);
+      
+    };
+    
     const selectOrder = (order) => {
         switch (order) {
             case 'Price':
@@ -54,7 +167,7 @@ const Search = () => {
       
 
     // Fetch room prices from the server
-    axios.get('https://backend-c4qy.onrender.com/api/aranzhmanet')
+    axios.get('http://localhost:5000/api/aranzhmanet')
       .then(response => {
         setAranzhmanet(response.data);
       })
@@ -99,9 +212,53 @@ const Search = () => {
     setDisplayedAranzhmanet(sortedAranzhmanet);
   };
 
-  const handleInput = (e) => {
-    const value = e.target.value;
-    filterBySearch(value);
+  const handleSearch = (e) => {
+    e.preventDefault();
+    console.log(searchPrompts);
+    
+    var filteredAranzhmanet = aranzhmanet;
+
+
+    if(searchPrompts.from.id) {filteredAranzhmanet = filteredAranzhmanet.filter( (aranzhmani) => {
+      return (
+        aranzhmani.airportId == searchPrompts.from.id
+      )
+    })}
+
+
+    if(searchPrompts.to.id) {filteredAranzhmanet = filteredAranzhmanet.filter( (aranzhmani) => {
+      return (
+        aranzhmani.shtetiId == searchPrompts.to.id
+      )
+    })}
+    
+
+
+   filteredAranzhmanet = filteredAranzhmanet.filter( (aranzhmani) => {
+      return (
+        aranzhmani.dataNisjes == searchPrompts.DepartureDate 
+      )
+    })
+
+    
+    if(searchPrompts.nrNeteve) {
+      console.log('searchPrompts.nrNeteve:', searchPrompts.nrNeteve);
+      filteredAranzhmanet = filteredAranzhmanet.filter( (aranzhmani) => {
+        const dataKthimit = new Date(aranzhmani.dataKthimit).getTime();
+        const dataNisjes = new Date(aranzhmani.dataNisjes).getTime();
+        const startDate = dataNisjes + searchPrompts.nrNeteve[0] * 24 * 60 * 60 * 1000; // Convert days to milliseconds
+        const endDate = dataNisjes + searchPrompts.nrNeteve[1] * 24 * 60 * 60 * 1000; // Convert days to milliseconds
+    
+        return (
+          dataKthimit >= startDate && 
+          dataKthimit <= endDate)
+    })
+    
+    console.log('aranzhmani:', filteredAranzhmanet);
+  }
+  
+
+    setDisplayedAranzhmanet(filteredAranzhmanet)
   }
 
   const filterBySearch = (searchTerm) => {
@@ -124,16 +281,193 @@ const Search = () => {
     setDisplayedAranzhmanet(filteredAranzhmanet);
 }
   };
-
+  const handleClearFilters = (e) => {
+    setSearchPrompts({
+      from: 
+        {
+          id: null,
+          emri: ''
+        }
+      ,
+      to: 
+        {
+          id: null,
+          emri: '',
+          qyteti: 
+            {
+              id: null,
+              emri: ''
+            }
+          
+        }
+      ,
+      DepartureDate:new Date().toLocaleDateString('en-CA'),
+      nrPersonave: 2,
+      nrNeteve: [0,5]
+    });
+    setDisplayedAranzhmanet(aranzhmanet)
+  }
   return (
     <div className="max-w-7xl m-auto ">
-        <div className="w-full  flex flex-col items-center my-9">
-            <h1 className="text-3xl py-5 font-mono">EUROPE CITY BREAK</h1>
-        </div>
-        <div className="flex gap-10">
-            <div className="w-64 border border-black h-96">
-                <input type="text" className=' border-2 border-black m-5' onInput={handleInput}/>
+      <div className="w-full  flex flex-col items-center my-9">
+          <h1 className="text-3xl py-5 font-mono">EUROPE CITY BREAK</h1>
+      </div>
+
+      <div className="flex gap-10">
+        <div className="bg-white shadow-md rounded-lg p-6 w-4xl mx-auto">
+
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Find Your Flight</h2>
+
+          <form className="gap-y-4 flex flex-col" onSubmit={handleSearch}>
+            <div className="py-4">
+              <div className="relative">
+              <button
+              type='button'
+                onClick={() => setIsAirportDropdownOpen(!isAirportDropdownOpen)}
+                className="flex items-center w-full p-3 bg-gray-100 border rounded-md hover:bg-gray-200"
+              >
+                <span className="mr-2">✈️</span>
+                {searchPrompts.from.emri || 'Nga'}
+              </button>
+
+              {isAirportDropdownOpen && (
+                <div className=" border rounded-md shadow-lg bg-white absolute z-10">
+                  <ul className="max-h-60 overflow-y-auto">
+                      <li key='' className="p-2 border-b">
+                        <div
+                          onClick={() => handleAirportClick('')}
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                        >
+                          All Airports
+                        </div>
+
+                      </li>
+                    {airports.map((airport) => (
+                      <li key={airport.emri} className="p-2 border-b">
+                        <div
+                          onClick={() => handleAirportClick(airport)}
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                        >
+                          {airport.emri}
+                        </div>
+
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+                
+              </div>
+              <div className="relative">
+              <button
+              type='button'
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="flex items-center w-full p-3 bg-gray-100 border rounded-md hover:bg-gray-200"
+              >
+                <span className="mr-2">✈️</span>
+                {searchPrompts.to.emri || searchPrompts.to.qyteti.emri|| 'Destinimi'}
+              </button>
+
+              {isDropdownOpen && (
+                <div className="mt-2 border rounded-md shadow-lg bg-white">
+
+                  <div className="p-2">
+                    <input
+                      type="text"
+                      placeholder="Kërko vend ose qytet"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                  </div>
+
+                  <ul className="max-h-60 overflow-y-auto">
+                      <li key='' className="p-2 border-b">
+                        <div
+                          onClick={() => handleCountryClick('')}
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                        >
+                          All Countries/Cities
+                        </div>
+                        </li>
+                    {filteredCountries.map((country) => (
+                      <li key={country.emri} className="p-2 border-b">
+                        <div
+                          onClick={() => handleCountryClick(country)}
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                        >
+                          {country.emri}
+                        </div>
+
+                        <ul className="ml-4 mt-1">
+                          {country.qytetet
+                            .filter((city) =>
+                              city.emri.toLowerCase().includes(searchTerm.toLowerCase())
+                            )
+                            .map((city) => (
+                              <li
+                                key={city.emri}
+                                onClick={() => handleCityClick(city)}
+                                className="p-1 text-gray-600 hover:bg-blue-100 cursor-pointer rounded"
+                              >
+                                {city.emri}
+                              </li>
+                            ))}
+                        </ul>
+                      </li>
+                    ))}
+                    {filteredCountries.length === 0 && (
+                      <li className="p-2 text-gray-500">No results found</li>
+                    )}
+                  </ul>
+                </div>
+              )}
+              </div>
             </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Departure Date</label>
+              <input
+                type="date"
+                min={today} 
+                value={today}
+                onChange={handleDepartureDate}
+                className="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Numri i Neteve</label>
+              <select
+                className="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+                onChange={handleNrNeteve}
+              >
+              <option value='{"start": 0, "end": 5}'>1-5 Netë</option>
+              <option value='{"start": 6, "end": 9}'>6-9 Netë</option>
+              <option value='{"start": 10, "end": 12}'>10-12 Netë</option>
+              <option value='{"start": 12, "end": 99}'>12+ Netë</option>
+              </select>
+            </div>
+
+            <div className="col-span-1 md:col-span-2 lg:col-span-3 text-center">
+              <button
+                type="submit"
+                className="bg-blue-500 text-white font-semibold rounded-md py-2 px-4 hover:bg-blue-600 transition"
+              >
+                Search Flights
+              </button>
+              <button
+                type="button"
+                onClick={handleClearFilters}
+                className="bg-red-500 text-white font-semibold rounded-md py-2 my-3 px-4 hover:bg-red-600 transition"
+              >
+                Clear Filters
+              </button>
+            </div>
+          </form>
+        </div>
+
             <div className="w-full border border-black">
                 <div className="p-3 flex">
                     <div>

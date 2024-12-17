@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Modal from '../Modal';
 
 function ManageCardsKapodakia() {
   const [cards, setCards] = useState([]);

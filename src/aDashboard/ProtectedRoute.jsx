@@ -16,8 +16,8 @@ const ProtectedRoute = ({ children }) => {
 
                 if (response.status === 200) {
                     setIsAuthenticated(true);
-                    if (response.data.user.role !== 'admin') {
-                        navigate('/'); // Redirect if the role is not 'admin'
+                    if (response.data.user.role !== 'admin' && response.data.user.role !== 'owner') {
+                        navigate('/'); 
                     }
                 } else {
                     throw new Error('Invalid response');

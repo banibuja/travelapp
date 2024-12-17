@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Menu from '../Menu';
+import Modal from '../Modal';
 
 function ManageAirports() {
   const [airports, setAirports] = useState([]);
