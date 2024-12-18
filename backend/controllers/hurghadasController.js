@@ -1,5 +1,7 @@
 // controllers/hotelController.js
 const Hurghada = require('../models/HurghadaCards');
+const Log = require('../models/log');
+const User = require('../models/user');
 
 
 
@@ -32,6 +34,12 @@ const addCardHurgada = async (req, res) => {
       imageBase64,
     });
 
+    await Log.create({
+      userId: req.user.id,
+      action: 'add',
+      details: `${req.user.username} added a new card: ${newCard.id}`, 
+    });
+
     res.status(201).json({
       message: 'Card added successfully',
       card: newCard,
@@ -55,6 +63,12 @@ const deleteHurgada = async (req, res) => {
     }
 
     await hurghada.destroy();
+
+    await Log.create({
+      userId: req.user.id,
+      action: 'delete',
+      details: `${req.user.username} deleted card with id: ${id}`,
+    });
     res.status(200).json({ message: 'Hotel deleted successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -81,6 +95,12 @@ const updateCardHurgada = async (req, res) => {
     }
 
     await card.save();
+
+    await Log.create({
+      userId: req.user.id,
+      action: 'edit',
+      details: `${req.user.username} updated user with id: ${id}.`,
+    });
 
     res.status(200).json({ message: 'Card updated successfully', card });
   } catch (error) {

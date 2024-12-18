@@ -21,7 +21,8 @@ function AddUser() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/register', formData);
+      await axios.post('http://localhost:5000/api/AddUser', formData, { withCredentials: true });
+
       setMessage('Regjistrimi ishte i suksesshëm.');
       setTimeout(() => {
         window.location.href = '/dashboard/ManageUser';

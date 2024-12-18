@@ -36,16 +36,26 @@ const {
   getAllQytetet, addQytetet, deleteQytetet, updateQytetet
 } = require('../controllers/qytetetController');
 
+const { getLogs
+} = require('../controllers/logController');
+
+
+
 const router = express.Router();
 const { isAuthenticated } = require('../middlewares/authMiddleware');
 
 // User routes
 router.post('/register', registerUser);
+router.post('/AddUser', isAuthenticated, registerUser);
+
 router.post('/login', (req, res, next) => loginUser(req, res, next));
 router.get('/users-get', isAuthenticated, getUsers);
 router.delete('/users/:id', isAuthenticated, deleteUser);
 router.put('/users/:id', isAuthenticated, updateUser);
 router.get('/users-count', isAuthenticated, countUsers);
+
+router.get('/logs', getLogs); // Fetch all logs
+
 
 // Travel plans routes
 router.post('/travel-plans', isAuthenticated, addTravelPlan);
@@ -60,19 +70,19 @@ router.delete('/images-delete/:id', isAuthenticated, deleteImage);
 router.put('/images-update/:id', isAuthenticated, updateImage);
 
 // stamboll Cards routes
-router.post('/add-cards', addCard);
+router.post('/add-cards', isAuthenticated, addCard);
 router.get('/cards', getAllHotels);
 router.delete('/cards-delete/:id', isAuthenticated, deleteHotel);
 router.put('/cards-update/:id', isAuthenticated, updateCard);
 
 //hurghada cards routes
-router.post('/hurghada/add-cards', addCardHurgada);
+router.post('/hurghada/add-cards', isAuthenticated, addCardHurgada);
 router.get('/hurghada/cards', getAllHurghada);
 router.delete('/hurghada/cards-delete/:id', isAuthenticated, deleteHurgada);
 router.put('/hurghada/cards-update/:id', isAuthenticated, updateCardHurgada);
 
 //kapodakia cards routes
-router.post('/kapodakia/add-cards', addCardKapodakia);
+router.post('/kapodakia/add-cards', isAuthenticated, addCardKapodakia);
 router.get('/kapodakia/cards', getAllKapodakia);
 router.delete('/kapodakia/cards-delete/:id', isAuthenticated, deleteKapodakia);
 router.put('/kapodakia/cards-update/:id', isAuthenticated, updateCardKapodakia);

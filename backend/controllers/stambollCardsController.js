@@ -1,5 +1,9 @@
 // controllers/hotelController.js
 const Hotel = require('../models/StambollCards');
+const Log = require('../models/log');
+const User = require('../models/user');
+
+
 
 
 
@@ -16,9 +20,14 @@ const getAllHotels = async (req, res) => {
 
 // Add a new hotel
 const addCard = async (req, res) => {
-  const { title, description, price, imageBase64 } = req.body; // Include price
+  console.log('User Info:', req.user);
+  const { title, description, price, imageBase64 } = req.body;
 
   try {
+    if (!req.user) {
+      return res.status(401).json({ message: 'Unauthorized: User not authenticated' });
+    }
+
     if (!title || !description || !price || !imageBase64) {
       return res.status(400).json({ message: 'Title, description, price, and image are required' });
     }
@@ -28,6 +37,12 @@ const addCard = async (req, res) => {
       location: description,
       price,
       imageBase64,
+    });
+
+    await Log.create({
+      userId: req.user.id,
+      action: 'add',
+      details: `${req.user.username} added a new card: ${newCard.id}`, 
     });
 
     res.status(201).json({
@@ -41,7 +56,6 @@ const addCard = async (req, res) => {
 };
 
 
-
 // Delete a hotel by ID
 const deleteHotel = async (req, res) => {
   try {
@@ -53,6 +67,12 @@ const deleteHotel = async (req, res) => {
     }
 
     await hotel.destroy();
+
+    await Log.create({
+      userId: req.user.id,
+      action: 'delete',
+      details: `${req.user.username} deleted card with id: ${id}`,
+    });
     res.status(200).json({ message: 'Hotel deleted successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -68,7 +88,11 @@ const updateCard = async (req, res) => {
     const card = await Hotel.findByPk(id);
     if (!card) {
       return res.status(404).json({ message: 'Card not found' });
+
+
     }
+    const oldData = { ...card.toJSON() }; 
+
 
     // Update the card details
     card.name = name;
@@ -79,6 +103,12 @@ const updateCard = async (req, res) => {
     }
 
     await card.save();
+
+    await Log.create({
+      userId: req.user.id,
+      action: 'edit',
+      details: `${req.user.username} updated user with id: ${id}.`,
+    });
 
     res.status(200).json({ message: 'Card updated successfully', card });
   } catch (error) {

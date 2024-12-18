@@ -121,7 +121,7 @@ function ManageCardsKapodakia() {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Manage Hurghadas Card</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">Manage Kapodakia Card</h2>
       {message && (
         <p className={`mb-4 ${message.includes('successfully') ? 'text-green-500' : 'text-red-500'}`}>
           {message}

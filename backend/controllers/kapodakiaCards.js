@@ -1,5 +1,6 @@
 // controllers/hotelController.js
 const Kapodakia = require('../models/Kapodakia');
+const Log = require('../models/log');
 
 
 
@@ -29,6 +30,12 @@ const addCardKapodakia = async (req, res) => {
       imageBase64,
     });
 
+    await Log.create({
+      userId: req.user.id,
+      action: 'add',
+      details: `${req.user.username} added a new card: ${newCard.id}`, 
+    });
+
     res.status(201).json({
       message: 'Card added successfully',
       card: newCard,
@@ -52,6 +59,13 @@ const deleteKapodakia = async (req, res) => {
     }
 
     await kapodakia.destroy();
+
+    await Log.create({
+      userId: req.user.id,
+      action: 'delete',
+      details: `${req.user.username} deleted card with id: ${id}`,
+    });
+
     res.status(200).json({ message: 'Hotel deleted successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -78,6 +92,12 @@ const updateCardKapodakia = async (req, res) => {
     }
 
     await card.save();
+
+    await Log.create({
+      userId: req.user.id,
+      action: 'edit',
+      details: `${req.user.username} updated user with id: ${id}.`,
+    });
 
     res.status(200).json({ message: 'Card updated successfully', card });
   } catch (error) {

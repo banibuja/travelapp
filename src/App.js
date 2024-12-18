@@ -45,6 +45,9 @@ import ManageShtetet from './aDashboard/shtetet/ManageShtetet';
 import AddQytetet from './aDashboard/qytetet/AddQytetet';
 import ManageQytetet from './aDashboard/qytetet/ManageQytetet';
 
+
+import ManageLogs from './aDashboard/Logs/Logs';
+
 const App = () => {
  
   const location = useLocation();
@@ -76,6 +79,9 @@ const App = () => {
               <KapodakiaCards />
             </ProtectedRoute>
           } />
+
+            <Route path="/dashboard/Logs" element={<ProtectedRoute><ManageLogs /></ProtectedRoute>} />
+
 
             <Route path="/dashboard/AddAranzhmanet" element={<ProtectedRoute><AddAranzhmanet /></ProtectedRoute>} />
             <Route path="/dashboard/ManageAranzhmanet" element={<ProtectedRoute><ManageAranzhmanet /></ProtectedRoute>} />

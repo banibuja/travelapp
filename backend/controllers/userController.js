@@ -2,6 +2,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const passport = require('passport'); 
+const Log = require('../models/log');
+
 
 
 const registerUser = async (req, res) => {
@@ -16,6 +18,13 @@ const registerUser = async (req, res) => {
       username,
       password: hash,
     });
+
+    await Log.create({
+      userId: req.user.id, 
+      action: 'add',
+      details: `${req.user.username} added a new user: ${username}`,
+    });
+
     res.status(201).json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -61,7 +70,15 @@ const loginUser = (req, res, next) => {
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
       }
+  
       await user.destroy();
+  
+      await Log.create({
+        userId: req.user.id,
+        action: 'delete',
+        details: `${req.user.username} deleted user with id: ${id}`,
+      });
+  
       res.status(200).json({ message: 'User deleted successfully' });
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -78,17 +95,27 @@ const loginUser = (req, res, next) => {
         return res.status(404).json({ error: 'User not found' });
       }
   
+      const oldData = { ...user.toJSON() }; 
+  
       user.firstName = firstName || user.firstName;
       user.lastName = lastName || user.lastName;
       user.email = email || user.email;
       user.number = number || user.number;
   
       await user.save();
+  
+      await Log.create({
+        userId: req.user.id,
+        action: 'edit',
+        details: `${req.user.username} updated user with username: ${user.username}. Old data: ${JSON.stringify(oldData)}`,
+      });
+  
       res.status(200).json(user);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
   };
+  
 
   const verifyRole = (role) => {
     return (req, res, next) => {
