@@ -1,13 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../layout/Footer';
 import Carousel from '../carousel.component';
+import axios from 'axios';
 
 const Greqi = () => {
-  let slides = [
-    "https://150429065.v2.pressablecdn.com/wp-content/uploads/2020/01/Santorini-Greece-1000x658.jpg", 
-    "https://greekcitytimes.com/wp-content/uploads/2018/07/http-cdn.cnn_.com-cnnnext-dam-assets-170606121035-greece-travel-destination-shutterstock-560829934.jpg", 
-    "https://media-cdn.tripadvisor.com/media/photo-m/1280/1c/c0/98/c5/caption.jpg", 
-  ];
+  const [slides, setSlides] = useState([]);
+  const [newImage, setNewImage] = useState({ title: '', imageBase64: '' });
+
+  // Fetch images from backend
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await axios.get('/api/slider-images'); // Replace with your API endpoint
+        setSlides(response.data);
+      } catch (error) {
+        console.error('Error fetching images:', error);
+      }
+    };
+
+    fetchImages();
+  }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewImage({ ...newImage, [name]: value });
+  };
+
+  const handleAddImage = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('/api/slider-images', newImage); // Replace with your API endpoint
+      setSlides([...slides, response.data.image]);
+      setNewImage({ title: '', imageBase64: '' });
+    } catch (error) {
+      console.error('Error adding image:', error);
+    }
+  };
 
   return (
     <>
@@ -16,7 +44,33 @@ const Greqi = () => {
           <h1 className="text-3xl py-5 font-mono">Visit Greece</h1>
         </div>
 
-        <Carousel slides={slides} />
+        <Carousel slides={slides.map(slide => slide.imageBase64)} />
+
+        <div className="mt-10">
+          <form onSubmit={handleAddImage} className="flex flex-col items-center">
+            <input
+              type="text"
+              name="title"
+              value={newImage.title}
+              onChange={handleInputChange}
+              placeholder="Image Title"
+              className="border rounded px-4 py-2 mb-3 w-80"
+            />
+            <textarea
+              name="imageBase64"
+              value={newImage.imageBase64}
+              onChange={handleInputChange}
+              placeholder="Paste Base64 Image Data"
+              className="border rounded px-4 py-2 mb-3 w-80 h-40"
+            />
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+            >
+              Add Image
+            </button>
+          </form>
+        </div>
       </div>
 
       <div className="bg-white text-gray-800 font-sans mt-16">
