@@ -44,7 +44,59 @@ const Search = () => {
     const [airports, setAirports] = useState([]);
     const today = new Date().toISOString().split('T')[0];
 
+    const formRef = useRef(null);
     useEffect( () => {
+      const getParams= async () => {
+      const queryParams = new URLSearchParams(location.search);
+      const fromId = queryParams.get('fromId');
+      const fromEmri = queryParams.get('fromEmri');
+      const toId = queryParams.get('toId');
+      const toEmri = queryParams.get('toEmri');
+      const toQytetiId = queryParams.get('toQytetiId');
+      const toQytetiEmri = queryParams.get('toQytetiEmri');
+      const DepartureDate = queryParams.get('DepartureDate');
+      const nrPersonave = queryParams.get('nrPersonave');
+      const nrNeteve = queryParams.get('nrNeteve');
+      const nrNeteveArray = nrNeteve ? nrNeteve.split(',') : [];
+      console.log({
+        fromId,
+        fromEmri,
+        toId,
+        toEmri,
+        toQytetiId,
+        toQytetiEmri,
+        DepartureDate,
+        nrPersonave,
+        nrNeteveArray,
+      });
+      setSearchPrompts({
+        from: 
+          {
+            id: fromId,
+            emri: fromEmri
+          }
+        ,
+        to: 
+          {
+            id: toId,
+            emri: toEmri,
+            qyteti: 
+              {
+                id: toQytetiId,
+                emri: toQytetiEmri
+              }
+            
+          }
+        ,
+        DepartureDate:DepartureDate,
+        nrPersonave: nrPersonave,
+        nrNeteve: nrNeteveArray
+      })
+      console.log(searchPrompts);
+      
+      handleSearch(document.body)
+      }
+      getParams();
       const checkSession = async () => {
       
       try {
@@ -123,7 +175,7 @@ const Search = () => {
         setSearchPrompts({...searchPrompts, to: { id:null, emri: '', qyteti: {id:null, emri:''}}});
         
       }else{   
-      setSearchPrompts({...searchPrompts, to: {...searchPrompts.to, id:country.id, emri: country.emri}});
+      setSearchPrompts({...searchPrompts, to: {...searchPrompts.to, id:country.id, emri: country.emri, qyteti: {id:null, emri:''}}});
     }
       setSearchTerm('');
       setIsDropdownOpen(false);
@@ -213,7 +265,6 @@ const Search = () => {
   };
 
   const handleSearch = (e) => {
-    e.preventDefault();
     console.log(searchPrompts);
     
     var filteredAranzhmanet = aranzhmanet;
@@ -318,7 +369,7 @@ const Search = () => {
 
           <h2 className="text-xl font-semibold text-gray-800 mb-4">Find Your Flight</h2>
 
-          <form className="gap-y-4 flex flex-col" onSubmit={handleSearch}>
+          <form className="gap-y-4 flex flex-col" ref={formRef}>
             <div className="py-4">
               <div className="relative">
               <button
@@ -359,14 +410,14 @@ const Search = () => {
                 
               </div>
               <div className="relative">
-              <button
-              type='button'
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center w-full p-3 bg-gray-100 border rounded-md hover:bg-gray-200"
-              >
-                <span className="mr-2">✈️</span>
-                {searchPrompts.to.emri || searchPrompts.to.qyteti.emri|| 'Destinimi'}
-              </button>
+                <button
+                type='button'
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex items-center w-full p-3 bg-gray-100 border rounded-md hover:bg-gray-200"
+                >
+                  <span className="mr-2">✈️</span>
+                  {searchPrompts.to.qyteti.emri|| searchPrompts.to.emri || 'Destinimi'}
+                </button>
 
               {isDropdownOpen && (
                 <div className="mt-2 border rounded-md shadow-lg bg-white">
@@ -407,7 +458,7 @@ const Search = () => {
                             .map((city) => (
                               <li
                                 key={city.emri}
-                                onClick={() => handleCityClick(city)}
+                                onClick={() => {handleCountryClick(country); handleCityClick(city)}}
                                 className="p-1 text-gray-600 hover:bg-blue-100 cursor-pointer rounded"
                               >
                                 {city.emri}
@@ -430,7 +481,7 @@ const Search = () => {
               <input
                 type="date"
                 min={today} 
-                value={today}
+                defaultValue={today}
                 onChange={handleDepartureDate}
                 className="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
               />
@@ -452,7 +503,8 @@ const Search = () => {
 
             <div className="col-span-1 md:col-span-2 lg:col-span-3 text-center">
               <button
-                type="submit"
+                type="button"
+                onClick={handleSearch}
                 className="bg-blue-500 text-white font-semibold rounded-md py-2 px-4 hover:bg-blue-600 transition"
               >
                 Search Flights

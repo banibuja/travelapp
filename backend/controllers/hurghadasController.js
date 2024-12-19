@@ -7,11 +7,9 @@ const User = require('../models/user');
 
 const getAllHurghada = async (req, res) => {
 
-  console.log(req.body)
   try {
     const hurghada = await Hurghada.findAll();
     res.json(hurghada);
-    console.log(req.body)
 
   } catch (err) {
     res.status(500).json({ error: err.message });
