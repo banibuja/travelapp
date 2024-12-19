@@ -123,6 +123,14 @@ function Menu() {
               Manage Kapodakia Cards
             </Link>
           </li>
+          <li>
+            <Link
+              to="/dashboard/SliderBullgari"
+              className="block px-4 py-2 text-blue-500 font-bold hover:text-blue-700 hover:bg-gray-100"
+            >
+              Manage Bullgari Slider
+            </Link>
+          </li>
         </ul>
       )}
     </div>

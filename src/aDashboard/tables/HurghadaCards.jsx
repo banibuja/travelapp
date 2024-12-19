@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Modal from '../Modal';
+import Menu from '../Menu';
+
 
 function ManageCardsHurghada() {
   const [cards, setCards] = useState([]);
@@ -137,7 +139,8 @@ function ManageCardsHurghada() {
   
 
   return (
-    <div className="p-4">
+    <div className="flex">
+    <div className="flex-grow p-4 overflow-auto max-h-screen">
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Manage Hurghadas Card</h2>
       {message && (
         <p className={`mb-4 ${message.includes('successfully') ? 'text-green-500' : 'text-red-500'}`}>
@@ -266,6 +269,10 @@ function ManageCardsHurghada() {
           ))}
         </tbody>
       </table>
+    </div>
+
+    <Menu />
+
     </div>
   );
 }

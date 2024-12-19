@@ -89,7 +89,7 @@ const loginUser = (req, res, next) => {
   const updateUser = async (req, res) => {
     try {
       const { id } = req.params;
-      const { firstName, lastName, email, number } = req.body;
+      const { firstName, lastName, email, number, role } = req.body;
       const user = await User.findByPk(id);
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
@@ -101,7 +101,8 @@ const loginUser = (req, res, next) => {
       user.lastName = lastName || user.lastName;
       user.email = email || user.email;
       user.number = number || user.number;
-  
+      user.role = role || user.role;
+
       await user.save();
   
       await Log.create({
