@@ -47,7 +47,7 @@ import ManageQytetet from './aDashboard/qytetet/ManageQytetet';
 
 
 import ManageLogs from './aDashboard/Logs/Logs';
-
+import SliderBullgari from './aDashboard/tables/SliderBullgari';
 const App = () => {
  
   const location = useLocation();
@@ -81,6 +81,7 @@ const App = () => {
           } />
 
             <Route path="/dashboard/Logs" element={<ProtectedRoute><ManageLogs /></ProtectedRoute>} />
+            <Route path="/dashboard/SliderBullgari" element={<ProtectedRoute><SliderBullgari /></ProtectedRoute>} />
 
 
             <Route path="/dashboard/AddAranzhmanet" element={<ProtectedRoute><AddAranzhmanet /></ProtectedRoute>} />

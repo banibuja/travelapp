@@ -24,6 +24,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     console.log('Connection has been established successfully.');
 
     const Log = require('./models/log')
+    const BullgariSlider = require('./models/BullgariSlider')
 
     await sequelize.sync();
     console.log('Tabela(t) janë krijuar në MySQL.');

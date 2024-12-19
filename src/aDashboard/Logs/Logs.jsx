@@ -35,7 +35,7 @@ function ManageLogs() {
         <table className="min-w-full bg-white border border-gray-300">
           <thead>
             <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-              <th className="py-3 px-6 text-left">User ID</th>
+              <th className="py-3 px-6 text-left">idstaff</th>
               <th className="py-3 px-6 text-left">Action</th>
               <th className="py-3 px-6 text-left">Details</th>
               <th className="py-3 px-6 text-left">Timestamp</th>

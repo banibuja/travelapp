@@ -1,7 +1,44 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import Footer from '../layout/Footer'
+import axios from 'axios'; 
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 
 function Bullgari() {
+
+    const [images, setImages] = useState([]);
+    const [message, setMessage] = useState('');
+  
+    useEffect(() => {
+      const fetchImages = async () => {
+        try {
+          const response = await axios.get('http://localhost:5000/api/bullgari/images', {
+            withCredentials: true,
+          });
+          setImages(response.data);
+        } catch (error) {
+          console.error('Error fetching images:', error);
+          setMessage('There was an error fetching images.');
+        }
+      };
+  
+      fetchImages();
+    }, []);
+
+
+    const settings = {
+      dots: true, 
+      infinite: true, 
+      speed: 500, 
+      slidesToShow: 1, 
+      slidesToScroll: 1, 
+      autoplay: true, 
+      autoplaySpeed: 3000, 
+      arrows: false, 
+    };
+    
   return (
     <div>
 
@@ -14,15 +51,19 @@ function Bullgari() {
 
 </div>
 
-<div className="a group relative block overflow-hidden rounded-lg col-span-2 py-10">
-  <img
-    width={400}
-    height={400}
-    className="h-[400px] w-[900px] rounded-lg object-cover transition-all group-hover:scale-110"
-    src="https://images.ctfassets.net/pzootm7d2s0g/2BqWwB1eTDPZCiprij3mGi/10bf974ef68fe2f9a30ad5a73662f126/dimri.jpg"
-    alt="aaa"
-  />
-</div>
+<div className="group rounded-lg overflow-hidden w-[70rem] h-[450px] mt-4">
+        <Slider {...settings}>
+          {images.map((image) => (
+            <div key={image.id}>
+              <img
+                className="w-full h-[450px] object-cover"
+                src={`data:image/png;base64,${image.imageBase64}`}
+                alt={image.title}
+              />
+            </div>
+          ))}
+        </Slider>
+      </div>
 
 
       </div>

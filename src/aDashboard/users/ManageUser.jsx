@@ -2,12 +2,37 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Menu from '../Menu';
 import Modal from '../Modal';
+import { useNavigate } from 'react-router-dom';
+
 
 function ManageUser() {
   const [users, setUsers] = useState([]);
   const [message, setMessage] = useState('');
   const [editingUser, setEditingUser] = useState(null); 
   const [updatedFields, setUpdatedFields] = useState({}); 
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [role, setRole] = useState('');
+
+
+
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/user', { withCredentials: true });
+        setRole(response.data.user.role)
+        if (response.status === 200 ) {
+            setIsLoggedIn(true);
+        }else {throw Error}
+      } catch (error) {
+        setIsLoggedIn(false); 
+        navigate('/login'); 
+      }
+    };
+
+    checkLoginStatus();
+  }, [navigate]);
 
   // Fetch all users
   useEffect(() => {
@@ -71,6 +96,8 @@ function ManageUser() {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      role: user.role,
+
     });
   };
 
@@ -91,7 +118,11 @@ function ManageUser() {
               <th className="py-3 px-6 text-left">Emri</th>
               <th className="py-3 px-6 text-left">Mbiemri</th>
               <th className="py-3 px-6 text-left">Email</th>
-              <th className="py-3 px-6 text-center">Opsione</th>
+              {role === 'owner' && (
+
+              <th className="py-3 px-6 text-left">roles</th>
+            )}
+                          <th className="py-3 px-6 text-center">Opsione</th>
             </tr>
           </thead>
           <tbody className="text-gray-700 text-sm font-light">
@@ -137,6 +168,25 @@ function ManageUser() {
                     user.email
                   )}
                 </td>
+                                {role === 'owner' && (
+                  <td className="py-3 px-6 text-left">
+                    {editingUser === user.id ? (
+                      <select
+                        value={updatedFields.role}
+                        onChange={(e) => handleEditChange(e, 'role')}
+                        onBlur={() => updateUser(user.id)} 
+                        className="border border-gray-300 rounded px-2 py-1"
+                      >
+                        <option value="owner">Owner</option>
+                        <option value="admin">Admin</option>
+                        <option value="user">User</option>
+                      </select>
+                    ) : (
+                      user.role
+                    )}
+                  </td>
+                )}
+
                 <td className="py-3 px-6 text-center">
                   <Modal onConfirm={ () => deleteUser(user.id)}>
                     <button

@@ -38,11 +38,25 @@ const {
 
 const { getLogs
 } = require('../controllers/logController');
+const { subscribe
+} = require('../controllers/nodeMailerController');
 
+
+const { 
+  getAllImagesBullgari, addImageBullgari, deleteImageBullgari, updateImageBullgari
+} = require('../controllers/bullgariController');
 
 
 const router = express.Router();
 const { isAuthenticated } = require('../middlewares/authMiddleware');
+
+
+const { abonohu
+} = require('../controllers/nodeMailerController');
+
+router.post('/abonohu', isAuthenticated, abonohu);
+
+
 
 // User routes
 router.post('/register', registerUser);
@@ -68,6 +82,12 @@ router.post('/add-images', addImage);
 router.get('/images', getAllImages);
 router.delete('/images-delete/:id', isAuthenticated, deleteImage);
 router.put('/images-update/:id', isAuthenticated, updateImage);
+
+
+router.post('/bullgari/add-images', addImageBullgari);
+router.get('/bullgari/images', getAllImagesBullgari);
+router.delete('/bullgari/images-delete/:id', isAuthenticated, deleteImageBullgari);
+router.put('/bullgari/images-update/:id', isAuthenticated, updateImageBullgari);
 
 // stamboll Cards routes
 router.post('/add-cards', isAuthenticated, addCard);

@@ -73,30 +73,42 @@ function Turqi() {
       </div>
 
       {/* Room Price Table */}
-      <div className="p-10 flex justify-center">
-        <div className="flex justify-center items-center space-x-8 p-10">
-          <table className="table-auto border-collapse border border-gray-200">
-            <thead>
-              <tr>
-                <th className="border border-gray-300 px-4 py-2">Lloji i Dhomës</th>
-                <th className="border border-gray-300 px-4 py-2">Shërbimi</th>
-                <th className="border border-gray-300 px-4 py-2">01.10-24.12.2024</th>
-                <th className="border border-gray-300 px-4 py-2">25.12-02.01.2025</th>
-              </tr>
-            </thead>
-            <tbody>
-              {roomPrices.map((room, index) => (
-                <tr key={index}>
-                  <td className="border border-gray-300 px-4 py-2">{room.room_type}</td>
-                  <td className="border border-gray-300 px-4 py-2">{room.service}</td>
-                  <td className="border border-gray-300 px-4 py-2">{room.price_1}</td>
-                  <td className="border border-gray-300 px-4 py-2">{room.price_2}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <div className="table-container p-8 bg-gray-50 rounded-xl shadow-lg">
+  <div className="flex justify-center items-center">
+    <table className="table-auto w-[50rem] bg-white shadow-md rounded-lg overflow-hidden">
+      <thead className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white">
+        <tr>
+          <th className="px-6 py-4 text-left text-lg font-semibold">Lloji i Dhomës</th>
+          <th className="pr-10 text-lg font-semibold">Shërbimi</th>
+          <th className="px-6 py-4 text-lg font-semibold text-center">Price 1</th>
+          <th className="px-6 py-4 text-lg font-semibold text-center">Price 2</th>
+        </tr>
+      </thead>
+      <tbody>
+        {roomPrices.map((room, index) => (
+          <tr
+            key={index}
+            className={`${
+              index % 2 === 0 ? "bg-gray-100" : "bg-gray-50"
+            } hover:bg-gray-200 transition duration-200 ease-in-out`}
+          >
+            <td className="px-6 py-4 text-gray-800 text-sm font-medium">{room.room_type}</td>
+            <td className=" pl-4 text-gray-800 text-sm">{room.service}</td>
+            <td className="px-6 py-4 text-center text-gray-800 text-sm font-medium">
+              {room.price_1}
+            </td>
+            <td className="px-6 py-4 text-center text-gray-800 text-sm font-medium">
+              {room.price_2}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
 
       <Table  
         perfshihet={['Akomodin',"Mëngjesi", "Spa center", "Pishina", "Aqua Park", "Parking", "WI-FI"]} 

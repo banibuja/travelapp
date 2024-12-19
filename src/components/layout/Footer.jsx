@@ -1,11 +1,31 @@
-import React from 'react'
-import { FaPhoneAlt, FaWhatsapp, FaViber, FaHeadset, FaCheckCircle } from 'react-icons/fa';
+import React, { useState } from 'react';
+import {FaCheckCircle } from 'react-icons/fa';
+import axios from 'axios';
 
 
 function Footer() {
+
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSubscribe = async () => {
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/api/abonohu',
+        { email }, 
+        { withCredentials: true } 
+      );
+  
+      setMessage('Jeni abonuar me sukses! Në email do të njoftoheni për ofertat më të mira.');
+    } catch (error) {
+      console.error('Gabim:', error);
+      setMessage('Ndodhi një gabim. Ju lutem provoni përsëri.');
+    }
+  };
+  
   return (
     <div>
-      <div className="f p-10">
+      <div className="f p-[7rem]">
         <div className="flex justify-center space-x-9 mb-6 gap-40">
           <div className="text-center">
             <FaCheckCircle className="text-green-500 w-8 h-8 mx-auto mb-2" />
@@ -24,10 +44,22 @@ function Footer() {
             <p className="text-xl font-semibold">+25 vite eksperiencë</p>
           </div>
         </div>
-        <div className="subscription  p-6 rounded-lg text-center">
-          <p className="mb-4 text-lg">Regjistrohu tani! Ne do të dërgojmë ofertat më të mira çdo javë.</p>
-          <input type="email" placeholder="Email" className="w-[16rem] p-2 border border-gray-300 rounded-[10px] mb-4 mr-2" />
-          <button className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">Abonohu</button>
+        <div className="subscription p-[3rem] rounded-lg text-center">
+          <p className="mb-5 text-lg">Regjistrohu tani! Ne do të dërgojmë ofertat më të mira çdo javë.</p>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-[16rem] p-2 border border-gray-300 rounded-[10px] mr-2"
+          />
+          <button
+            onClick={handleSubscribe}
+            className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+          >
+            Abonohu
+          </button>
+          {message && <p className="mt-4 text-green-500">{message}</p>}
         </div>
       </div>
 

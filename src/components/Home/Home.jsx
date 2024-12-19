@@ -132,48 +132,48 @@ function Home() {
     ],
   };
 
-  const hotelss = [
-    {
-      id: 1,
-      image: "https://media.dev.paximum.com/hotelimages/479240/1.jpg",
-      name: "Ramada by Wyndham Cappadocia",
-      stars: 5,
-      location: "Ortahisar, Turkey",
-      price: "125",
-    },
-    {
-      id: 2,
-      image: "https://photos.hotelbeds.com/giata/xl/28/284333/284333a_hb_a_001.jpg",
-      name: "Hotel Cave Konak",
-      stars: 3,
-      location: "Ürgüp merkez, Turkey",
-      price: "155",
-    },
-    {
-      id: 3,
-      image: "https://photos.hotelbeds.com/giata/xl/37/370942/370942a_hb_ro_039.jpg",
-      name: "Rox Cappadocia",
-      stars: 4,
-      location: "Uçhisar, Turkey",
-      price: "160",
-    },
-    {
-      id: 4,
-      image: "https://photos.hotelbeds.com/giata/xl/15/157370/157370a_hb_l_001.jpg",
-      name: "Kale Konak Hotel",
-      stars: 4,
-      location: "Uçhisar, Turkey",
-      price: "167",
-    },
-    {
-      id: 5,
-      image: "https://photos.hotelbeds.com/giata/xl/15/157370/157370a_hb_l_001.jpg",
-      name: "Ban Konak Hotel",
-      stars: 4,
-      location: "Uçhisar, Turkey",
-      price: "167",
-    },
-  ];
+  // const hotelss = [
+  //   {
+  //     id: 1,
+  //     image: "https://media.dev.paximum.com/hotelimages/479240/1.jpg",
+  //     name: "Ramada by Wyndham Cappadocia",
+  //     stars: 5,
+  //     location: "Ortahisar, Turkey",
+  //     price: "125",
+  //   },
+  //   {
+  //     id: 2,
+  //     image: "https://photos.hotelbeds.com/giata/xl/28/284333/284333a_hb_a_001.jpg",
+  //     name: "Hotel Cave Konak",
+  //     stars: 3,
+  //     location: "Ürgüp merkez, Turkey",
+  //     price: "155",
+  //   },
+  //   {
+  //     id: 3,
+  //     image: "https://photos.hotelbeds.com/giata/xl/37/370942/370942a_hb_ro_039.jpg",
+  //     name: "Rox Cappadocia",
+  //     stars: 4,
+  //     location: "Uçhisar, Turkey",
+  //     price: "160",
+  //   },
+  //   {
+  //     id: 4,
+  //     image: "https://photos.hotelbeds.com/giata/xl/15/157370/157370a_hb_l_001.jpg",
+  //     name: "Kale Konak Hotel",
+  //     stars: 4,
+  //     location: "Uçhisar, Turkey",
+  //     price: "167",
+  //   },
+  //   {
+  //     id: 5,
+  //     image: "https://photos.hotelbeds.com/giata/xl/15/157370/157370a_hb_l_001.jpg",
+  //     name: "Ban Konak Hotel",
+  //     stars: 4,
+  //     location: "Uçhisar, Turkey",
+  //     price: "167",
+  //   },
+  // ];
 
 
 
@@ -274,28 +274,50 @@ function Home() {
               <div className="flex justify-center items-center space-x-8 p-10">
       
                 {/* Call Center */}
-                <div className="flex items-center justify-between rounded-[20px] bg-white w-[20rem] h-[6rem] border border-blue-900 group hover:bg-[#132246] transition-all duration-300">
-                  <span className="font-semibold text-blue-900 text-[20px] ml-8 group-hover:text-white transition-colors duration-300">Call Center</span>
+                <a 
+                  href="tel:+38345963828" 
+                  className="flex items-center justify-between rounded-[20px] bg-white w-[20rem] h-[6rem] border border-blue-900 group hover:bg-[#132246] transition-all duration-300"
+                >
+                  <span className="font-semibold text-blue-900 text-[20px] ml-8 group-hover:text-white transition-colors duration-300">
+                    Call Center
+                  </span>
                   <div className="bg-[#132246] w-[8rem] h-[6rem] rounded-l-[20px] rounded-r-[20px] flex items-center justify-center">
                     <FaPhoneAlt className="text-white w-[3rem] h-8 group-hover:scale-150 transition-transform duration-300" />
                   </div>
-                </div>
+                </a>
+
 
                 {/* WhatsApp */}
-                <div className="flex items-center justify-between rounded-[20px] bg-white w-[20rem] h-[6rem] border border-green-600 group hover:bg-[#25d366] transition-all duration-300">
-                  <span className="font-semibold text-green-600 text-[20px] ml-8 group-hover:text-white transition-colors duration-300">WhatsApp</span>
-                  <div className="bg-[#25d366] w-[8rem] h-[6rem] rounded-l-[20px] rounded-r-[20px] flex items-center justify-center">
-                    <FaWhatsapp className="text-white w-[3rem] h-10 group-hover:scale-150 transition-transform duration-300" />
-                  </div>
+                <a 
+                href="https://wa.me/38345963828" 
+                className="flex items-center justify-between rounded-[20px] bg-white w-[20rem] h-[6rem] border border-green-600 group hover:bg-[#25d366] transition-all duration-300" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <span className="font-semibold text-green-600 text-[20px] ml-8 group-hover:text-white transition-colors duration-300">
+                  WhatsApp
+                </span>
+                <div className="bg-[#25d366] w-[8rem] h-[6rem] rounded-l-[20px] rounded-r-[20px] flex items-center justify-center">
+                  <FaWhatsapp className="text-white w-[3rem] h-10 group-hover:scale-150 transition-transform duration-300" />
                 </div>
+              </a>
+
 
                 {/* Viber */}
-                <div className="flex items-center justify-between rounded-[20px] bg-white w-[20rem] h-[6rem] border border-purple-700 group hover:bg-[#7360f2] transition-all duration-300">
-                  <span className="font-semibold text-purple-900 text-[20px] ml-8 group-hover:text-white transition-colors duration-300">Viber</span>
+                <a 
+                  href="viber://chat?number=38345963828" 
+                  className="flex items-center justify-between rounded-[20px] bg-white w-[20rem] h-[6rem] border border-purple-700 group hover:bg-[#7360f2] transition-all duration-300" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  <span className="font-semibold text-purple-900 text-[20px] ml-8 group-hover:text-white transition-colors duration-300">
+                    Viber
+                  </span>
                   <div className="bg-[#7360f2] w-[8rem] h-[6rem] rounded-l-[20px] rounded-r-[20px] flex items-center justify-center">
                     <FaViber className="text-white w-[3rem] h-10 group-hover:scale-150 transition-transform duration-300" />
                   </div>
-                </div>
+                </a>
+
               </div>
             </div>
           </div>

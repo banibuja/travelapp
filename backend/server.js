@@ -18,14 +18,29 @@ const routes = require('./routes/routes-all');
 const app = express();
 app.set('trust proxy', 1);
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-});
-app.use(limiter);
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, 
+//   max: 500, 
+// });
+// app.use(limiter);
+
+// app.use((req, res, next) => {
+//   if (req.ip === '127.0.0.1') {
+//     return next(); 
+//   }
+//   limiter(req, res, next);
+// });
+
+// const authLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 200, 
+// });
+
+// app.use('/api/auth', authLimiter);
+
 
 // Set security headers
-app.use(helmet());
+// app.use(helmet());
 
 // CORS setup
 const allowedOrigins = [
@@ -179,3 +194,16 @@ const initializeDatabase = async () => {
 };
 
 initializeDatabase();
+
+
+
+// Global error handling
+process.on('uncaughtException', (error) => {
+  console.error('Unhandled Exception:', error.message);
+  process.exit(1); // Force server exit on uncaught exceptions
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection:', reason);
+  process.exit(1); // Force server exit on unhandled promise rejections
+});
