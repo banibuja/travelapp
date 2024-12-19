@@ -5,7 +5,6 @@ import axios from 'axios';
 
 const Greqi = () => {
   const [slides, setSlides] = useState([]);
-  const [newImage, setNewImage] = useState({ title: '', imageBase64: '' });
 
   // Fetch images from backend
   useEffect(() => {
@@ -21,22 +20,6 @@ const Greqi = () => {
     fetchImages();
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewImage({ ...newImage, [name]: value });
-  };
-
-  const handleAddImage = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('/api/slider-images', newImage); // Replace with your API endpoint
-      setSlides([...slides, response.data.image]);
-      setNewImage({ title: '', imageBase64: '' });
-    } catch (error) {
-      console.error('Error adding image:', error);
-    }
-  };
-
   return (
     <>
       <div className="overflow-x-auto max-w-4xl m-auto">
@@ -45,32 +28,6 @@ const Greqi = () => {
         </div>
 
         <Carousel slides={slides.map(slide => slide.imageBase64)} />
-
-        <div className="mt-10">
-          <form onSubmit={handleAddImage} className="flex flex-col items-center">
-            <input
-              type="text"
-              name="title"
-              value={newImage.title}
-              onChange={handleInputChange}
-              placeholder="Image Title"
-              className="border rounded px-4 py-2 mb-3 w-80"
-            />
-            <textarea
-              name="imageBase64"
-              value={newImage.imageBase64}
-              onChange={handleInputChange}
-              placeholder="Paste Base64 Image Data"
-              className="border rounded px-4 py-2 mb-3 w-80 h-40"
-            />
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
-            >
-              Add Image
-            </button>
-          </form>
-        </div>
       </div>
 
       <div className="bg-white text-gray-800 font-sans mt-16">
