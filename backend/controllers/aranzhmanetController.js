@@ -1,6 +1,19 @@
+require('dotenv').config();
+const nodemailer = require('nodemailer');
 const Aranzhmanet = require('../models/Aranzhmanet');
 const Shtetet = require('../models/shtetet');
 const Airports = require('../models/airports');
+const User = require('../models/user'); 
+
+
+const transporter = nodemailer.createTransport({
+    service: 'Gmail', 
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
+  });
+
 
 // Get all ofertat
 const getAllAranzhmanet = async (req, res) => {
@@ -43,21 +56,64 @@ const getAllAranzhmanet = async (req, res) => {
 };
 
 // Add new Aranzhmanet price
+// const addAranzhmanet = async (req, res) => {
+//   const { titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airportId, cmimi, rating, shtetiId } = req.body;
+//   try {
+//     const newAranzhmani = await Aranzhmanet.create({
+//       titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airportId, cmimi, rating, shtetiId
+//     });
+//     res.status(201).json({
+//       message: 'Aranzhmanet added successfully',
+//       Aranzhmani: newAranzhmani
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error adding Aranzhmani', error: error.message });
+//   }
+// };
+
 const addAranzhmanet = async (req, res) => {
   const { titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airportId, cmimi, rating, shtetiId } = req.body;
   try {
     const newAranzhmani = await Aranzhmanet.create({
-      titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airportId, cmimi, rating, shtetiId
+      titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airportId, cmimi, rating, shtetiId,
     });
+
+    const users = await User.findAll({ attributes: ['email'] });
+    const emailList = users.map(user => user.email);
+
+    if (emailList.length === 0) {
+      return res.status(400).json({ message: 'Nuk ka përdorues të regjistruar me email për të dërguar njoftimin.' });
+    }
+
+    const mailOptions = {
+      from: 'travelbani48@gmail.com',
+      to: emailList, 
+      subject: 'Ofertë e re është shtuar!',
+      text: `Një ofertë e re është shtuar:
+      
+      Titulli: ${newAranzhmani.titulli}
+      Numri i Personave: ${newAranzhmani.nrPersonave}
+      Numri i Netëve: ${newAranzhmani.nrNeteve}
+      Lloji i Dhomës: ${newAranzhmani.llojiDhomes}
+      Shërbimi: ${newAranzhmani.sherbimi}
+      Data e Nisjes: ${newAranzhmani.dataNisjes}
+      Data e Kthimit: ${newAranzhmani.dataKthimit}
+      Çmimi: ${newAranzhmani.cmimi} EUR
+      `,
+    };
+
+    // Dërgimi i email-it
+    await transporter.sendMail(mailOptions);
+
     res.status(201).json({
-      message: 'Aranzhmanet added successfully',
-      Aranzhmani: newAranzhmani
+      message: 'Aranzhmani u shtua me sukses dhe email-i u dërgua!',
+      Aranzhmani: newAranzhmani,
     });
   } catch (error) {
-    res.status(500).json({ message: 'Error adding Aranzhmani', error: error.message });
+    console.error('Gabim:', error);
+    res.status(500).json({ message: 'Ndodhi një gabim gjatë shtimit të Aranzhmanit.', error: error.message });
   }
 };
-
 
 
 
