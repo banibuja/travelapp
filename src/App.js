@@ -11,6 +11,7 @@ import './App.css';
 import Turqi from './components/Turqi/Turqi';
 import Bullgari from './components/Bullgari/Bullgari';
 import Greqi from './components/Greqi/Greqi';
+import Maqedoni from './components/Maqedoni/Maqedoni';
 import FestateFundvitit from './components/FestaFundVitit/FestateFundvitit';
 import EuropeCityBreak from './components/EuropeCity/EuropeCityBreak';
 import Nav from './components/layout/nav';
@@ -67,6 +68,7 @@ const App = () => {
             <Route path="/turqi" element={<Turqi />} />
             <Route path="/bullgari" element={<Bullgari />} />
             <Route path="/greqi" element={<Greqi />} />
+            <Route path="/maqedoni" element={<Maqedoni />} />
             <Route path="/festateFundvitit" element={<FestateFundvitit />} />
             <Route path="/europecitybreak" element={<EuropeCityBreak />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /> </ProtectedRoute>} />

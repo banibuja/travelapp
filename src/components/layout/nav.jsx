@@ -114,7 +114,7 @@ function Nav() {
           <a href="/turqi" target="" className="text-gray-700 hover:text-blue-500">Turqi</a>
           <a href="/bullgari" target="" className="text-gray-700 hover:text-blue-500">Bullgari</a>
           <a href="/FestateFundVitit" className="text-gray-700 hover:text-blue-500">Festat e fundvitit</a>
-          <a href="#" className="text-gray-700 hover:text-blue-500">Maqedoni</a>
+          <a href="/Maqedoni" className="text-gray-700 hover:text-blue-500">Maqedoni</a>
           <a href="/Greqi" className="text-gray-700 hover:text-blue-500">Greqi</a>
           <a href="/EuropeCityBreak" className="text-gray-700 hover:text-blue-500">Europe-City Break</a>
           <a href="/Dubai" className="text-gray-700 hover:text-blue-500">Dubai</a>
