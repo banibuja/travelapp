@@ -26,6 +26,7 @@ import Dashboard from './aDashboard/Dashboard';
 import AddUser from './aDashboard/users/AddUser';
 import ManageUser from './aDashboard/users/ManageUser';
 import ManageHomeTable from './aDashboard/tables/ManageHomeTable';
+import GreqiSlider from './aDashboard/tables/GreqiSlider';
 import TurqiTable from './aDashboard/tables/TurqiTable';
 import DubaiTable from './aDashboard/tables/DubaiPricesTable';
 import SliderManage from './aDashboard/tables/SliderManage';
@@ -48,6 +49,9 @@ import ManageQytetet from './aDashboard/qytetet/ManageQytetet';
 
 import ManageLogs from './aDashboard/Logs/Logs';
 import SliderBullgari from './aDashboard/tables/SliderBullgari';
+
+
+
 const App = () => {
  
   const location = useLocation();
@@ -69,6 +73,7 @@ const App = () => {
             <Route path="/dashboard/AddUser" element={<ProtectedRoute><AddUser /></ProtectedRoute>} />
             <Route path="/dashboard/ManageUser" element={<ProtectedRoute><ManageUser /></ProtectedRoute>} />
             <Route path="/dashboard/ManageHomeTable" element={<ProtectedRoute><ManageHomeTable /></ProtectedRoute>} />
+            <Route path="/dashboard/GreqiSlider" element={<ProtectedRoute><GreqiSlider /></ProtectedRoute>} />
             <Route path="/dashboard/TurqiTable" element={<ProtectedRoute><TurqiTable /></ProtectedRoute>} />
             <Route path="/dashboard/DubaiTable" element={<ProtectedRoute><DubaiTable /></ProtectedRoute>} />
             <Route path="/dashboard/SliderManage" element={<ProtectedRoute><SliderManage /></ProtectedRoute>} />

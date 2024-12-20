@@ -10,7 +10,7 @@ const Greqi = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('/api/slider-images'); // Replace with your API endpoint
+        const response = await axios.get('http://localhost:5000/api/greqi-images');
         setSlides(response.data);
       } catch (error) {
         console.error('Error fetching images:', error);
@@ -26,8 +26,7 @@ const Greqi = () => {
         <div className="w-full text-center mb-14 my-9">
           <h1 className="text-3xl py-5 font-mono">Visit Greece</h1>
         </div>
-
-        <Carousel slides={slides.map(slide => slide.imageBase64)} />
+        <Carousel slides={slides.map(slide => `data:image/jpeg;base64,${slide.imageBase64}`)} />
       </div>
 
       <div className="bg-white text-gray-800 font-sans mt-16">

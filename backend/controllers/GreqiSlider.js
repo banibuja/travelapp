@@ -1,7 +1,7 @@
 const SliderGreqi = require('../models/SliderGreqi');
 
 // Fetch all images
-const getAllImages = async (req, res) => {
+const getAllGreqiImages = async (req, res) => {
   try {
     const images = await SliderGreqi.findAll(); // Replace with your ORM query
     res.json(images);
@@ -11,7 +11,7 @@ const getAllImages = async (req, res) => {
 };
 
 // Add a new image
-const addImage = async (req, res) => {
+const addGreqiImage = async (req, res) => {
   try {
     const { imageBase64, title } = req.body;
 
@@ -34,7 +34,7 @@ const addImage = async (req, res) => {
 };
 
 // Delete an image
-const deleteImage = async (req, res) => {
+const deleteGreqiImage = async (req, res) => {
   try {
     const { id } = req.params;
     const image = await SliderGreqi.findByPk(id);
@@ -51,7 +51,7 @@ const deleteImage = async (req, res) => {
 };
 
 module.exports = {
-  getAllImages,
-  addImage,
-  deleteImage,
+  getAllGreqiImages,
+  addGreqiImage,
+  deleteGreqiImage,
 };

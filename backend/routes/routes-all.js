@@ -41,6 +41,9 @@ const { getLogs
 const { subscribe
 } = require('../controllers/nodeMailerController');
 
+const { 
+  getAllGreqiImages, addGreqiImage, deleteGreqiImage,
+} = require('../controllers/GreqiSlider');
 
 const { 
   getAllImagesBullgari, addImageBullgari, deleteImageBullgari, updateImageBullgari
@@ -141,5 +144,8 @@ router.delete('/qytetet-delete/:id', isAuthenticated, deleteQytetet);
 router.put('/qytetet-update/:id', isAuthenticated, updateQytetet);
 router.get('/qytetet', getAllQytetet);
 
+router.post('/add-greqi-image', addGreqiImage);
+router.delete('/greqi-image-delete/:id', isAuthenticated, deleteGreqiImage);
+router.get('/greqi-images', getAllGreqiImages);
 
 module.exports = router;

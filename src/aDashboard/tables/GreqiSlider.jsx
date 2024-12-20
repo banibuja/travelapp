@@ -1,9 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
+import Modal from '../Modal';
+import Menu from '../Menu';
 
 const GreqiSlider = () => {
+  const [images, setImages] = useState([]);
   const [newImage, setNewImage] = useState({ title: '', file: null });
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/greqi-images', {
+          withCredentials: true,
+        });
+        setImages(response.data);
+      } catch (error) {
+        console.error('Error fetching images:', error);
+        setMessage('There was an error fetching images.');
+      }
+    };
+
+    fetchImages();
+  }, []);
+
+  const deleteGreqiImage = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/greqi-image-delete/${id}`, {
+        withCredentials: true,
+      });
+      setImages(images.filter((image) => image.id !== id));
+      setMessage('Image deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting image:', error);
+      setMessage('Error deleting image.');
+    }
+  };
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -26,7 +59,7 @@ const GreqiSlider = () => {
       const base64String = reader.result.split(',')[1];
 
       try {
-        const response = await axios.post('/api/slider-images', {
+        const response = await axios.post('http://localhost:5000/api/add-greqi-image', {
           imageBase64: base64String,
           title: newImage.title,
         });
@@ -42,6 +75,7 @@ const GreqiSlider = () => {
   };
 
   return (
+    <div className="flex h-screen">
     <div className="max-w-4xl m-auto p-6">
       <h2 className="text-2xl font-bold mb-4 text-center">Add a New Slider Image</h2>
       {message && (
@@ -75,6 +109,45 @@ const GreqiSlider = () => {
           Add Image
         </button>
       </form>
+
+      <table className="min-w-full bg-white border border-gray-300">
+          <thead>
+            <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+              <th className="py-3 px-6 text-left">ID</th>
+              <th className="py-3 px-6 text-left">Title</th>
+              <th className="py-3 px-6 text-left">Image</th>
+              <th className="py-3 px-6 text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-700 text-sm font-light">
+            {images.map((image) => (
+              <tr key={image.id} className="border-b border-gray-200 hover:bg-gray-100">
+                <td className="py-3 px-6 text-left">{image.id}</td>
+                <td className="py-3 px-6 text-left">{image.title}</td>
+                <td className="py-3 px-6 text-left">
+                  <img
+                    src={`data:image/jpeg;base64,${image.imageBase64}`}
+                    alt={image.title}
+                    className="w-16 h-16 object-cover rounded"
+                  />
+                </td>
+                <td className="py-3 px-6 text-center">
+                  <Modal onConfirm={ () => deleteGreqiImage(image.id)}>
+                    <button
+                      className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-200"
+                    >
+                      Fshi
+                    </button>
+                  </Modal>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        </div>
+        <div className="w-64 bg-gray-100 border-l border-gray-300 shadow-lg">
+        <Menu />
+      </div>
     </div>
   );
 };
