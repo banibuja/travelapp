@@ -7,29 +7,7 @@ import { useLocation } from 'react-router-dom';
 
 const Search = () => {
     const location = useLocation();
-    const [searchPrompts, setSearchPrompts] = useState({
-      from: 
-        {
-          id: null,
-          emri: ''
-        }
-      ,
-      to: 
-        {
-          id: null,
-          emri: '',
-          qyteti: 
-            {
-              id: null,
-              emri: ''
-            }
-          
-        }
-      ,
-      DepartureDate:new Date().toLocaleDateString('en-CA'),
-      nrPersonave: 2,
-      nrNeteve: [0,5]
-    });
+    
     
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState("Price");
@@ -45,58 +23,43 @@ const Search = () => {
     const today = new Date().toISOString().split('T')[0];
 
     const formRef = useRef(null);
-    useEffect( () => {
-      const getParams= async () => {
-      const queryParams = new URLSearchParams(location.search);
-      const fromId = queryParams.get('fromId');
-      const fromEmri = queryParams.get('fromEmri');
-      const toId = queryParams.get('toId');
-      const toEmri = queryParams.get('toEmri');
-      const toQytetiId = queryParams.get('toQytetiId');
-      const toQytetiEmri = queryParams.get('toQytetiEmri');
-      const DepartureDate = queryParams.get('DepartureDate');
-      const nrPersonave = queryParams.get('nrPersonave');
-      const nrNeteve = queryParams.get('nrNeteve');
-      const nrNeteveArray = nrNeteve ? nrNeteve.split(',') : [];
-      console.log({
-        fromId,
-        fromEmri,
-        toId,
-        toEmri,
-        toQytetiId,
-        toQytetiEmri,
-        DepartureDate,
-        nrPersonave,
-        nrNeteveArray,
-      });
-      setSearchPrompts({
-        from: 
-          {
-            id: fromId,
-            emri: fromEmri
-          }
-        ,
-        to: 
-          {
-            id: toId,
-            emri: toEmri,
-            qyteti: 
-              {
-                id: toQytetiId,
-                emri: toQytetiEmri
-              }
-            
-          }
-        ,
-        DepartureDate:DepartureDate,
-        nrPersonave: nrPersonave,
-        nrNeteve: nrNeteveArray
-      })
-      console.log(searchPrompts);
+    const queryParams = new URLSearchParams(location.search);
+    const fromId = queryParams.get('fromId');
+    const fromEmri = queryParams.get('fromEmri');
+    const toId = queryParams.get('toId');
+    const toEmri = queryParams.get('toEmri');
+    const toQytetiId = queryParams.get('toQytetiId');
+    const toQytetiEmri = queryParams.get('toQytetiEmri');
+    const DepartureDate = queryParams.get('DepartureDate');
+    const nrPersonave = queryParams.get('nrPersonave');
+    const nrNeteve = queryParams.get('nrNeteve');
+    const nrNeteveArray = nrNeteve ? nrNeteve.split(',') : [];
       
-      handleSearch(document.body)
-      }
-      getParams();
+  const [searchPrompts, setSearchPrompts] = useState({
+      from: 
+        {
+          id: fromId,
+          emri: fromEmri
+        }
+      ,
+      to: 
+        {
+          id: toId,
+          emri: toEmri,
+          qyteti: 
+            {
+              id: toQytetiId,
+              emri: toQytetiEmri
+            }
+          
+        }
+      ,
+      DepartureDate:DepartureDate,
+      nrPersonave: nrPersonave,
+      nrNeteve: nrNeteveArray
+    })
+    useEffect( () => {
+      
       const checkSession = async () => {
       
       try {
@@ -148,7 +111,57 @@ const Search = () => {
       };
     }, []);
   
+    useEffect(() => {
+      handleSearch()
+    }, [aranzhmanet])
   
+    
+  const handleSearch = () => {
+    
+    var filteredAranzhmanet = aranzhmanet;
+
+
+    if(searchPrompts.from.id) {filteredAranzhmanet = filteredAranzhmanet.filter( (aranzhmani) => {
+      return (
+        aranzhmani.airportId == searchPrompts.from.id
+      )
+    })}
+
+
+    if(searchPrompts.to.id) {filteredAranzhmanet = filteredAranzhmanet.filter( (aranzhmani) => {
+      return (
+        aranzhmani.shtetiId == searchPrompts.to.id
+      )
+    })}
+    
+
+
+    if(searchPrompts.DepartureDate) {filteredAranzhmanet = filteredAranzhmanet.filter( (aranzhmani) => {
+      return (
+        aranzhmani.dataNisjes == searchPrompts.DepartureDate 
+      )
+    })}
+
+    
+    if(searchPrompts.nrNeteve.length > 0) {
+      filteredAranzhmanet = filteredAranzhmanet.filter( (aranzhmani) => {
+        const dataKthimit = new Date(aranzhmani.dataKthimit).getTime();
+        const dataNisjes = new Date(aranzhmani.dataNisjes).getTime();
+        const startDate = dataNisjes + searchPrompts.nrNeteve[0] * 24 * 60 * 60 * 1000; // Convert days to milliseconds
+        const endDate = dataNisjes + searchPrompts.nrNeteve[1] * 24 * 60 * 60 * 1000; // Convert days to milliseconds
+    
+        return (
+          dataKthimit >= startDate && 
+          dataKthimit <= endDate)
+    })
+    
+  }
+  
+
+    setDisplayedAranzhmanet(filteredAranzhmanet)
+  }
+
+
     const filteredCountries = shtetet.filter((country) => {
       const matchesCountry = country.emri.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCity = country.qytetet.some((city) =>
@@ -193,7 +206,6 @@ const Search = () => {
       const selectedValue = e.target.value;
       const parsedValue = JSON.parse(selectedValue);
       setSearchPrompts({...searchPrompts, nrNeteve: [parsedValue.start, parsedValue.end]});
-      console.log([parsedValue.start, parsedValue.end]);
       
     };
     
@@ -230,9 +242,9 @@ const Search = () => {
 
 
     useEffect(() => {
-      const queryParams = new URLSearchParams(location.search);
-      const searchTerm = queryParams.get('s') || '';
-      filterBySearch(searchTerm)
+      // const queryParams = new URLSearchParams(location.search);
+      // const searchTerm = queryParams.get('s') || '';
+      // filterBySearch(searchTerm)
 
 
   }, [aranzhmanet]);
@@ -264,53 +276,6 @@ const Search = () => {
     setDisplayedAranzhmanet(sortedAranzhmanet);
   };
 
-  const handleSearch = (e) => {
-    console.log(searchPrompts);
-    
-    var filteredAranzhmanet = aranzhmanet;
-
-
-    if(searchPrompts.from.id) {filteredAranzhmanet = filteredAranzhmanet.filter( (aranzhmani) => {
-      return (
-        aranzhmani.airportId == searchPrompts.from.id
-      )
-    })}
-
-
-    if(searchPrompts.to.id) {filteredAranzhmanet = filteredAranzhmanet.filter( (aranzhmani) => {
-      return (
-        aranzhmani.shtetiId == searchPrompts.to.id
-      )
-    })}
-    
-
-
-   filteredAranzhmanet = filteredAranzhmanet.filter( (aranzhmani) => {
-      return (
-        aranzhmani.dataNisjes == searchPrompts.DepartureDate 
-      )
-    })
-
-    
-    if(searchPrompts.nrNeteve) {
-      console.log('searchPrompts.nrNeteve:', searchPrompts.nrNeteve);
-      filteredAranzhmanet = filteredAranzhmanet.filter( (aranzhmani) => {
-        const dataKthimit = new Date(aranzhmani.dataKthimit).getTime();
-        const dataNisjes = new Date(aranzhmani.dataNisjes).getTime();
-        const startDate = dataNisjes + searchPrompts.nrNeteve[0] * 24 * 60 * 60 * 1000; // Convert days to milliseconds
-        const endDate = dataNisjes + searchPrompts.nrNeteve[1] * 24 * 60 * 60 * 1000; // Convert days to milliseconds
-    
-        return (
-          dataKthimit >= startDate && 
-          dataKthimit <= endDate)
-    })
-    
-    console.log('aranzhmani:', filteredAranzhmanet);
-  }
-  
-
-    setDisplayedAranzhmanet(filteredAranzhmanet)
-  }
 
   const filterBySearch = (searchTerm) => {
     if (searchTerm.length < 1) {
@@ -359,9 +324,9 @@ const Search = () => {
     setDisplayedAranzhmanet(aranzhmanet)
   }
   return (
-    <div className="max-w-7xl m-auto ">
+    <div className="max-w-[85rem] m-auto ">
       <div className="w-full  flex flex-col items-center my-9">
-          <h1 className="text-3xl py-5 font-mono">EUROPE CITY BREAK</h1>
+          <h1 className="text-3xl py-5 font-mono">Find Your Flight</h1>
       </div>
 
       <div className="flex gap-10">
@@ -478,11 +443,12 @@ const Search = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Departure Date</label>
+              
               <input
                 type="date"
                 min={today} 
-                defaultValue={today}
                 onChange={handleDepartureDate}
+                defaultValue={searchPrompts.DepartureDate || today}
                 className="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>

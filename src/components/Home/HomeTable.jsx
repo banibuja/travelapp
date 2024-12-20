@@ -17,6 +17,7 @@ function HomeTable() {
     const elementsRef = useRef([]); // Array to store refs
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDepartureDropdownOpen, setIsDepartureDropdownOpen] = useState(false);
+  const [isNrNeteveDropdownOpen, setIsNrNeteveDropdownOpen] = useState(false);
 
   const today = new Date().toISOString().split('T')[0];
   const [searchPrompts, setSearchPrompts] = useState({
@@ -40,7 +41,7 @@ function HomeTable() {
     ,
     DepartureDate: null,
     nrPersonave: null,
-    nrNeteve: [0,5]
+    nrNeteve:null
   });
 
 
@@ -51,6 +52,7 @@ function HomeTable() {
       if (!elementsRef.current.some((ref) => ref && ref.contains(event.target))) {
         setIsDepartureDropdownOpen(false); 
         setIsDropdownOpen(false); 
+        setIsNrNeteveDropdownOpen(false); 
       }
     };
 
@@ -143,7 +145,8 @@ function HomeTable() {
   
   const DataENisjes = () => { 
     const handleDepartureDate = (e) => {
-      setSearchPrompts({...searchPrompts, DepartureDate: e.toISOString().split('T')[0]});
+      
+      setSearchPrompts({...searchPrompts, DepartureDate: e.toLocaleDateString('en-CA')});
     };
     return (
       <div>
@@ -159,6 +162,7 @@ function HomeTable() {
     );
   };
   const handleUdhetaret = (e) => {    
+    
     setSearchPrompts({...searchPrompts, nrPersonave: e.target.value});
   };
   const Udhetaret = () => { 
@@ -177,42 +181,76 @@ function HomeTable() {
       </div>
     );
   };
-  const handleNrNeteve = (e) => {
-    if (!e.target.value) {
-      // Reset the value if the input is empty (e.g., placeholder selected)
-      setSearchPrompts({ ...searchPrompts, nrNeteve: null });
-      return;
-    }
-  
-    const selectedValue = e.target.value;
-    const parsedValue = JSON.parse(selectedValue);
-    setSearchPrompts({ ...searchPrompts, nrNeteve: [parsedValue.start, parsedValue.end] });
+  const handleNrNeteve = (input) => {
+    setSearchPrompts((prevState) => ({
+      ...prevState,
+      nrNeteve: input,
+    }));
+    setIsNrNeteveDropdownOpen(false);
   };
   
-  const NrNeteve = () => { 
-    // Check if nrNeteve is set and convert it to JSON string for comparison
-    const value = searchPrompts.nrNeteve 
-      ? JSON.stringify({ start: searchPrompts.nrNeteve[0], end: searchPrompts.nrNeteve[1] })
-      : '';
+  const NrNeteve = () => {
+    // Ensure value is correctly formatted
+ 
   
     return (
-      <div>
-        <select
-          className="w-full border outline-none border-gray-300 rounded-md p-3"
-          onChange={handleNrNeteve}
-          value={value} 
-        >
-          <option value=''>Numri i Neteve</option>
-          <option value='{"start": 0, "end": 5}'>1-5 Netë</option>
-          <option value='{"start": 6, "end": 9}'>6-9 Netë</option>
-          <option value='{"start": 10, "end": 12}'>10-12 Netë</option>
-          <option value='{"start": 12, "end": 99}'>12+ Netë</option>
-        </select>
+      <div className="relative font-sans border-gray-300 rounded-lg w-40 shadow-md">
+        <button type='button' onClick={() => {setIsDepartureDropdownOpen(false);setIsDropdownOpen(false);setIsNrNeteveDropdownOpen(!isNrNeteveDropdownOpen)}} className="outline-none flex items-center w-40 p-3 bg-gray-100 border rounded-md hover:bg-gray-200">
+        {searchPrompts.nrNeteve ? `${searchPrompts.nrNeteve[0]}-${searchPrompts.nrNeteve[1]} Netë` : 'Numri i Neteve'}
+        </button>
+
+        {isNrNeteveDropdownOpen && (
+          <div className="mt-2 border rounded-md shadow-lg absolute bg-white " ref={(el) => elementsRef.current.push(el)}>
+            <ul className="max-h-60 overflow-y-auto">
+                <li key="-1" className="p-2 text-sm text-[#374151] cursor-pointer transition-all  ">
+                  <div
+                    onClick={() => handleNrNeteve(null)}
+                    className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                  >
+                    Te gjitha
+                  </div>
+                </li>
+                <li key="0" className="p-2 text-sm text-[#374151] cursor-pointer transition-all  ">
+                  <div
+                    onClick={() => handleNrNeteve([0, 5])}
+                    className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                  >
+                    1-5 Netë
+                  </div>
+                </li>
+                <li key="1" className="p-2 text-sm text-[#374151] cursor-pointer transition-all  ">
+                  <div
+                    onClick={() => handleNrNeteve([6, 9])}
+                    className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                  >
+                    6-9 Netë
+                  </div>
+                </li>
+                <li key="2" className="p-2 text-sm text-[#374151] cursor-pointer transition-all  ">
+                  <div
+                    onClick={() => handleNrNeteve([10, 12])}
+                    className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                  >
+                    10-12 Netë
+                  </div>
+                </li>
+                <li key="3" className="p-2 text-sm text-[#374151] cursor-pointer transition-all  ">
+                  <div
+                    onClick={() => handleNrNeteve([13,99])}
+                    className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                  >
+                    12+ Netë
+                  </div>
+                </li>
+              </ul>
+            </div>
+        )}
       </div>
+
+       
     );
   };
   
-
 
   const Destinimi = () => {
     return(
@@ -279,53 +317,59 @@ function HomeTable() {
 
   const NisjaNga = () => {
     return(
-<div className="relative font-sans border-gray-300 rounded-lg w-40 shadow-md">
-                  <button type='button' onClick={() => {setIsDepartureDropdownOpen(!isDepartureDropdownOpen);setIsDropdownOpen(false)}} className="outline-none flex items-center w-40 p-3 bg-gray-100 border rounded-md hover:bg-gray-200">
-                    <span className="mr-2">✈️</span>
-                    {searchPrompts.from.emri || 'Nisja Nga'}
-                  </button>
+      <div className="relative font-sans border-gray-300 rounded-lg w-40 shadow-md">
+        <button type='button' onClick={() => {setIsDepartureDropdownOpen(!isDepartureDropdownOpen);setIsDropdownOpen(false)}} className="outline-none flex items-center w-40 p-3 bg-gray-100 border rounded-md hover:bg-gray-200">
+          <span className="mr-2">✈️</span>
+          {searchPrompts.from.emri || 'Nisja Nga'}
+        </button>
 
-                  {isDepartureDropdownOpen && (
-                    <div className="mt-2 border rounded-md shadow-lg absolute bg-white " ref={(el) => elementsRef.current.push(el)}>
-                      <ul className="max-h-60 overflow-y-auto">
-                          <li key='-1' className="p-2 border-b">
-                            <div
-                              onClick={() => handleAirportClick('')}
-                              className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
-                            >
-                              All Airports
-                            </div>
-                          </li>
-                          {airports.map((airport) => (
-                          <li key={airport.emri} className="p-2 text-sm text-[#374151] cursor-pointer transition-all  ">
-                            <div
-                              onClick={() => handleAirportClick(airport)}
-                              className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
-                            >
-                              {airport.emri}  ({airport.akronimi})
-                            </div>
-                          </li>
-                          ))}
-                        </ul>
-                      </div>
-                  )}
-                </div>
+        {isDepartureDropdownOpen && (
+          <div className="mt-2 border rounded-md shadow-lg absolute bg-white " ref={(el) => elementsRef.current.push(el)}>
+            <ul className="max-h-60 overflow-y-auto">
+                <li key='-1' className="p-2 border-b">
+                  <div
+                    onClick={() => handleAirportClick('')}
+                    className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                  >
+                    All Airports
+                  </div>
+                </li>
+                {airports.map((airport) => (
+                <li key={airport.emri} className="p-2 text-sm text-[#374151] cursor-pointer transition-all  ">
+                  <div
+                    onClick={() => handleAirportClick(airport)}
+                    className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                  >
+                    {airport.emri}  ({airport.akronimi})
+                  </div>
+                </li>
+                ))}
+              </ul>
+            </div>
+        )}
+      </div>
     )
   } 
   const handleSearch = () => {
-    const queryString = new URLSearchParams({
-      fromId: searchPrompts.from.id,
-      fromEmri: searchPrompts.from.emri,
-      toId: searchPrompts.to.id,
-      toEmri: searchPrompts.to.emri,
-      toQytetiId: searchPrompts.to.qyteti.id,
-      toQytetiEmri: searchPrompts.to.qyteti.emri,
+    const queryParams = Object.entries({
+      fromId: searchPrompts.from?.id,
+      fromEmri: searchPrompts.from?.emri,
+      toId: searchPrompts.to?.id,
+      toEmri: searchPrompts.to?.emri,
+      toQytetiId: searchPrompts.to?.qyteti?.id,
+      toQytetiEmri: searchPrompts.to?.qyteti?.emri,
       DepartureDate: searchPrompts.DepartureDate,
       nrPersonave: searchPrompts.nrPersonave,
-      nrNeteve: searchPrompts.nrNeteve.join(','), // Convert array to a comma-separated string
-    }).toString();
-    console.log(queryString);
-    navigate(`/search?${queryString}`)
+      nrNeteve: searchPrompts.nrNeteve,
+    }).reduce((acc, [key, value]) => {
+      if (value !== null && value !== undefined && value !== '') {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+    
+    const queryString = new URLSearchParams(queryParams).toString();
+    navigate(`/search?${queryString}`);
   };
   
   return (
