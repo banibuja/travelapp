@@ -12,6 +12,9 @@ const {
   getAllDubaiPrices, addDubaiPrice, deleteDubaiPrice, updateDubaiPrice 
 } = require('../controllers/dubaiPricesController');
 const { 
+  getAllMaqedoniPrices, addMaqedoniPrices, deleteMaqedoniPrices, updateMaqedoniPrices 
+} = require('../controllers/maqedoniPricesController');
+const { 
   getAllImages, addImage, deleteImage, updateImage 
 } = require('../controllers/sliderHomeController');
 const { 
@@ -123,6 +126,13 @@ router.get('/dubai-price', getAllDubaiPrices);
 router.delete('/dubai-prices-delete/:id', isAuthenticated, deleteDubaiPrice);
 router.put('/dubai-prices-update/:id', isAuthenticated, updateDubaiPrice);
 router.post('/add-dubai-price', isAuthenticated, addDubaiPrice);
+
+//Maqedoni prices routes
+router.post('/add-maqedoni-price', isAuthenticated, addMaqedoniPrices);
+router.get('/maqedoni-price', getAllMaqedoniPrices);
+router.delete('/maqedoni-prices-delete/:id', isAuthenticated, deleteMaqedoniPrices);
+router.put('/maqedoni-prices-update/:id', isAuthenticated, updateMaqedoniPrices);
+router.post('/add-maqedoni-price', isAuthenticated, addMaqedoniPrices);
 
 router.post('/add-Aranzhmani', addAranzhmanet);
 router.delete('/Aranzhmani-delete/:id', isAuthenticated, deleteAranzhmanet);

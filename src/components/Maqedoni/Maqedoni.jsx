@@ -40,6 +40,44 @@ const Maqedoni = () => {
               <img className='aspect-square object-cover rounded-xl' src="https://miasfavorite.com/wp-content/uploads/2024/10/restaurant_outdoor_MFH.jpg" alt="" />
             </div>
           </div>
+          <div className="mt-6 mb-14">
+            <table className="min-w-full">
+              <thead>
+                <tr className="bg-white">
+                  <th className="py-2 text-left">Lloji dhomes</th>
+                  <th className="py-2 text-left">Sherbimi</th>
+                  <th className="py-2 text-left">Gjatë sezones</th>
+                  <th className="py-2 text-left">Jasht sezones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-gray-100">
+                  <td className="py-2 px-4">Standard</td>
+                  <td className="py-2 px-4">B&B</td>
+                  <td className="py-2 px-4">€100</td>
+                  <td className="py-2 px-4">€80</td>
+                </tr>
+                <tr className="bg-white">
+                  <td className="py-2 px-4">Deluxe</td>
+                  <td className="py-2 px-4">Half-Board</td>
+                  <td className="py-2 px-4">€150</td>
+                  <td className="py-2 px-4">€120</td>
+                </tr>
+                <tr className="bg-gray-100">
+                  <td className="py-2 px-4">Suite</td>
+                  <td className="py-2 px-4">Full-Board</td>
+                  <td className="py-2 px-4">€200</td>
+                  <td className="py-2 px-4">€170</td>
+                </tr>
+                <tr className="bg-white">
+                  <td className="py-2 px-4">Family Room</td>
+                  <td className="py-2 px-4">All Inclusive</td>
+                  <td className="py-2 px-4">€250</td>
+                  <td className="py-2 px-4">€220</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <Footer />
