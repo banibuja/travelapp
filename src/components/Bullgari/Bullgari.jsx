@@ -4,6 +4,7 @@ import axios from 'axios';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import axiosInstance from '../../axiosInstance';
 
 
 function Bullgari() {
@@ -14,7 +15,7 @@ function Bullgari() {
     useEffect(() => {
       const fetchImages = async () => {
         try {
-          const response = await axios.get('http://localhost:5000/api/bullgari/images', {
+          const response = await axiosInstance.get('/bullgari/images', {
             withCredentials: true,
           });
           setImages(response.data);
@@ -47,23 +48,24 @@ function Bullgari() {
         <span>Bankso | Bullgari</span>
 
 
-        <div className="p w-[42rem] font-medium text-[#555555] text-[20px] mt-[3rem]">Përjetoni aventurën e skijimit në Bullgari, një nga destinacionet më të njohura në Evropë për ski! Me peisazhet e saj mahnitëse dhe skistat e shkëlqyer, Bullgaria ofron mundësi të pafundme për të gjithë ata që duan të kalojnë një fundjavë të paharrueshme në mal.
-
+        <div className="p w-full sm:w-[42rem] font-medium text-[#555555] text-[16px] sm:text-[20px] mt-[3rem]">
+  Përjetoni aventurën e skijimit në Bullgari, një nga destinacionet më të njohura në Evropë për ski! Me peisazhet e saj mahnitëse dhe skistat e shkëlqyer, Bullgaria ofron mundësi të pafundme për të gjithë ata që duan të kalojnë një fundjavë të paharrueshme në mal.
 </div>
 
-<div className="group rounded-lg overflow-hidden w-[70rem] h-[450px] mt-4">
-        <Slider {...settings}>
-          {images.map((image) => (
-            <div key={image.id}>
-              <img
-                className="w-full h-[450px] object-cover"
-                src={`data:image/png;base64,${image.imageBase64}`}
-                alt={image.title}
-              />
-            </div>
-          ))}
-        </Slider>
+<div className="group rounded-lg overflow-hidden w-full sm:w-[70rem] h-[300px] sm:h-[450px] mt-4">
+  <Slider {...settings}>
+    {images.map((image) => (
+      <div key={image.id}>
+        <img
+          className="w-full h-full object-cover"
+          src={`data:image/png;base64,${image.imageBase64}`}
+          alt={image.title}
+        />
       </div>
+    ))}
+  </Slider>
+</div>
+
 
 
       </div>

@@ -3,6 +3,7 @@ import axios from 'axios';
 // import { FaPhoneAlt, FaWhatsapp, FaViber, FaHeadset, FaCheckCircle } from 'react-icons/fa';
 import Footer from '../layout/Footer';
 import Table from '../Table';
+import axiosInstance from '../../axiosInstance';
 
 function Turqi() {
   const [roomPrices, setRoomPrices] = useState([]);
@@ -12,9 +13,7 @@ function Turqi() {
   useEffect(() => {
     const fetchRoomPrices = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/room-price', {
-          withCredentials: true,
-        });
+        const response = await axiosInstance.get('/room-price');
         setRoomPrices(response.data);
       } catch (error) {
         console.error('Error fetching room prices:', error);
@@ -37,39 +36,40 @@ function Turqi() {
         </div>
 
         <div className="p-10">
-          <div className="flex justify-center items-center space-x-4 mx-auto truncate whitespace-break-spaces text-navy text-xl font-bold tracking-tight lg:text-2xl">
-            <span>Turqi Home | Paket Arazhman</span>
-          </div>
+  <div className="flex justify-center items-center space-x-4 mx-auto truncate whitespace-break-spaces text-navy text-xl font-bold tracking-tight lg:text-2xl">
+    <span>Turqi Home | Paket Arazhman</span>
+  </div>
 
-          <div className="flex justify-center items-center space-x-4 mt-8">
-            <div className="card1 w-1/4 text-center relative">
-              <img
-                className="rounded-lg object-cover w-full h-auto transition-transform duration-300 ease-in-out transform hover:scale-105"
-                src="https://images.ctfassets.net/pzootm7d2s0g/1kARR2mbPE3LiFAeV2OYmi/266c1d6d9df5156aec01a75a10983be6/antlya_teaser.jpg"
-                alt="City Break"
-              />
-              <p className="city font-semibold text-white absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 px-3 py-1 rounded-lg">Antalya</p>
-            </div>
+  <div className="flex justify-center items-center space-x-4 mt-8 flex-wrap">
+    <div className="card1 w-full sm:w-1/2 lg:w-1/4 text-center relative mb-6">
+      <img
+        className="rounded-lg object-cover w-full h-auto transition-transform duration-300 ease-in-out transform hover:scale-105"
+        src="https://images.ctfassets.net/pzootm7d2s0g/1kARR2mbPE3LiFAeV2OYmi/266c1d6d9df5156aec01a75a10983be6/antlya_teaser.jpg"
+        alt="City Break"
+      />
+      <p className="city font-semibold text-white absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 px-3 py-1 rounded-lg">Antalya</p>
+    </div>
 
-            <div className="card1 w-1/4 text-center relative">
-              <img
-                className="rounded-lg object-cover w-full h-auto transition-transform duration-300 ease-in-out transform hover:scale-105"
-                src="https://images.ctfassets.net/pzootm7d2s0g/1IKyu5EnQgbdTTvJo7FEh0/0b2a5680302f64d3ce895807fb0ef9d8/bodrum_teasser.jpg"
-                alt="Dubai"
-              />
-              <p className="city font-semibold text-white absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 px-3 py-1 rounded-lg">Bodrum</p>
-            </div>
+    <div className="card1 w-full sm:w-1/2 lg:w-1/4 text-center relative mb-6">
+      <img
+        className="rounded-lg object-cover w-full h-auto transition-transform duration-300 ease-in-out transform hover:scale-105"
+        src="https://images.ctfassets.net/pzootm7d2s0g/1IKyu5EnQgbdTTvJo7FEh0/0b2a5680302f64d3ce895807fb0ef9d8/bodrum_teasser.jpg"
+        alt="Dubai"
+      />
+      <p className="city font-semibold text-white absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 px-3 py-1 rounded-lg">Bodrum</p>
+    </div>
 
-            <div className="card1 w-1/4 text-center relative">
-              <img
-                className="rounded-lg object-cover w-full h-auto transition-transform duration-300 ease-in-out transform hover:scale-105"
-                src="https://images.ctfassets.net/pzootm7d2s0g/11X8bWs3Zrnwq7EqOLhhHU/242d74a5f3d5485f8bbb6ff7f701c34d/IST_TEA.jpg"
-                alt="Stamboll"
-              />
-              <p className="city font-semibold text-white absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 px-3 py-1 rounded-lg">Stamboll</p>
-            </div>
-          </div>
-        </div>
+    <div className="card1 w-full sm:w-1/2 lg:w-1/4 text-center relative mb-6">
+      <img
+        className="rounded-lg object-cover w-full h-auto transition-transform duration-300 ease-in-out transform hover:scale-105"
+        src="https://images.ctfassets.net/pzootm7d2s0g/11X8bWs3Zrnwq7EqOLhhHU/242d74a5f3d5485f8bbb6ff7f701c34d/IST_TEA.jpg"
+        alt="Stamboll"
+      />
+      <p className="city font-semibold text-white absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 px-3 py-1 rounded-lg">Stamboll</p>
+    </div>
+  </div>
+</div>
+
       </div>
 
       {/* Room Price Table */}

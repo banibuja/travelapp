@@ -7,7 +7,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from 'axios'; 
-
+import axiosInstance from '../../axiosInstance';
 
 function Home() {
 
@@ -23,7 +23,7 @@ function Home() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/images', {
+        const response = await axiosInstance.get('/images', {
           withCredentials: true,
         });
         setImages(response.data);
@@ -39,7 +39,7 @@ function Home() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/cards', {
+        const response = await axiosInstance.get('/cards', {
           withCredentials: true,
         });
         setHotels(response.data);
@@ -55,7 +55,7 @@ function Home() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/hurghada/cards', {
+        const response = await axiosInstance.get('/hurghada/cards', {
           withCredentials: true,
         });
         setHotelsHughada(response.data);
@@ -71,7 +71,7 @@ function Home() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/kapodakia/cards', {
+        const response = await axiosInstance.get('/kapodakia/cards', {
           withCredentials: true,
         });
         setKapodakia(response.data);
@@ -181,147 +181,212 @@ function Home() {
     <div>
       <HomeTable />
 
-      <div className="flex justify-center items-center space-x-4 p-5 mt-[2rem]">
-        <div className="check flex items-center bg-gray-100 rounded-lg shadow-md p-2">
-          <svg className="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-          <span>Charter</span>
+      <div className="flex flex-wrap justify-center items-center gap-4 p-5 mt-8">
+  <div className="check flex items-center bg-gray-100 rounded-lg shadow-md p-3 w-full sm:w-auto">
+    <svg
+      className="w-6 h-6 text-green-500 mr-2"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M5 13l4 4L19 7"
+      ></path>
+    </svg>
+    <span>Charter</span>
+  </div>
+  <div className="check flex items-center bg-gray-100 rounded-lg shadow-md p-3 w-full sm:w-auto">
+    <svg
+      className="w-6 h-6 text-green-500 mr-2"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M5 13l4 4L19 7"
+      ></path>
+    </svg>
+    <span>Udhëtime Individuale</span>
+  </div>
+  <div className="check flex items-center bg-gray-100 rounded-lg shadow-md p-3 w-full sm:w-auto">
+    <svg
+      className="w-6 h-6 text-green-500 mr-2"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M5 13l4 4L19 7"
+      ></path>
+    </svg>
+    <span>Bileta Aeroplani</span>
+  </div>
+  <div className="check flex items-center bg-gray-100 rounded-lg shadow-md p-3 w-full sm:w-auto">
+    <svg
+      className="w-6 h-6 text-green-500 mr-2"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M5 13l4 4L19 7"
+      ></path>
+    </svg>
+    <span>Hotele në të gjithë Botën</span>
+  </div>
+  <div className="check flex items-center bg-gray-100 rounded-lg shadow-md p-3 w-full sm:w-auto">
+    <svg
+      className="w-6 h-6 text-green-500 mr-2"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M5 13l4 4L19 7"
+      ></path>
+    </svg>
+    <span>Kroçiere</span>
+  </div>
+</div>
+
+
+<div className="flex flex-col justify-center items-center p-6">
+  <div className="flex justify-center items-center space-x-4 p-5 mx-auto truncate whitespace-break-spaces text-navy text-lg font-bold tracking-tight sm:text-xl lg:text-2xl">
+    <span>Oferta Speciale</span>
+  </div>
+  <div className="group rounded-lg overflow-hidden w-full max-w-[70rem] h-[450px] sm:h-[350px] md:h-[450px]">
+    <Slider {...settings}>
+      {images.map((image) => (
+        <div key={image.id}>
+          <img
+            className="w-full h-[450px] sm:h-[350px] md:h-[450px] object-cover"
+            src={`data:image/png;base64,${image.imageBase64}`}
+            alt={image.title}
+          />
         </div>
-        <div className="check flex items-center bg-gray-100 rounded-lg shadow-md p-2">
-          <svg className="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-          <span>Udhëtime Individuale</span>
+      ))}
+    </Slider>
+  </div>
+</div>
+
+
+    
+<div className="p-4 sm:p-6 md:p-10">
+      {/* Recommendations Section */}
+      <div>
+        <div className="flex justify-center items-center space-x-4 mx-auto truncate whitespace-break-spaces text-navy text-lg font-bold tracking-tight sm:text-xl lg:text-2xl">
+          <span>Rekomandimet</span>
         </div>
-        <div className="check flex items-center bg-gray-100 rounded-lg shadow-md p-2">
-          <svg className="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-          <span>Bileta Aeroplani</span>
-        </div>
-        <div className="check flex items-center bg-gray-100 rounded-lg shadow-md p-2">
-          <svg className="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-          <span>Hotele në të gjithë Botën</span>
-        </div>
-        <div className="check flex items-center bg-gray-100 rounded-lg shadow-md p-2">
-          <svg className="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-          <span>Kroçiere</span>
+
+        <div className="flex flex-wrap justify-center items-center gap-4 mt-6 sm:mt-8">
+          {/* City Break */}
+          <div className="card1 w-full sm:w-1/2 lg:w-1/4 text-center relative rounded-lg overflow-hidden">
+            <img
+              className="rounded-lg object-cover w-full h-[200px] sm:h-[250px] md:h-[300px] transition-transform duration-300 ease-in-out transform hover:scale-105"
+              src="https://images.ctfassets.net/pzootm7d2s0g/6HIzcqGhHdAD68aGixaEDl/74d6b3825b8ea872c694b31780c1c919/city_break.jpg"
+              alt="City Break"
+            />
+            <p className="city font-semibold text-white absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 px-3 py-1 rounded-lg">
+              City Break
+            </p>
+          </div>
+
+          {/* Dubai */}
+          <div className="card1 w-full sm:w-1/2 lg:w-1/4 text-center relative rounded-lg overflow-hidden">
+            <img
+              className="rounded-lg object-cover w-full h-[200px] sm:h-[250px] md:h-[300px] transition-transform duration-300 ease-in-out transform hover:scale-105"
+              src="https://images.ctfassets.net/pzootm7d2s0g/4lcQvODRZ3CVyLSVreRCFt/98754a0e4909d5fde9c3af9a23309202/dubai_main1w.jpg"
+              alt="Dubai"
+            />
+            <p className="city font-semibold text-white absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 px-3 py-1 rounded-lg">
+              Dubai
+            </p>
+          </div>
+
+          {/* Stamboll */}
+          <div className="card1 w-full sm:w-1/2 lg:w-1/4 text-center relative rounded-lg overflow-hidden">
+            <img
+              className="rounded-lg object-cover w-full h-[200px] sm:h-[250px] md:h-[300px] transition-transform duration-300 ease-in-out transform hover:scale-105"
+              src="https://images.ctfassets.net/pzootm7d2s0g/11X8bWs3Zrnwq7EqOLhhHU/242d74a5f3d5485f8bbb6ff7f701c34d/IST_TEA.jpg"
+              alt="Stamboll"
+            />
+            <p className="city font-semibold text-white absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 px-3 py-1 rounded-lg">
+              Stamboll
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-col justify-center items-center p-10">
-      <div className="flex justify-center items-center space-x-4 p-10 mx-auto truncate whitespace-break-spaces text-navy text-xl font-bold tracking-tight lg:text-2xl">
-        <span>Oferta Speciale</span>
-      </div>
-      <div className="group rounded-lg overflow-hidden w-[70rem] h-[450px]">
-        <Slider {...settings}>
-          {images.map((image) => (
-            <div key={image.id}>
-              <img
-                className="w-full h-[450px] object-cover"
-                src={`data:image/png;base64,${image.imageBase64}`}
-                alt={image.title}
-              />
+      {/* Contacts Section */}
+      <div className="mt-10">
+        <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6">
+          {/* Call Center */}
+          <a
+            href="tel:+38345963828"
+            className="flex flex-col sm:flex-row items-center justify-between rounded-[20px] bg-white w-full sm:w-[20rem] h-[6rem] border border-blue-900 group hover:bg-[#132246] transition-all duration-300"
+          >
+            <span className="font-semibold text-blue-900 text-[16px] sm:text-[20px] sm:ml-8 group-hover:text-white transition-colors duration-300">
+              Call Center
+            </span>
+            <div className="bg-[#132246] w-full sm:w-[8rem] h-[6rem] rounded-b-[20px] sm:rounded-l-[20px] sm:rounded-r-[20px] flex items-center justify-center">
+              <FaPhoneAlt className="text-white w-[2rem] sm:w-[3rem] h-6 sm:h-8 group-hover:scale-150 transition-transform duration-300" />
             </div>
-          ))}
-        </Slider>
+          </a>
+
+          {/* WhatsApp */}
+          <a
+            href="https://wa.me/38345963828"
+            className="flex flex-col sm:flex-row items-center justify-between rounded-[20px] bg-white w-full sm:w-[20rem] h-[6rem] border border-green-600 group hover:bg-[#25d366] transition-all duration-300"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="font-semibold text-green-600 text-[16px] sm:text-[20px] sm:ml-8 group-hover:text-white transition-colors duration-300">
+              WhatsApp
+            </span>
+            <div className="bg-[#25d366] w-full sm:w-[8rem] h-[6rem] rounded-b-[20px] sm:rounded-l-[20px] sm:rounded-r-[20px] flex items-center justify-center">
+              <FaWhatsapp className="text-white w-[2rem] sm:w-[3rem] h-6 sm:h-8 group-hover:scale-150 transition-transform duration-300" />
+            </div>
+          </a>
+
+          {/* Viber */}
+          <a
+            href="viber://chat?number=38345963828"
+            className="flex flex-col sm:flex-row items-center justify-between rounded-[20px] bg-white w-full sm:w-[20rem] h-[6rem] border border-purple-700 group hover:bg-[#7360f2] transition-all duration-300"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="font-semibold text-purple-900 text-[16px] sm:text-[20px] sm:ml-8 group-hover:text-white transition-colors duration-300">
+              Viber
+            </span>
+            <div className="bg-[#7360f2] w-full sm:w-[8rem] h-[6rem] rounded-b-[20px] sm:rounded-l-[20px] sm:rounded-r-[20px] flex items-center justify-center">
+              <FaViber className="text-white w-[2rem] sm:w-[3rem] h-6 sm:h-8 group-hover:scale-150 transition-transform duration-300" />
+            </div>
+          </a>
+        </div>
       </div>
     </div>
-        <div className="p-10">
-          <div className="flex justify-center items-center space-x-4 mx-auto truncate whitespace-break-spaces text-navy text-xl font-bold tracking-tight lg:text-2xl">
-            <span>Rekomandimet</span>
-          </div>
-        
-          <div className="flex justify-center items-center space-x-4 mt-8">
-            <div className="card1 w-1/4 text-center relative rounded-lg overflow-hidden"> 
-              <img className="rounded-lg object-cover w-full h-auto transition-transform duration-300 ease-in-out transform hover:scale-105" 
-                src="https://images.ctfassets.net/pzootm7d2s0g/6HIzcqGhHdAD68aGixaEDl/74d6b3825b8ea872c694b31780c1c919/city_break.jpg" alt="City Break" /> 
-              <p className="city font-semibold text-white absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 px-3 py-1 rounded-lg">
-                City Break 
-              </p> 
-            </div>
-
-            {/* Dubai */}
-            <div className="card1 w-1/4 text-center relative rounded-lg overflow-hidden">
-              <img
-                className="rounded-lg object-cover w-full h-auto transition-transform duration-300 ease-in-out transform hover:scale-105"
-                src="https://images.ctfassets.net/pzootm7d2s0g/4lcQvODRZ3CVyLSVreRCFt/98754a0e4909d5fde9c3af9a23309202/dubai_main1w.jpg"
-                alt="Dubai" />
-              <p className="city font-semibold text-white absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 px-3 py-1 rounded-lg">
-                Dubai
-              </p>
-            </div>
-
-            {/* Stamboll */}
-            <div className="card1 w-1/4 text-center relative rounded-lg overflow-hidden">
-              <img
-                className="rounded-lg object-cover w-full h-auto transition-transform duration-300 ease-in-out transform hover:scale-105"
-                src="https://images.ctfassets.net/pzootm7d2s0g/11X8bWs3Zrnwq7EqOLhhHU/242d74a5f3d5485f8bbb6ff7f701c34d/IST_TEA.jpg"
-                alt="Stamboll"
-              />
-              <p className="city font-semibold text-white absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 px-3 py-1 rounded-lg">
-                Stamboll
-              </p>
-            </div>
-          </div>
-          <div className="contacts">
-            <div className="p-10">
-              <div className="flex justify-center items-center space-x-8 p-10">
-      
-                {/* Call Center */}
-                <a 
-                  href="tel:+38345963828" 
-                  className="flex items-center justify-between rounded-[20px] bg-white w-[20rem] h-[6rem] border border-blue-900 group hover:bg-[#132246] transition-all duration-300"
-                >
-                  <span className="font-semibold text-blue-900 text-[20px] ml-8 group-hover:text-white transition-colors duration-300">
-                    Call Center
-                  </span>
-                  <div className="bg-[#132246] w-[8rem] h-[6rem] rounded-l-[20px] rounded-r-[20px] flex items-center justify-center">
-                    <FaPhoneAlt className="text-white w-[3rem] h-8 group-hover:scale-150 transition-transform duration-300" />
-                  </div>
-                </a>
 
 
-                {/* WhatsApp */}
-                <a 
-                href="https://wa.me/38345963828" 
-                className="flex items-center justify-between rounded-[20px] bg-white w-[20rem] h-[6rem] border border-green-600 group hover:bg-[#25d366] transition-all duration-300" 
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                <span className="font-semibold text-green-600 text-[20px] ml-8 group-hover:text-white transition-colors duration-300">
-                  WhatsApp
-                </span>
-                <div className="bg-[#25d366] w-[8rem] h-[6rem] rounded-l-[20px] rounded-r-[20px] flex items-center justify-center">
-                  <FaWhatsapp className="text-white w-[3rem] h-10 group-hover:scale-150 transition-transform duration-300" />
-                </div>
-              </a>
-
-
-                {/* Viber */}
-                <a 
-                  href="viber://chat?number=38345963828" 
-                  className="flex items-center justify-between rounded-[20px] bg-white w-[20rem] h-[6rem] border border-purple-700 group hover:bg-[#7360f2] transition-all duration-300" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                >
-                  <span className="font-semibold text-purple-900 text-[20px] ml-8 group-hover:text-white transition-colors duration-300">
-                    Viber
-                  </span>
-                  <div className="bg-[#7360f2] w-[8rem] h-[6rem] rounded-l-[20px] rounded-r-[20px] flex items-center justify-center">
-                    <FaViber className="text-white w-[3rem] h-10 group-hover:scale-150 transition-transform duration-300" />
-                  </div>
-                </a>
-
-              </div>
-            </div>
-          </div>
-        </div>
         <div className="flex justify-center items-center space-x-4 mx-auto truncate whitespace-break-spaces text-navy text-xl font-bold tracking-tight lg:text-2xl">
           <span>Rekomandimet</span>
         </div>

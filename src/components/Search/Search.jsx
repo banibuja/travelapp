@@ -3,6 +3,7 @@ import axios from 'axios';
 import SvgIcons from '../icons/svgs'
 import SearchItem from './SearchItem'
 import { useLocation } from 'react-router-dom';
+import axiosInstance from '../../axiosInstance';
 
 
 const Search = () => {

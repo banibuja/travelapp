@@ -47,6 +47,8 @@ const allowedOrigins = [
   'http://localhost:3000',
   'https://travelapp-virid.vercel.app',
   'http://localhost:5000',
+  'https://backend1-lt5m.onrender.com',
+
 ];
 
 app.use(
