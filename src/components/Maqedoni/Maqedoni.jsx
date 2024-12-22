@@ -1,8 +1,21 @@
-import React from 'react';
-import Footer from '../layout/Footer';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Footer from '../layout/Footer';
 
 const Maqedoni = () => {
+  const [roomPrices, setRoomPrices] = useState([]);
+
+  useEffect(() => {
+    // Fetch room prices from the server
+    axios.get('http://localhost:5000/api/maqedoni-price')
+      .then(response => {
+        setRoomPrices(response.data); // Assuming response.data contains the room price data
+      })
+      .catch(error => {
+        console.error("There was an error fetching the room prices:", error);
+      });
+  }, []);
+
   return (
     <>
       <div className="flex w-full">
@@ -51,30 +64,14 @@ const Maqedoni = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-gray-100">
-                  <td className="py-2 px-4">Standard</td>
-                  <td className="py-2 px-4">B&B</td>
-                  <td className="py-2 px-4">€100</td>
-                  <td className="py-2 px-4">€80</td>
-                </tr>
-                <tr className="bg-white">
-                  <td className="py-2 px-4">Deluxe</td>
-                  <td className="py-2 px-4">Half-Board</td>
-                  <td className="py-2 px-4">€150</td>
-                  <td className="py-2 px-4">€120</td>
-                </tr>
-                <tr className="bg-gray-100">
-                  <td className="py-2 px-4">Suite</td>
-                  <td className="py-2 px-4">Full-Board</td>
-                  <td className="py-2 px-4">€200</td>
-                  <td className="py-2 px-4">€170</td>
-                </tr>
-                <tr className="bg-white">
-                  <td className="py-2 px-4">Family Room</td>
-                  <td className="py-2 px-4">All Inclusive</td>
-                  <td className="py-2 px-4">€250</td>
-                  <td className="py-2 px-4">€220</td>
-                </tr>
+                {roomPrices.map((price) => (
+                  <tr key={price.id} className={price.id % 2 === 0 ? 'bg-gray-100' : 'bg-white'}>
+                    <td className="py-2 px-4">{price.lloji_dhomes}</td>
+                    <td className="py-2 px-4">{price.sherbimi}</td>
+                    <td className="py-2 px-4">€{price.gjat_sezones}</td>
+                    <td className="py-2 px-4">€{price.jasht_sezones}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
