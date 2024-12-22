@@ -1,4 +1,4 @@
-const MaqedoniPrices = require ('..models/MaqedoniPrices');
+const MaqedoniPrices = require ('../models/MaqedoniPrices');
 
 //get all maqedoni prices
 const getAllMaqedoniPrices = async (req, res) => {

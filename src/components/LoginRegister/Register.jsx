@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import axiosInstance from '../../axiosInstance';
 
 
 const Register = () => {
@@ -21,7 +22,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/register', formData, { withCredentials: true });
+      await axiosInstance.post('http://localhost:5000/api/register', formData, { withCredentials: true });
       setMessage('Regjistrimi ishte i suksesshëm.');
       setTimeout(() => {
         window.location.href = '/';

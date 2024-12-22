@@ -66,14 +66,14 @@ function Menu() {
       </button>
       {isTablesOpen && (
         <ul className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-10" ref={(el) => elementsRef.current.push(el)}>
-          <li>
+          {/* <li>
             <Link
               to="/dashboard/managehometable"
               className="block px-4 py-2 text-blue-500 font-bold hover:text-blue-700 hover:bg-gray-100"
             >
               Manage Home Table
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link
               to="/dashboard/turqitable"

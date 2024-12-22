@@ -9,11 +9,11 @@ const MaqedoniPrices = sequalize.define('Maqedoni_prices', {
         allowNull: false
     },
     lloji_dhomes: {
-        type: DataTypes.String(50),
+        type: DataTypes.STRING,
         allowNull: false
     },
     sherbimi: {
-        type: DataTypes.String(50),
+        type: DataTypes.STRING,
         allowNull: false
     },
     gjat_sezones: {

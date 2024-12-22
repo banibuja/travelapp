@@ -1,10 +1,11 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000', // Default URL
-  withCredentials: true, // Include credentials if using cookies/sessions
+  // baseURL: 'http://localhost:5000/api',
+  baseURL: 'https://backend1-lt5m.onrender.com/api',
+  withCredentials: true,
   headers: {
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json', 
   },
 });
 

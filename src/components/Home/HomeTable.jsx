@@ -417,9 +417,10 @@ function HomeTable() {
           </div>
 
           {/* Inputet dhe butoni */}
-          <div className="flex bg-[#ffffff4c] shadow-lg rounded-lg justify-around  p-4 space-x-4 w-full max-w-5xl">
+          <div className="flex flex-wrap bg-[#ffffff4c] shadow-lg rounded-lg justify-around  p-4 space-x-4 w-full max-w-5xl">
           {selected === 0 && (
               <>
+
                 <NisjaNga />
 
                 <Destinimi />
@@ -429,6 +430,7 @@ function HomeTable() {
                 <DataENisjes />
                
                 <Udhetaret />
+
               </>
             )}
             {selected === 1 && (

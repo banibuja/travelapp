@@ -60,7 +60,12 @@ const { isAuthenticated } = require('../middlewares/authMiddleware');
 const { abonohu
 } = require('../controllers/nodeMailerController');
 
-router.post('/abonohu', isAuthenticated, abonohu);
+
+const { sendContactEmail
+} = require('../controllers/nodeKontaktForm');
+
+router.post('/abonohu', abonohu);
+router.post('/contact', sendContactEmail);
 
 
 
