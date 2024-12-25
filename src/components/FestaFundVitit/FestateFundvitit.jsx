@@ -1,7 +1,63 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../layout/Footer';
 
 function FestateFundvitit() {
+  const [currentImageIndexNewYork, setCurrentImageIndexNewYork] = useState(0);
+  const [currentImageIndexLasVegas, setCurrentImageIndexLasVegas] = useState(0);
+  const [currentImageIndexSanFrancisco, setCurrentImageIndexSanFrancisco] = useState(0);
+
+  const [isHoveredNewYork, setIsHoveredNewYork] = useState(false);
+  const [isHoveredLasVegas, setIsHoveredLasVegas] = useState(false);
+  const [isHoveredSanFrancisco, setIsHoveredSanFrancisco] = useState(false);
+
+  const imagesNewYork = [
+    "https://images.rove.me/w_1920,q_85/rd9hr8htudskgwb5esid/new-york-times-square-new-years-eve.jpg",
+    "https://cdn-imgix.headout.com/media/images/b54d5c0b0bc915fb893bb3a4ef981ac0-Fireworks%20over%20New%20York%20City.jpeg?auto=format&w=1069.6000000000001&h=687.6&q=90&fit=crop&ar=14%3A9&crop=faces",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbHSwQ2d1quCmYGpUqGhtVWoiiJ_Q6GWj-TUKEVLyWxYlRd1r-wirDQeHnxOoDNgzctLY&usqp=CAU"
+  ];
+
+  const imagesLasVegas = [
+    "https://ktla.com/wp-content/uploads/sites/4/2020/12/AP20365030764895.jpg?strip=1",
+    "https://example.com/second-image-las-vegas.jpg",
+    "https://example.com/third-image-las-vegas.jpg"
+  ];
+
+  const imagesSanFrancisco = [
+    "https://miro.medium.com/v2/resize:fit:1200/1*CGvTjTOr6_h40pllQA2ATw.png",
+    "https://example.com/second-image-san-francisco.jpg",
+    "https://example.com/third-image-san-francisco.jpg"
+  ];
+
+  useEffect(() => {
+    if (isHoveredNewYork) {
+      const interval = setInterval(() => {
+        setCurrentImageIndexNewYork((prevIndex) => (prevIndex + 1) % imagesNewYork.length);
+      }, 2000);
+
+      return () => clearInterval(interval);
+    }
+  }, [isHoveredNewYork, imagesNewYork.length]);
+
+  useEffect(() => {
+    if (isHoveredLasVegas) {
+      const interval = setInterval(() => {
+        setCurrentImageIndexLasVegas((prevIndex) => (prevIndex + 1) % imagesLasVegas.length);
+      }, 2000);
+
+      return () => clearInterval(interval);
+    }
+  }, [isHoveredLasVegas, imagesLasVegas.length]);
+
+  useEffect(() => {
+    if (isHoveredSanFrancisco) {
+      const interval = setInterval(() => {
+        setCurrentImageIndexSanFrancisco((prevIndex) => (prevIndex + 1) % imagesSanFrancisco.length);
+      }, 2000);
+
+      return () => clearInterval(interval);
+    }
+  }, [isHoveredSanFrancisco, imagesSanFrancisco.length]);
+
   return (
     <div>
       <div className="max-w-7xl m-auto">
@@ -17,95 +73,47 @@ function FestateFundvitit() {
             këto tre qytete kryesore ofrojnë eksperienca të paharrueshme për të festuar fundvitin në mënyrën më të bukur.
           </div>
         </div>
-
-      <div className="slider-container">
+        <hr className="my-8 border-t-4 border-gray-300"></hr>
+        <div className="slider-container">
           <div className="slider">
-            <h2 className="text-center text-2xl font-bold mb-4">US</h2>
+            <h2 className="text-center text-2xl font-bold mb-4">Destinacionet Më të Mirë për Festime Spektakolare të Vitit të Ri</h2>
             <div className="flex justify-center space-x-4">
-              <a href="#" className="country-card w-1/3 text-center transform transition duration-300 hover:scale-105 hover:shadow-lg">
+              <div 
+                className="country-card w-1/3 text-center transform transition duration-300 hover:scale-105 hover:shadow-lg"
+                onMouseEnter={() => setIsHoveredNewYork(true)}
+                onMouseLeave={() => setIsHoveredNewYork(false)}
+              >
                 <img
                   className="rounded-lg object-cover w-full h-auto"
-                  src="https://media.timeout.com/images/105730957/750/422/image.jpg"
+                  src={imagesNewYork[currentImageIndexNewYork]}
                   alt="New York"
                 />
                 <p className="font-semibold mt-2">New York</p>
-              </a>
-              <a href="#" className="country-card w-1/3 text-center transform transition duration-300 hover:scale-105 hover:shadow-lg">
+              </div>
+              <div 
+                className="country-card w-1/3 text-center transform transition duration-300 hover:scale-105 hover:shadow-lg"
+                onMouseEnter={() => setIsHoveredLasVegas(true)}
+                onMouseLeave={() => setIsHoveredLasVegas(false)}
+              >
                 <img
                   className="rounded-lg object-cover w-full h-auto"
-                  src="https://ktla.com/wp-content/uploads/sites/4/2020/12/AP20365030764895.jpg?strip=1"
+                  src={imagesLasVegas[currentImageIndexLasVegas]}
                   alt="Las Vegas"
                 />
                 <p className="font-semibold mt-2">Las Vegas</p>
-              </a>
-              <a href="#" className="country-card w-1/3 text-center transform transition duration-300 hover:scale-105 hover:shadow-lg">
+              </div>
+              <div 
+                className="country-card w-1/3 text-center transform transition duration-300 hover:scale-105 hover:shadow-lg"
+                onMouseEnter={() => setIsHoveredSanFrancisco(true)}
+                onMouseLeave={() => setIsHoveredSanFrancisco(false)}
+              >
                 <img
                   className="rounded-lg object-cover w-full h-auto"
-                  src="https://miro.medium.com/v2/resize:fit:1200/1*CGvTjTOr6_h40pllQA2ATw.png"
+                  src={imagesSanFrancisco[currentImageIndexSanFrancisco]}
                   alt="San Francisco"
                 />
                 <p className="font-semibold mt-2">San Francisco</p>
-              </a>
-            </div>
-          </div>
-
-          <div className="slider mt-12">
-            <h2 className="text-center text-2xl font-bold mb-4">EU</h2>
-            <div className="flex justify-center space-x-4">
-              <a href="#" className="country-card w-1/3 text-center transform transition duration-300 hover:scale-105 hover:shadow-lg">
-                <img
-                  className="rounded-lg object-cover w-full h-auto"
-                  src="https://www.bvjhostelparis.com/wp-content/uploads/2017/07/FIRE-WORKS-PARIS-14-JULY.jpg"
-                  alt="Paris"
-                />
-                <p className="font-semibold mt-2">Paris</p>
-              </a>
-              <a href="#" className="country-card w-1/3 text-center transform transition duration-300 hover:scale-105 hover:shadow-lg">
-                <img
-                  className="rounded-lg object-cover w-full h-auto"
-                  src="https://www.wien.info/resource/image/309314/19x10/1200/630/6e921a41966756ab2b894918a4fb557e/B78CB8E009BF476058916BD62BC65D8F/silvester-silvesterpfad-graben.jpg"
-                  alt="Vienna"
-                />
-                <p className="font-semibold mt-2">Vienna</p>
-              </a>
-              <a href="#" className="country-card w-1/3 text-center transform transition duration-300 hover:scale-105 hover:shadow-lg">
-                <img
-                  className="rounded-lg object-cover w-full h-auto"
-                  src="https://cdn-imgix.headout.com/microbrands-content-image/image/505c0f8d8d05ad0ddc6fb6da463ca924-Budapest%201.jpg?auto=format&w=1222.3999999999999&h=687.6&q=90&fit=crop&ar=16%3A9&crop=faces"
-                  alt="Budapest"
-                />
-                <p className="font-semibold mt-2">Budapest</p>
-              </a>
-            </div>
-          </div>
-
-          <div className="slider mt-12">
-            <h2 className="text-center text-2xl font-bold mb-4">Asia</h2>
-            <div className="flex justify-center space-x-4">
-              <a href="#" className="country-card w-1/3 text-center transform transition duration-300 hover:scale-105 hover:shadow-lg">
-                <img
-                  className="rounded-lg object-cover w-full h-auto"
-                  src="https://c.regencyholidays.com/blog/blog/content/images/2021/11/New-Year-In-UAE-2022--2-.webp"
-                  alt="Dubai"
-                />
-                <p className="font-semibold mt-2">Dubai</p>
-              </a>
-              <a href="#" className="country-card w-1/3 text-center transform transition duration-300 hover:scale-105 hover:shadow-lg">
-                <img
-                  className="rounded-lg object-cover w-full h-auto"
-                  src="https://media.timeout.com/images/105692512/image.jpg"
-                  alt="Tokyo"
-                />
-                <p className="font-semibold mt-2">Tokyo</p>
-              </a>
-              <a href="#" className="country-card w-1/3 text-center transform transition duration-300 hover:scale-105 hover:shadow-lg">
-                <img
-                  className="rounded-lg object-cover w-full h-auto"
-                  src="https://ik.imagekit.io/tvlk/blog/2024/10/shutterstock_727168480.jpg?tr=q-70,w-625,dpr-2"
-                  alt="Singapore"
-                />
-                <p className="font-semibold mt-2">Singapore</p>
-              </a>
+              </div>
             </div>
           </div>
         </div>
