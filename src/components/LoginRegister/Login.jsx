@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';  
+import { useNavigate, useLocation } from 'react-router-dom';  
 import axiosInstance from '../../axiosInstance';
 
 const Login = () => {
@@ -8,6 +8,9 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();  
+  const location = useLocation();  
+
+
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -34,15 +37,15 @@ const Login = () => {
         'http://localhost:5000/api/login',
         { username, password }
       );
-      // console.log('Login response:', response);
       setMessage('Login ishte i suksesshëm.');
-      navigate('/'); // Redirect to dashboard after successful login
-      window.location.reload(); 
+      navigate(location.state?.from || '/');  // Redirect to the previous page or home
+      window.location.reload();
     } catch (error) {
       console.error('Login error:', error);
       setMessage('Gabim gjatë login.');
     }
   };
+  
 
   return (
 

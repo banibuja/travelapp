@@ -60,8 +60,8 @@ app.use(
         callback(new Error('Not allowed by CORS'));
       }
     },
-    methods: 'GET,POST,PUT,DELETE',
-    credentials: true, // Kjo i lejon cookies dhe headers
+    methods: 'GET, POST, PUT, DELETE',
+    credentials: true,
   })
 );
 
@@ -98,6 +98,13 @@ app.use(session({
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
   },
 }));
+
+// app.use((req, res, next) => {
+//   console.log('Request Origin:', req.headers.origin);
+//   console.log('Request Headers:', req.headers);
+//   next();
+// });
+
 app.use(flash());
 
 // Passport.js setup for authentication

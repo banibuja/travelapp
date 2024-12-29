@@ -57,14 +57,16 @@ const router = express.Router();
 const { isAuthenticated } = require('../middlewares/authMiddleware');
 
 
-const { abonohu
+const { abonohu, reserveOffer
 } = require('../controllers/nodeMailerController');
 
 
 const { sendContactEmail
 } = require('../controllers/nodeKontaktForm');
 
+router.post('/reserveOffer', reserveOffer);
 router.post('/abonohu', abonohu);
+
 router.post('/contact', sendContactEmail);
 
 

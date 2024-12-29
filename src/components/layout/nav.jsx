@@ -148,7 +148,7 @@ function Nav() {
               Dashboard
             </button>
           ): null}
-          <a href="#" className="text-gray-700 hover:text-blue-500">Kontakti</a>
+          <a href="/kontakt" className="text-gray-700 hover:text-blue-500">Kontakti</a>
         </div>
       </div>
 
