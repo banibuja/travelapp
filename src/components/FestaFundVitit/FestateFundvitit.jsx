@@ -18,7 +18,7 @@ function FestateFundvitit() {
 
   const imagesLasVegas = [
     "https://ktla.com/wp-content/uploads/sites/4/2020/12/AP20365030764895.jpg?strip=1",
-    "https://example.com/second-image-las-vegas.jpg",
+    "https://example.com/second-image-las-vegas.jpg",    
     "https://example.com/third-image-las-vegas.jpg"
   ];
 
