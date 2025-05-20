@@ -14,17 +14,17 @@ const getAllAirports = async (req, res) => {
     });
     res.json(
       airports.map(airport => (
-       {
-        id: airport.id,
-        emri: airport.emri,
-        akronimi: airport.akronimi,
-        shtetiId: airport.shtetiId,
-        shteti: airport.shtetet.emri
-      }
+        {
+          id: airport.id,
+          emri: airport.emri,
+          akronimi: airport.akronimi,
+          shtetiId: airport.shtetiId,
+          shteti: airport.shtetet?.emri
+        }
       ))
     );
   } catch (err) {
-        res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -33,7 +33,7 @@ const addAirports = async (req, res) => {
   const { emri, akronimi, shtetiId } = req.body;
   try {
     const newAirport = await Airports.create({
-      emri, akronimi, shtetiId 
+      emri, akronimi, shtetiId
     });
     res.status(201).json({
       message: 'Airport added successfully',
@@ -48,7 +48,7 @@ const addAirports = async (req, res) => {
 
 
 // Delete Airport
-const deleteAirport= async (req, res) => {
+const deleteAirport = async (req, res) => {
   try {
     const { id } = req.params;
     const Airport = await Airports.findByPk(id);
@@ -83,4 +83,4 @@ const updateAirport = async (req, res) => {
   }
 };
 
-module.exports = { getAllAirports, addAirports, deleteAirport, updateAirport};
+module.exports = { getAllAirports, addAirports, deleteAirport, updateAirport };
