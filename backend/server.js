@@ -44,6 +44,7 @@ app.set('trust proxy', 1);
 
 // CORS setup
 const allowedOrigins = [
+  '*',
   'http://localhost:3000',
   'https://travelapp-virid.vercel.app',
   'http://localhost:5000',
@@ -51,34 +52,12 @@ const allowedOrigins = [
 
 ];
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    methods: 'GET, POST, PUT, DELETE',
-    credentials: true,
-  })
-);
+// app.use(
+//   cors()
+// );
 
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  );
-  next();
-});
-
-
-app.options('*', cors()); 
+// app.options('*', cors()); 
 
 
 
@@ -140,12 +119,12 @@ passport.deserializeUser(async (id, done) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use((req, res, next) => {
-  if (req.headers.origin && req.headers.origin !== 'http://localhost:3000') {
-    return res.status(403).json({ error: "Forbidden: Invalid origin" });
-  }
-  next();
-});
+// app.use((req, res, next) => {
+//   if (req.headers.origin && req.headers.origin !== 'http://localhost:3000') {
+//     return res.status(403).json({ error: "Forbidden: Invalid origin" });
+//   }
+//   next();
+// });
 
 // Routes
 app.use('/api', routes);
