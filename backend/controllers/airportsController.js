@@ -28,6 +28,37 @@ const getAllAirports = async (req, res) => {
   }
 };
 
+// Get airports by shtetiId
+const getAirportsByShtetiId = async (req, res) => {
+  try {
+    const { shtetiId } = req.params;
+    if (!shtetiId) {
+      return res.status(400).json({ error: 'shtetiId parameter is required' });
+    }
+    const airports = await Airports.findAll({
+      where: { shtetiId },
+      include: [
+        {
+          model: Shtetet,
+          attributes: ['emri'],
+        }
+      ],
+    });
+
+    res.json(
+      airports.map(airport => ({
+        id: airport.id,
+        emri: airport.emri,
+        akronimi: airport.akronimi,
+        shtetiId: airport.shtetiId,
+        shteti: airport.shtetet?.emri,
+      }))
+    );
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 // Add new Airports
 const addAirports = async (req, res) => {
   const { emri, akronimi, shtetiId } = req.body;
@@ -43,9 +74,6 @@ const addAirports = async (req, res) => {
     res.status(500).json({ message: 'Error adding Airport', error: error.message });
   }
 };
-
-
-
 
 // Delete Airport
 const deleteAirport = async (req, res) => {
@@ -83,4 +111,10 @@ const updateAirport = async (req, res) => {
   }
 };
 
-module.exports = { getAllAirports, addAirports, deleteAirport, updateAirport };
+module.exports = {
+  getAllAirports,
+  getAirportsByShtetiId,  // <-- Export new function
+  addAirports,
+  deleteAirport,
+  updateAirport
+};

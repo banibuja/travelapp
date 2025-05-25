@@ -1,41 +1,41 @@
 const express = require('express');
-const { 
-  registerUser, loginUser, getUsers, deleteUser, updateUser, verifyRole, countUsers 
+const {
+  registerUser, loginUser, getUsers, deleteUser, updateUser, verifyRole, countUsers
 } = require('../controllers/userController');
-const { 
-  getAllTravelPlans, addTravelPlan, deleteTravelPlan, updateTravelPlan 
+const {
+  getAllTravelPlans, addTravelPlan, deleteTravelPlan, updateTravelPlan
 } = require('../controllers/travelController');
-const { 
-  getAllRoomPrices, addRoomPrice, deleteRoomPrice, updateRoomPrice 
+const {
+  getAllRoomPrices, addRoomPrice, deleteRoomPrice, updateRoomPrice
 } = require('../controllers/roomPricesController');
-const { 
-  getAllDubaiPrices, addDubaiPrice, deleteDubaiPrice, updateDubaiPrice 
+const {
+  getAllDubaiPrices, addDubaiPrice, deleteDubaiPrice, updateDubaiPrice
 } = require('../controllers/dubaiPricesController');
-const { 
-  getAllMaqedoniPrices, addMaqedoniPrices, deleteMaqedoniPrices, updateMaqedoniPrices 
+const {
+  getAllMaqedoniPrices, addMaqedoniPrices, deleteMaqedoniPrices, updateMaqedoniPrices
 } = require('../controllers/maqedoniPricesController');
-const { 
-  getAllImages, addImage, deleteImage, updateImage 
+const {
+  getAllImages, addImage, deleteImage, updateImage
 } = require('../controllers/sliderHomeController');
-const { 
-  getAllHotels, addCard, deleteHotel, updateCard 
+const {
+  getAllHotels, addCard, deleteHotel, updateCard
 } = require('../controllers/stambollCardsController');
-const { 
+const {
   getAllAranzhmanet, updateAranzhmani, deleteAranzhmanet, addAranzhmanet
 } = require('../controllers/aranzhmanetController');
-const { 
-  getAllAirports, addAirports, deleteAirport, updateAirport
+const {
+  getAllAirports, addAirports, deleteAirport, updateAirport, getAirportsByShtetiId
 } = require('../controllers/airportsController');
-const { 
+const {
   getAllShtetet, addShtetet, deleteShtetet, updateShteti
 } = require('../controllers/shtetetController');
-const { 
-  getAllHurghada, addCardHurgada, deleteHurgada, updateCardHurgada 
+const {
+  getAllHurghada, addCardHurgada, deleteHurgada, updateCardHurgada
 } = require('../controllers/hurghadasController');
-const { 
-  getAllKapodakia, addCardKapodakia, deleteKapodakia, updateCardKapodakia 
+const {
+  getAllKapodakia, addCardKapodakia, deleteKapodakia, updateCardKapodakia
 } = require('../controllers/kapodakiaCards');
-const { 
+const {
   getAllQytetet, addQytetet, deleteQytetet, updateQytetet
 } = require('../controllers/qytetetController');
 
@@ -44,11 +44,11 @@ const { getLogs
 const { subscribe
 } = require('../controllers/nodeMailerController');
 
-const { 
+const {
   getAllGreqiImages, addGreqiImage, deleteGreqiImage,
 } = require('../controllers/GreqiSlider');
 
-const { 
+const {
   getAllImagesBullgari, addImageBullgari, deleteImageBullgari, updateImageBullgari
 } = require('../controllers/bullgariController');
 
@@ -150,6 +150,7 @@ router.post('/add-airports', addAirports);
 router.delete('/airports-delete/:id', isAuthenticated, deleteAirport);
 router.put('/airports-update/:id', isAuthenticated, updateAirport);
 router.get('/airports', getAllAirports);
+router.get('/airports/by-shteti/:shtetiId', getAirportsByShtetiId);
 
 router.post('/add-shtetin', addShtetet);
 router.delete('/shtetin-delete/:id', isAuthenticated, deleteShtetet);
