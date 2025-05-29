@@ -35,7 +35,7 @@ const addCardHurgada = async (req, res) => {
     await Log.create({
       userId: req.user.id,
       action: 'add',
-      details: `${req.user.username} added a new card: ${newCard.id}`, 
+      details: `${req.user.username} added a new card: ${newCard.id}`,
     });
 
     res.status(201).json({
@@ -87,7 +87,7 @@ const updateCardHurgada = async (req, res) => {
     // Update the card details
     card.name = name;
     card.location = location;
-    card.price = price;  
+    card.price = price;
     if (imageBase64) {
       card.imageBase64 = imageBase64;
     }
@@ -109,8 +109,8 @@ const updateCardHurgada = async (req, res) => {
 
 
 module.exports = {
-getAllHurghada,
-addCardHurgada,
-deleteHurgada,
-updateCardHurgada,
+  getAllHurghada,
+  addCardHurgada,
+  deleteHurgada,
+  updateCardHurgada,
 };
