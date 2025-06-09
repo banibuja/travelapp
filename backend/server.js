@@ -43,19 +43,17 @@ app.set('trust proxy', 1);
 // app.use(helmet());
 
 // CORS setup
-const allowedOrigins = [
-  '*',
-  'http://localhost:3000',
-  'https://travelapp-virid.vercel.app',
-  'http://localhost:5000',
-  'https://backend1-lt5m.onrender.com',
 
-];
-
-// app.use(
-//   cors()
-// );
-
+const corsOptions = {
+  origin: function (origin, callback) {
+    // For development, allow any origin
+    console.log("Request Origin:", origin); // Log the origin for debugging
+    callback(null, true);
+  },
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 
 // app.options('*', cors()); 
 
@@ -130,17 +128,17 @@ app.use(passport.session());
 app.use('/api', routes);
 
 const isAuthenticated = (req, res, next) => {
-  const token = req.cookies['ubtsecured'];
-  if (!token) {
-    return res.status(401).json({ error: 'Kërkohet autentifikimi.' });
-  }
-  jwt.verify(token, process.env.JWT_SECRET || 'supersecret', (err, user) => {
-    if (err) {
-      return res.status(403).json({ error: 'Token i pavlefshëm.' });
-    }
-    req.user = user;
+  // const token = req.cookies['ubtsecured'];
+  // if (!token) {
+  //   return res.status(401).json({ error: 'Kërkohet autentifikimi.' });
+  // }
+  // jwt.verify(token, process.env.JWT_SECRET || 'supersecret', (err, user) => {
+  //   if (err) {
+  //     return res.status(403).json({ error: 'Token i pavlefshëm.' });
+  //   }
+  //   req.user = user;
     next();
-  });
+  // });
 };
 
 // Example routes
