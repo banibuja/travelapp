@@ -29,6 +29,27 @@ const registerUser = async (req, res) => {
   }
 };
 
+const registerUserForm = async (req, res) => {
+  const { firstName, lastName, number, email, username, password } = req.body;
+  try {
+    const hash = await bcrypt.hash(password, 10);
+    const user = await User.create({
+      firstName,
+      lastName,
+      number,
+      email,
+      username,
+      password: hash,
+    });
+
+
+
+    res.status(201).json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 const loginUser = (req, res, next) => {
   passport.authenticate('local', async (err, user, info) => {
     if (err) return next(err);
@@ -150,4 +171,5 @@ module.exports = {
   updateUser,
   verifyRole,
   countUsers,
+  registerUserForm
 };

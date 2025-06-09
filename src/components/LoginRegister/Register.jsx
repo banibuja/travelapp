@@ -22,7 +22,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axiosInstance.post('http://localhost:5000/api/register', formData, { withCredentials: true });
+      await axiosInstance.post('http://localhost:5000/api/registerForm', formData, { withCredentials: true });
       setMessage('Regjistrimi ishte i suksesshëm.');
       setTimeout(() => {
         window.location.href = '/';
@@ -32,7 +32,7 @@ const Register = () => {
       setMessage('Gabim gjatë regjistrimit.');
     }
   };
-  
+
 
   return (
 

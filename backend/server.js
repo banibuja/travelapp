@@ -13,7 +13,7 @@ const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const sequelize = require('./db');
 const User = require('./models/user');
-const routes = require('./routes/routes-all'); 
+const routes = require('./routes/routes-all');
 
 const app = express();
 app.set('trust proxy', 1);
@@ -137,7 +137,7 @@ const isAuthenticated = (req, res, next) => {
   //     return res.status(403).json({ error: 'Token i pavlefshëm.' });
   //   }
   //   req.user = user;
-    next();
+  next();
   // });
 };
 
@@ -163,8 +163,6 @@ app.post('/logout', (req, res) => {
     res.status(200).json({ message: 'U çkyçët me sukses.' });
   });
 });
-
-
 
 
 const initializeDatabase = async () => {

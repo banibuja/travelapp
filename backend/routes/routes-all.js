@@ -1,6 +1,6 @@
 const express = require('express');
 const {
-  registerUser, loginUser, getUsers, deleteUser, updateUser, verifyRole, countUsers
+  registerUser, loginUser, getUsers, deleteUser, updateUser, verifyRole, countUsers, registerUserForm
 } = require('../controllers/userController');
 const {
   getAllTravelPlans, addTravelPlan, deleteTravelPlan, updateTravelPlan
@@ -74,12 +74,13 @@ router.post('/contact', sendContactEmail);
 // User routes
 router.post('/register', registerUser);
 router.post('/AddUser', isAuthenticated, registerUser);
-
+router.post('/registerForm', registerUserForm);
 router.post('/login', (req, res, next) => loginUser(req, res, next));
 router.get('/users-get', isAuthenticated, getUsers);
 router.delete('/users/:id', isAuthenticated, deleteUser);
 router.put('/users/:id', isAuthenticated, updateUser);
 router.get('/users-count', isAuthenticated, countUsers);
+
 
 router.get('/logs', getLogs); // Fetch all logs
 
