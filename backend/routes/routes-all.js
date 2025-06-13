@@ -21,7 +21,7 @@ const {
   getAllHotels, addCard, deleteHotel, updateCard
 } = require('../controllers/stambollCardsController');
 const {
-  getAllAranzhmanet, updateAranzhmani, deleteAranzhmanet, addAranzhmanet
+  getAllAranzhmanet, updateAranzhmani, deleteAranzhmanet, addAranzhmanet, countAranzhmanet
 } = require('../controllers/aranzhmanetController');
 const {
   getAllAirports, addAirports, deleteAirport, updateAirport, getAirportsByShtetiId
@@ -146,6 +146,8 @@ router.post('/add-Aranzhmani', addAranzhmanet);
 router.delete('/Aranzhmani-delete/:id', isAuthenticated, deleteAranzhmanet);
 router.put('/Aranzhmani-update/:id', isAuthenticated, updateAranzhmani);
 router.get('/aranzhmanet', getAllAranzhmanet);
+router.get('/aranzhmanet/count', countAranzhmanet);
+
 
 router.post('/add-airports', addAirports);
 router.delete('/airports-delete/:id', isAuthenticated, deleteAirport);
