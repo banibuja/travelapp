@@ -5,8 +5,8 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
-    user: process.env.EMAIL_USER,  
-    pass: process.env.EMAIL_PASS,  
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
@@ -18,8 +18,8 @@ const sendContactEmail = async (req, res) => {
   }
 
   const mailOptions = {
-    from: email,  
-    to: 'travelbani48@gmail.com',  
+    from: email,
+    to: 'arionrxh@gmail.com',
     subject: 'Mesazh nga formulari i kontaktit',
     text: `
       Emri: ${name}
