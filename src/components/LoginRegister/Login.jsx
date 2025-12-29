@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';  
+import { useNavigate, useLocation } from 'react-router-dom';
 import axiosInstance from '../../axiosInstance';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const navigate = useNavigate();  
-  const location = useLocation();  
+  const navigate = useNavigate();
+  const location = useLocation();
 
 
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await axiosInstance.get('http://localhost:5001/user', { withCredentials: true });
-        if (response.status === 200) {
-
+        const response = await fetch('http://localhost:5001/user', {
+          method: 'GET',
+          credentials: 'include'
+        });
+        const data = await response.json();
+        if (response.ok && data.user) {
           navigate('/');
-
         }
       } catch (error) {
         console.log('User is not logged in');
@@ -45,7 +47,7 @@ const Login = () => {
       setMessage('Gabim gjatë login.');
     }
   };
-  
+
 
   return (
 
