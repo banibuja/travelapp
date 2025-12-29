@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 const Shtetet = require('./shtetet.js');
 const Airports = require('./airports.js');
+const BusStations = require('./busStations.js');
 
 const Aranzhmanet = sequelize.define('aranzhmanet', {
     id: {
@@ -82,5 +83,8 @@ const Aranzhmanet = sequelize.define('aranzhmanet', {
 
   Aranzhmanet.belongsTo(Airports, { foreignKey: 'airportId', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
   Airports.hasMany(Aranzhmanet, { foreignKey: 'airportId', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+
+  Aranzhmanet.belongsTo(BusStations, { foreignKey: 'busStationId', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+  BusStations.hasMany(Aranzhmanet, { foreignKey: 'busStationId', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
   
   module.exports = Aranzhmanet;

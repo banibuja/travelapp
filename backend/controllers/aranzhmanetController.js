@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 const Aranzhmanet = require('../models/Aranzhmanet');
 const Shtetet = require('../models/shtetet');
 const Airports = require('../models/airports');
+const BusStations = require('../models/busStations');
 const User = require('../models/user');
 
 
@@ -28,6 +29,10 @@ const getAllAranzhmanet = async (req, res) => {
           model: Airports,
           attributes: ['emri', 'akronimi'], // Include only the 'emri' (country name) column
         },
+        {
+          model: BusStations,
+          attributes: ['emri', 'adresa'], // Include bus station name and address
+        },
       ],
     });
     res.json(
@@ -44,6 +49,7 @@ const getAllAranzhmanet = async (req, res) => {
           airportId: aranzhmani.airportId,
           airport: aranzhmani.airport ? `${aranzhmani.airport.emri} (${aranzhmani.airport.akronimi})` : null,
           busStationId: aranzhmani.busStationId,
+          busStation: aranzhmani.busStation ? aranzhmani.busStation.emri : null,
           cmimi: aranzhmani.cmimi,
           rating: aranzhmani.rating,
           shtetiId: aranzhmani.shtetiId,

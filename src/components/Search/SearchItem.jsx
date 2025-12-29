@@ -29,6 +29,7 @@ const SearchItem = ({ data }) => {
 
   const item = {
     airport: data.airport,
+    busStation: data.busStation,
     cmimi: data.cmimi,
     dataKthimit: data.dataKthimit,
     dataNisjes: data.dataNisjes,
@@ -40,6 +41,7 @@ const SearchItem = ({ data }) => {
     shteti: data.shteti,
     titulli: data.titulli,
     imageBase64: data.imageBase64,
+    llojiTransportit: data.llojiTransportit,
   };
 
   const handleReservation = async () => {
@@ -105,8 +107,17 @@ const SearchItem = ({ data }) => {
           <p>{item.sherbimi}</p>
         </div>
         <div className="mt-2 flex items-center text-sm text-gray-600">
-          <span className="mr-1">✈️</span>
-          <p>{item.airport}</p>
+          {item.llojiTransportit === 'bus' ? (
+            <>
+              <span className="mr-1">🚌</span>
+              <p>{item.busStation || 'Bus Station'}</p>
+            </>
+          ) : (
+            <>
+              <span className="mr-1">✈️</span>
+              <p>{item.airport}</p>
+            </>
+          )}
         </div>
         <div className="mt-4 text-center">
           <button

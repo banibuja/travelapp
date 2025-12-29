@@ -17,16 +17,21 @@ const Search = () => {
     const [displayedAranzhmanet, setDisplayedAranzhmanet] = useState([]);
     const ref = useRef(null);
     const [isAirportDropdownOpen, setIsAirportDropdownOpen] = useState(false);
+    const [isBusStationDropdownOpen, setIsBusStationDropdownOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [shtetet, setShtetet] = useState([]);
     const [airports, setAirports] = useState([]);
+    const [busStations, setBusStations] = useState([]);
     const today = new Date().toISOString().split('T')[0];
 
     const formRef = useRef(null);
     const queryParams = new URLSearchParams(location.search);
+    const transportType = queryParams.get('transportType') || 'plane';
     const fromId = queryParams.get('fromId');
     const fromEmri = queryParams.get('fromEmri');
+    const busStationId = queryParams.get('busStationId');
+    const busStationEmri = queryParams.get('busStationEmri');
     const toId = queryParams.get('toId');
     const toEmri = queryParams.get('toEmri');
     const toQytetiId = queryParams.get('toQytetiId');
@@ -37,10 +42,17 @@ const Search = () => {
     const nrNeteveArray = nrNeteve ? nrNeteve.split(',') : [];
       
   const [searchPrompts, setSearchPrompts] = useState({
+      transportType: transportType,
       from: 
         {
           id: fromId,
           emri: fromEmri
+        }
+      ,
+      busStation: 
+        {
+          id: busStationId,
+          emri: busStationEmri
         }
       ,
       to: 
@@ -71,6 +83,15 @@ const Search = () => {
         } 
       } catch (error) {
         console.error('Error checking session:', error);
+      }
+      try {
+        const getBusStations = await fetch('http://localhost:5001/api/bus-stations', { method: 'GET', credentials: 'include' });
+        const busStationsData = await getBusStations.json();
+        if (getBusStations.ok) {
+          setBusStations(busStationsData)
+        } 
+      } catch (error) {
+        console.error('Error fetching bus stations:', error);
       }
       try {
         const getShtetet = await fetch('http://localhost:5001/api/shtetet', { method: 'GET', credentials: 'include' });
@@ -121,45 +142,57 @@ const Search = () => {
     
     var filteredAranzhmanet = aranzhmanet;
 
+    // Filter by transport type
+    if(searchPrompts.transportType) {
+      filteredAranzhmanet = filteredAranzhmanet.filter((aranzhmani) => {
+        return aranzhmani.llojiTransportit === searchPrompts.transportType;
+      });
+    }
 
-    if(searchPrompts.from.id) {filteredAranzhmanet = filteredAranzhmanet.filter( (aranzhmani) => {
-      return (
-        aranzhmani.airportId == searchPrompts.from.id
-      )
-    })}
+    // Filter by airport if transport is plane
+    if(searchPrompts.transportType === 'plane' && searchPrompts.from.id) {
+      filteredAranzhmanet = filteredAranzhmanet.filter((aranzhmani) => {
+        return aranzhmani.airportId == searchPrompts.from.id;
+      });
+    }
 
+    // Filter by bus station if transport is bus
+    if(searchPrompts.transportType === 'bus' && searchPrompts.busStation?.id) {
+      filteredAranzhmanet = filteredAranzhmanet.filter((aranzhmani) => {
+        return aranzhmani.busStationId == searchPrompts.busStation.id;
+      });
+    }
 
-    if(searchPrompts.to.id) {filteredAranzhmanet = filteredAranzhmanet.filter( (aranzhmani) => {
-      return (
-        aranzhmani.shtetiId == searchPrompts.to.id
-      )
-    })}
+    // Filter by destination country
+    if(searchPrompts.to.id) {
+      filteredAranzhmanet = filteredAranzhmanet.filter((aranzhmani) => {
+        return aranzhmani.shtetiId == searchPrompts.to.id;
+      });
+    }
     
+    // Filter by departure date
+    if(searchPrompts.DepartureDate) {
+      filteredAranzhmanet = filteredAranzhmanet.filter((aranzhmani) => {
+        return aranzhmani.dataNisjes == searchPrompts.DepartureDate;
+      });
+    }
 
-
-    if(searchPrompts.DepartureDate) {filteredAranzhmanet = filteredAranzhmanet.filter( (aranzhmani) => {
-      return (
-        aranzhmani.dataNisjes == searchPrompts.DepartureDate 
-      )
-    })}
-
-    
+    // Filter by number of nights
     if(searchPrompts.nrNeteve.length > 0) {
-      filteredAranzhmanet = filteredAranzhmanet.filter( (aranzhmani) => {
+      filteredAranzhmanet = filteredAranzhmanet.filter((aranzhmani) => {
         const dataKthimit = new Date(aranzhmani.dataKthimit).getTime();
         const dataNisjes = new Date(aranzhmani.dataNisjes).getTime();
-        const startDate = dataNisjes + searchPrompts.nrNeteve[0] * 24 * 60 * 60 * 1000; // Convert days to milliseconds
-        const endDate = dataNisjes + searchPrompts.nrNeteve[1] * 24 * 60 * 60 * 1000; // Convert days to milliseconds
+        const startDate = dataNisjes + searchPrompts.nrNeteve[0] * 24 * 60 * 60 * 1000;
+        const endDate = dataNisjes + searchPrompts.nrNeteve[1] * 24 * 60 * 60 * 1000;
     
         return (
           dataKthimit >= startDate && 
-          dataKthimit <= endDate)
-    })
-    
-  }
+          dataKthimit <= endDate
+        );
+      });
+    }
   
-
-    setDisplayedAranzhmanet(filteredAranzhmanet)
+    setDisplayedAranzhmanet(filteredAranzhmanet);
   }
 
 
@@ -182,6 +215,17 @@ const Search = () => {
         setSearchPrompts({...searchPrompts, from: {id:airport.id, emri: airport.emri}});
       }
       setIsAirportDropdownOpen(false);
+    };
+
+    const handleBusStationClick = (busStation) => {      
+      if (!busStation) {
+        setSearchPrompts({...searchPrompts, busStation: {id:null, emri: ''}});
+        
+      }else{
+
+        setSearchPrompts({...searchPrompts, busStation: {id:busStation.id, emri: busStation.emri}});
+      }
+      setIsBusStationDropdownOpen(false);
     };
   
     const handleCountryClick = (country) => {  
@@ -324,54 +368,106 @@ const Search = () => {
     });
     setDisplayedAranzhmanet(aranzhmanet)
   }
+  const getTitle = () => {
+    if (transportType === 'bus') return 'Find Your Bus Trip';
+    return 'Find Your Flight';
+  };
+
+  const getSearchButtonText = () => {
+    if (transportType === 'bus') return 'Search Buses';
+    return 'Search Flights';
+  };
+
   return (
     <div className="max-w-[85rem] m-auto ">
       <div className="w-full  flex flex-col items-center my-9">
-          <h1 className="text-3xl py-5 font-mono">Find Your Flight</h1>
+          <h1 className="text-3xl py-5 font-mono">{getTitle()}</h1>
       </div>
 
       <div className="flex gap-10">
         <div className="bg-white shadow-md rounded-lg p-6 w-4xl mx-auto">
 
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Find Your Flight</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">{getTitle()}</h2>
 
           <form className="gap-y-4 flex flex-col" ref={formRef}>
             <div className="py-4">
               <div className="relative">
-              <button
-              type='button'
-                onClick={() => setIsAirportDropdownOpen(!isAirportDropdownOpen)}
-                className="flex items-center w-full p-3 bg-gray-100 border rounded-md hover:bg-gray-200"
-              >
-                <span className="mr-2">✈️</span>
-                {searchPrompts.from.emri || 'Nga'}
-              </button>
+              {transportType === 'bus' ? (
+                <>
+                  <button
+                  type='button'
+                    onClick={() => {setIsBusStationDropdownOpen(!isBusStationDropdownOpen); setIsAirportDropdownOpen(false)}}
+                    className="flex items-center w-full p-3 bg-gray-100 border rounded-md hover:bg-gray-200"
+                  >
+                    <span className="mr-2">🚌</span>
+                    {searchPrompts.busStation?.emri || 'Bus Station'}
+                  </button>
 
-              {isAirportDropdownOpen && (
-                <div className=" border rounded-md shadow-lg bg-white absolute z-10">
-                  <ul className="max-h-60 overflow-y-auto">
-                      <li key='' className="p-2 border-b">
-                        <div
-                          onClick={() => handleAirportClick('')}
-                          className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
-                        >
-                          All Airports
-                        </div>
+                  {isBusStationDropdownOpen && (
+                    <div className=" border rounded-md shadow-lg bg-white absolute z-10">
+                      <ul className="max-h-60 overflow-y-auto">
+                          <li key='' className="p-2 border-b">
+                            <div
+                              onClick={() => handleBusStationClick('')}
+                              className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                            >
+                              All Bus Stations
+                            </div>
 
-                      </li>
-                    {airports.map((airport) => (
-                      <li key={airport.emri} className="p-2 border-b">
-                        <div
-                          onClick={() => handleAirportClick(airport)}
-                          className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
-                        >
-                          {airport.emri}
-                        </div>
+                          </li>
+                        {busStations.map((busStation) => (
+                          <li key={busStation.emri} className="p-2 border-b">
+                            <div
+                              onClick={() => handleBusStationClick(busStation)}
+                              className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                            >
+                              {busStation.emri}
+                            </div>
 
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  <button
+                  type='button'
+                    onClick={() => {setIsAirportDropdownOpen(!isAirportDropdownOpen); setIsBusStationDropdownOpen(false)}}
+                    className="flex items-center w-full p-3 bg-gray-100 border rounded-md hover:bg-gray-200"
+                  >
+                    <span className="mr-2">✈️</span>
+                    {searchPrompts.from.emri || 'Nga'}
+                  </button>
+
+                  {isAirportDropdownOpen && (
+                    <div className=" border rounded-md shadow-lg bg-white absolute z-10">
+                      <ul className="max-h-60 overflow-y-auto">
+                          <li key='' className="p-2 border-b">
+                            <div
+                              onClick={() => handleAirportClick('')}
+                              className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                            >
+                              All Airports
+                            </div>
+
+                          </li>
+                        {airports.map((airport) => (
+                          <li key={airport.emri} className="p-2 border-b">
+                            <div
+                              onClick={() => handleAirportClick(airport)}
+                              className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                            >
+                              {airport.emri}
+                            </div>
+
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </>
               )}
                 
               </div>
@@ -474,7 +570,7 @@ const Search = () => {
                 onClick={handleSearch}
                 className="bg-blue-500 text-white font-semibold rounded-md py-2 px-4 hover:bg-blue-600 transition"
               >
-                Search Flights
+                {getSearchButtonText()}
               </button>
               <button
                 type="button"
