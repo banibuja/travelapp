@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children }) => {
     useEffect(() => {
         const checkLoginStatus = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/user', { withCredentials: true });
+                const response = await axios.get('http://localhost:5001/user', { withCredentials: true });
                 setRole(response.data.user.role);
 
                 if (response.status === 200) {

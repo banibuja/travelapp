@@ -20,7 +20,7 @@ function Kontakt() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/api/contact', formData);
+      const response = await axios.post('http://localhost:5001/api/contact', formData);
       setStatusMessage(response.data.message);
       setFormData({ name: '', email: '', message: '', number: '' });  // Clear form after success
     } catch (error) {

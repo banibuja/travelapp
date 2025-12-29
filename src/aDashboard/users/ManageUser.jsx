@@ -20,7 +20,7 @@ function ManageUser() {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/user', { withCredentials: true });
+        const response = await axios.get('http://localhost:5001/user', { withCredentials: true });
         setRole(response.data.user.role)
         if (response.status === 200 ) {
             setIsLoggedIn(true);
@@ -38,7 +38,7 @@ function ManageUser() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users-get', {
+        const response = await axios.get('http://localhost:5001/api/users-get', {
           withCredentials: true,
         });
         setUsers(response.data);
@@ -52,7 +52,7 @@ function ManageUser() {
   // Delete user
   const deleteUser = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/api/users/${id}`, {
+      const response = await axios.delete(`http://localhost:5001/api/users/${id}`, {
         withCredentials: true,
       });
       setUsers(users.filter((user) => user.id !== id));
@@ -78,7 +78,7 @@ function ManageUser() {
     };
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/users/${id}`, updatedUser, {
+      const response = await axios.put(`http://localhost:5001/api/users/${id}`, updatedUser, {
         withCredentials: true,
       });
       setUsers(users.map((user) => (user.id === id ? response.data : user)));

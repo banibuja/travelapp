@@ -64,7 +64,7 @@ const Search = () => {
       const checkSession = async () => {
       
       try {
-        const getAirports = await fetch('http://localhost:5000/api/airports', { method: 'GET', credentials: 'include' });
+        const getAirports = await fetch('http://localhost:5001/api/airports', { method: 'GET', credentials: 'include' });
         const airportsData = await getAirports.json();
         if (getAirports.ok) {
           setAirports(airportsData)
@@ -73,10 +73,10 @@ const Search = () => {
         console.error('Error checking session:', error);
       }
       try {
-        const getShtetet = await fetch('http://localhost:5000/api/shtetet', { method: 'GET', credentials: 'include' });
+        const getShtetet = await fetch('http://localhost:5001/api/shtetet', { method: 'GET', credentials: 'include' });
         const shtetetData = await getShtetet.json();
         if (getShtetet.ok) {
-          const getQyetet = await fetch('http://localhost:5000/api/qytetet', { method: 'GET', credentials: 'include' });
+          const getQyetet = await fetch('http://localhost:5001/api/qytetet', { method: 'GET', credentials: 'include' });
           const qytetetData = await getQyetet.json();
           const mergedData = shtetetData.map((state) => {
             // Filter and map to extract only id and emri
@@ -232,7 +232,7 @@ const Search = () => {
       
 
     // Fetch room prices from the server
-    axios.get('http://localhost:5000/api/aranzhmanet')
+    axios.get('http://localhost:5001/api/aranzhmanet')
       .then(response => {
         setAranzhmanet(response.data);
       })

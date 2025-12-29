@@ -11,7 +11,7 @@ function Footer() {
   const handleSubscribe = async () => {
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/abonohu',
+        'http://localhost:5001/api/abonohu',
         { email }, 
         { withCredentials: true } 
       );

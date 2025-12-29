@@ -10,7 +10,7 @@ function ManageLogs() {
   useEffect(() => {
     const fetchLogs = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/logs', {
+        const response = await axios.get('http://localhost:5001/api/logs', {
           withCredentials: true,
         });
         setLogs(response.data);

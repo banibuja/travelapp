@@ -12,7 +12,7 @@ const SearchItem = ({ data }) => {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/user', { withCredentials: true });
+        const response = await axios.get('http://localhost:5001/user', { withCredentials: true });
         if (response.status === 200) {
           setIsLoggedIn(true);
           setUserId(response.data.user.id);
@@ -48,7 +48,7 @@ const SearchItem = ({ data }) => {
     }
 
     try {
-      await axios.post('http://localhost:5000/api/reserveOffer', { item, userId });
+      await axios.post('http://localhost:5001/api/reserveOffer', { item, userId });
       setIsReserved(true);
     } catch (error) {
       console.error('Gabim gjatë rezervimit:', error);

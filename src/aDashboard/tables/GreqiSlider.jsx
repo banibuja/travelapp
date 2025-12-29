@@ -11,7 +11,7 @@ const GreqiSlider = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/greqi-images', {
+        const response = await axios.get('http://localhost:5001/api/greqi-images', {
           withCredentials: true,
         });
         setImages(response.data);
@@ -26,7 +26,7 @@ const GreqiSlider = () => {
 
   const deleteGreqiImage = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/greqi-image-delete/${id}`, {
+      await axios.delete(`http://localhost:5001/api/greqi-image-delete/${id}`, {
         withCredentials: true,
       });
       setImages(images.filter((image) => image.id !== id));
@@ -59,7 +59,7 @@ const GreqiSlider = () => {
       const base64String = reader.result.split(',')[1];
 
       try {
-        const response = await axios.post('http://localhost:5000/api/add-greqi-image', {
+        const response = await axios.post('http://localhost:5001/api/add-greqi-image', {
           imageBase64: base64String,
           title: newImage.title,
         });

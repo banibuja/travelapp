@@ -13,7 +13,7 @@ function ManageQytetet() {
   useEffect(() => {
     const fetchQytetet = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/qytetet', {
+        const response = await axios.get('http://localhost:5001/api/qytetet', {
           withCredentials: true,
         });
         setQytetet(response.data);
@@ -27,7 +27,7 @@ function ManageQytetet() {
   // Delete Qytetet
   const deleteQytetet = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/qytetet-delete/${id}`, {
+      await axios.delete(`http://localhost:5001/api/qytetet-delete/${id}`, {
         withCredentials: true,
       });
       setQytetet(qytetet.filter((Qytetet) => Qytetet.id !== id));
@@ -53,7 +53,7 @@ function ManageQytetet() {
     };
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/qytetet-update/${id}`, updatedQytetet, {
+      const response = await axios.put(`http://localhost:5001/api/qytetet-update/${id}`, updatedQytetet, {
         withCredentials: true,
       });
       setQytetet(qytetet.map((qyteti) => (qyteti.id === id ? response.data : qyteti)));

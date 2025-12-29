@@ -13,7 +13,7 @@ function ManageAirports() {
   useEffect(() => {
     const fetchAirports = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/airports', {
+        const response = await axios.get('http://localhost:5001/api/airports', {
           withCredentials: true,
         });
         setAirports(response.data);
@@ -27,7 +27,7 @@ function ManageAirports() {
   // Delete Airport
   const deleteAirport = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/airports-delete/${id}`, {
+      await axios.delete(`http://localhost:5001/api/airports-delete/${id}`, {
         withCredentials: true,
       });
       setAirports(airports.filter((Airport) => Airport.id !== id));
@@ -53,7 +53,7 @@ function ManageAirports() {
     };
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/airports-update/${id}`, updatedAirport, {
+      const response = await axios.put(`http://localhost:5001/api/airports-update/${id}`, updatedAirport, {
         withCredentials: true,
       });
       setAirports(airports.map((airport) => (airport.id === id ? response.data : airport)));

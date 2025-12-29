@@ -14,7 +14,7 @@ function ManageAranzhmanet() {
   useEffect(() => {
     const fetchAranzhmanet = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/aranzhmanet', {
+        const response = await axios.get('http://localhost:5001/api/aranzhmanet', {
           withCredentials: true,
         });
         setAranzhmanet(response.data);
@@ -28,7 +28,7 @@ function ManageAranzhmanet() {
   // Delete aranzhman
   const deleteAranzhman = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/Aranzhmani-delete/${id}`, {
+      await axios.delete(`http://localhost:5001/api/Aranzhmani-delete/${id}`, {
         withCredentials: true,
       });
       setAranzhmanet(aranzhmanet.filter((aranzhmani) => aranzhmani.id !== id));
@@ -54,7 +54,7 @@ function ManageAranzhmanet() {
     };
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/Aranzhmani-update/${id}`, updatedAranzhmani, {
+      const response = await axios.put(`http://localhost:5001/api/Aranzhmani-update/${id}`, updatedAranzhmani, {
         withCredentials: true,
       });
       setAranzhmanet(aranzhmanet.map((aranzhman) => (aranzhman.id === id ? response.data : aranzhman)));

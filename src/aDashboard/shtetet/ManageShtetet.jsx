@@ -13,7 +13,7 @@ function ManageShtetet() {
   useEffect(() => {
     const fetchShtetet = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/shtetet', {
+        const response = await axios.get('http://localhost:5001/api/shtetet', {
           withCredentials: true,
         });
         setShtetet(response.data);
@@ -27,7 +27,7 @@ function ManageShtetet() {
   // Delete Shtetet
   const deleteShtetet = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/shtetin-delete/${id}`, {
+      await axios.delete(`http://localhost:5001/api/shtetin-delete/${id}`, {
         withCredentials: true,
       });
       setShtetet(shtetet.filter((shteti) => shteti.id !== id));
@@ -53,7 +53,7 @@ function ManageShtetet() {
     };
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/shtetin-update/${id}`, updatedShteti, {
+      const response = await axios.put(`http://localhost:5001/api/shtetin-update/${id}`, updatedShteti, {
         withCredentials: true,
       });
       setShtetet(shtetet.map((shteti) => (shteti.id === id ? response.data : shteti)));

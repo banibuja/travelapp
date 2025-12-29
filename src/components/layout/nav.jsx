@@ -13,9 +13,9 @@ function Nav() {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await fetch('http://localhost:5000/user', { method: 'GET', credentials: 'include' });
+        const response = await fetch('http://localhost:5001/user', { method: 'GET', credentials: 'include' });
         const data = await response.json();
-        if (response.ok) {
+        if (response.ok && data.user) {
           setRole(data.user.role)
           setIsLoggedIn(true);
         } else {
@@ -40,7 +40,7 @@ function Nav() {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/logout', {}, { withCredentials: true });
+      const response = await axios.post('http://localhost:5001/logout', {}, { withCredentials: true });
 
       if (response.status === 200) {
         window.location.reload(); 
@@ -72,9 +72,9 @@ function Nav() {
    <nav className={"bg-blue-100 shadow-md"}>
   <div className="container mx-auto flex justify-center items-center py-2 border-b">
     <div className="flex items-center space-x-6">
-      <a href="#" className="text-gray-700 hover:text-blue-500">
-        <span role="img" aria-label="heart"> <a href="/">
-          &#x2764;&#xFE0F;</a>
+      <a href="/" className="text-gray-700 hover:text-blue-500">
+        <span role="img" aria-label="heart">
+          &#x2764;&#xFE0F;
         </span>
         Të preferuarat
       </a>

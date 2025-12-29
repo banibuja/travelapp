@@ -13,7 +13,7 @@ function DubaiPricesTable() {
   useEffect(() => {
     const fetchDubaiPrices = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/dubai-price', {
+        const response = await axios.get('http://localhost:5001/api/dubai-price', {
           withCredentials: true,
         });
         setDubaiPrices(response.data);
@@ -29,7 +29,7 @@ function DubaiPricesTable() {
   // Delete dubai price
   const deleteDubaiPrice = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/dubai-prices-delete/${id}`, {
+      await axios.delete(`http://localhost:5001/api/dubai-prices-delete/${id}`, {
         withCredentials: true,
       });
       setDubaiPrices(dubaiPrices.filter((price) => price.id !== id));
@@ -55,7 +55,7 @@ function DubaiPricesTable() {
     };
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/dubai-prices-update/${id}`, updatedPrice, {
+      const response = await axios.put(`http://localhost:5001/api/dubai-prices-update/${id}`, updatedPrice, {
         withCredentials: true,
       });
       setDubaiPrices(
@@ -91,7 +91,7 @@ function DubaiPricesTable() {
     };
 
     try {
-      const response = await axios.post('http://localhost:5000/api/add-dubai-price', newPrice, {
+      const response = await axios.post('http://localhost:5001/api/add-dubai-price', newPrice, {
         withCredentials: true,
       });
       setDubaiPrices([...dubaiPrices, response.data.dubaiPrice]);

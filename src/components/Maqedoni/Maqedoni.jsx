@@ -7,7 +7,7 @@ const Maqedoni = () => {
 
   useEffect(() => {
     // Fetch room prices from the server
-    axios.get('http://localhost:5000/api/maqedoni-price')
+    axios.get('http://localhost:5001/api/maqedoni-price')
       .then(response => {
         setRoomPrices(response.data); // Assuming response.data contains the room price data
       })

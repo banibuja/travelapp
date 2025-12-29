@@ -10,7 +10,7 @@ const Greqi = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/greqi-images');
+        const response = await axios.get('http://localhost:5001/api/greqi-images');
         setSlides(response.data);
       } catch (error) {
         console.error('Error fetching images:', error);

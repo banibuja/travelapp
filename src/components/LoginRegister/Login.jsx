@@ -15,7 +15,7 @@ const Login = () => {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await axiosInstance.get('http://localhost:5000/user', { withCredentials: true });
+        const response = await axiosInstance.get('http://localhost:5001/user', { withCredentials: true });
         if (response.status === 200) {
 
           navigate('/');
@@ -34,7 +34,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/login',
+        'http://localhost:5001/api/login',
         { username, password }
       );
       setMessage('Login ishte i suksesshëm.');

@@ -66,7 +66,7 @@ function HomeTable() {
   useEffect(() => {
     const fetchTravelPlans = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/travel-plans");
+        const response = await axios.get("http://localhost:5001/api/travel-plans");
         setTravelPlans(response.data);
       } catch (error) {
         console.error("Gabim gjatë marrjes së të dhënave:", error);
@@ -76,7 +76,7 @@ function HomeTable() {
     const fetchData = async () => {
       
       try {
-        const getAirports = await fetch('http://localhost:5000/api/airports', { method: 'GET', credentials: 'include' });
+        const getAirports = await fetch('http://localhost:5001/api/airports', { method: 'GET', credentials: 'include' });
         const airportsData = await getAirports.json();
         if (getAirports.ok) {
           
@@ -87,10 +87,10 @@ function HomeTable() {
         console.error('Error checking session:', error);
       }
       try {
-        const getShtetet = await fetch('http://localhost:5000/api/shtetet', { method: 'GET', credentials: 'include' });
+        const getShtetet = await fetch('http://localhost:5001/api/shtetet', { method: 'GET', credentials: 'include' });
         const shtetetData = await getShtetet.json();
         if (getShtetet.ok) {
-          const getQyetet = await fetch('http://localhost:5000/api/qytetet', { method: 'GET', credentials: 'include' });
+          const getQyetet = await fetch('http://localhost:5001/api/qytetet', { method: 'GET', credentials: 'include' });
           const qytetetData = await getQyetet.json();
           const mergedData = shtetetData.map((state) => {
             const cities = qytetetData
