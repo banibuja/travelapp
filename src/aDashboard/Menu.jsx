@@ -120,13 +120,27 @@ function Menu({ isCollapsed, setIsCollapsed }) {
       <div className="p-6 border-b border-white/10">
         <div className="flex items-center justify-between">
           {!isCollapsed && (
-            <div className="flex items-center space-x-3">
+            <Link 
+              to="/dashboard" 
+              className="flex items-center space-x-3 hover:opacity-80 transition-opacity cursor-pointer"
+            >
               <div className="w-10 h-10 rounded-xl flex items-center justify-center"
                 style={{ background: 'linear-gradient(135deg, #f97316, #fb923c)' }}>
                 <span className="text-white text-xl">✈️</span>
               </div>
               <span className="text-white font-bold text-xl">TravelApp</span>
-            </div>
+            </Link>
+          )}
+          {isCollapsed && (
+            <Link 
+              to="/dashboard" 
+              className="flex items-center justify-center hover:opacity-80 transition-opacity cursor-pointer"
+            >
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg, #f97316, #fb923c)' }}>
+                <span className="text-white text-xl">✈️</span>
+              </div>
+            </Link>
           )}
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Menu from './Menu';
-import { useNavigate, Outlet } from 'react-router-dom';
+import { useNavigate, Outlet, Link } from 'react-router-dom';
 import axios from 'axios';
 
 function Dashboard() {
@@ -8,7 +8,11 @@ function Dashboard() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [role, setRole] = useState('');
   const [userCount, setUserCount] = useState(0);
+  const [packageCount, setPackageCount] = useState(0);
+  const [bookingCount, setBookingCount] = useState(0);
+  const [destinationCount, setDestinationCount] = useState(0);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -29,15 +33,33 @@ function Dashboard() {
   }, [navigate]);
 
   useEffect(() => {
-    const fetchUserCount = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5001/api/users-count', { withCredentials: true });
-        setUserCount(response.data.count);
+        setIsLoading(true);
+        // Fetch user count
+        const userResponse = await axios.get('http://localhost:5001/api/users-count', { withCredentials: true });
+        setUserCount(userResponse.data.count || 0);
+
+        // Fetch packages count (aranzhmanet)
+        const packagesResponse = await axios.get('http://localhost:5001/api/aranzhmanet', { withCredentials: true });
+        setPackageCount(Array.isArray(packagesResponse.data) ? packagesResponse.data.length : 0);
+
+        // Fetch bookings count (purchases)
+        const purchasesResponse = await axios.get('http://localhost:5001/api/purchases', { withCredentials: true });
+        setBookingCount(Array.isArray(purchasesResponse.data) ? purchasesResponse.data.length : 0);
+
+        // Fetch approved destinations count (purchases with adminApproved = true)
+        const approvedPurchases = Array.isArray(purchasesResponse.data) 
+          ? purchasesResponse.data.filter(p => p.adminApproved === true)
+          : [];
+        setDestinationCount(approvedPurchases.length);
       } catch (error) {
-        console.error('Error fetching user count:', error);
+        console.error('Error fetching dashboard data:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
-    fetchUserCount();
+    fetchData();
   }, []);
 
   if (!isLoggedIn) {
@@ -80,7 +102,13 @@ function Dashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-white/80 text-sm font-medium">Total Users</p>
-                  <p className="text-4xl font-bold mt-2">{userCount}</p>
+                  {isLoading ? (
+                    <div className="mt-2">
+                      <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                    </div>
+                  ) : (
+                    <p className="text-4xl font-bold mt-2">{userCount}</p>
+                  )}
                 </div>
                 <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center">
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,7 +124,13 @@ function Dashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-white/80 text-sm font-medium">Packages</p>
-                  <p className="text-4xl font-bold mt-2">24</p>
+                  {isLoading ? (
+                    <div className="mt-2">
+                      <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                    </div>
+                  ) : (
+                    <p className="text-4xl font-bold mt-2">{packageCount}</p>
+                  )}
                 </div>
                 <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center">
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,8 +145,14 @@ function Dashboard() {
               style={{ background: 'linear-gradient(135deg, #1e3a5f, #2d5a87)' }}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-white/80 text-sm font-medium">Destinations</p>
-                  <p className="text-4xl font-bold mt-2">12</p>
+                  <p className="text-white/80 text-sm font-medium">Approved Destinations</p>
+                  {isLoading ? (
+                    <div className="mt-2">
+                      <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                    </div>
+                  ) : (
+                    <p className="text-4xl font-bold mt-2">{destinationCount}</p>
+                  )}
                 </div>
                 <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center">
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -120,15 +160,21 @@ function Dashboard() {
                   </svg>
                 </div>
               </div>
-              <p className="text-white/60 text-sm mt-4">Popular destinations</p>
+              <p className="text-white/60 text-sm mt-4">Approved by admin</p>
             </div>
 
             <div className="rounded-2xl p-6 text-white shadow-lg transform hover:scale-105 transition-all duration-300"
               style={{ background: 'linear-gradient(135deg, #10b981, #34d399)' }}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-white/80 text-sm font-medium">Bookings</p>
-                  <p className="text-4xl font-bold mt-2">156</p>
+                  <p className="text-white/80 text-sm font-medium">Total Purchases</p>
+                  {isLoading ? (
+                    <div className="mt-2">
+                      <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                    </div>
+                  ) : (
+                    <p className="text-4xl font-bold mt-2">{bookingCount}</p>
+                  )}
                 </div>
                 <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center">
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,7 +182,7 @@ function Dashboard() {
                   </svg>
                 </div>
               </div>
-              <p className="text-white/60 text-sm mt-4">This month</p>
+              <p className="text-white/60 text-sm mt-4">All bookings</p>
             </div>
           </div>
 
@@ -144,22 +190,28 @@ function Dashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
             <div className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
               <h2 className="text-xl font-bold text-gray-800 mb-6">Quick Actions</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {[
                   { label: 'Add Package', icon: '📦', to: '/dashboard/AddAranzhmanet', color: '#f97316' },
                   { label: 'Add User', icon: '👤', to: '/dashboard/AddUser', color: '#0ea5e9' },
                   { label: 'Add Country', icon: '🌍', to: '/dashboard/AddShtetin', color: '#1e3a5f' },
+                  { label: 'Add Airport', icon: '✈️', to: '/dashboard/AddAirport', color: '#8b5cf6' },
+                  { label: 'Add Bus Station', icon: '🚌', to: '/dashboard/AddBusStation', color: '#ec4899' },
                   { label: 'View Logs', icon: '📋', to: '/dashboard/Logs', color: '#10b981' },
+                  { label: 'Turqi Table', icon: '📊', to: '/dashboard/turqitable', color: '#f59e0b' },
+                  { label: 'Dubai Table', icon: '📊', to: '/dashboard/dubaitable', color: '#06b6d4' },
+                  { label: 'Maqedoni Prices', icon: '📊', to: '/dashboard/MaqedoniPricesTable', color: '#14b8a6' },
+                  { label: 'Home Slider', icon: '🖼️', to: '/dashboard/SliderManage', color: '#6366f1' },
                 ].map((action, idx) => (
-                  <a
+                  <Link
                     key={idx}
-                    href={action.to}
+                    to={action.to}
                     className="flex flex-col items-center p-4 rounded-xl hover:shadow-lg transition-all duration-300 border-2 border-transparent hover:border-gray-200"
                     style={{ background: `${action.color}10` }}
                   >
                     <span className="text-3xl mb-2">{action.icon}</span>
-                    <span className="text-sm font-medium text-gray-700">{action.label}</span>
-                  </a>
+                    <span className="text-sm font-medium text-gray-700 text-center">{action.label}</span>
+                  </Link>
                 ))}
               </div>
             </div>
