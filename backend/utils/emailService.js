@@ -265,9 +265,50 @@ const sendTravelDocumentEmail = async (user, purchase, packageDetails) => {
   }
 };
 
+// Send refund confirmation email
+const sendRefundConfirmationEmail = async (user, purchase, packageDetails, refund) => {
+  try {
+    const mailOptions = {
+      from: process.env.EMAIL_USER || 'travelbani48@gmail.com',
+      to: user.email,
+      subject: 'Rimbursimi u krye me sukses! - TravelApp',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #1e3a5f;">Rimbursimi u krye me sukses!</h2>
+          <p>Përshëndetje <strong>${user.firstName} ${user.lastName}</strong>,</p>
+          <p>Rimbursimi për rezervimin tuaj është procesuar me sukses.</p>
+          
+          <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #2d5a87; margin-top: 0;">Detajet e rimbursimit:</h3>
+            <p><strong>Paketa:</strong> ${packageDetails.titulli || 'N/A'}</p>
+            <p><strong>Destinacioni:</strong> ${packageDetails.shteti || 'N/A'}</p>
+            <p><strong>Shuma e rimbursuar:</strong> €${parseFloat(purchase.amount).toFixed(2)}</p>
+            <p><strong>Status i rimbursimit:</strong> ${refund.status}</p>
+            <p><strong>ID e rimbursimit:</strong> ${refund.id}</p>
+            <p><strong>Purchase ID:</strong> #${purchase.id}</p>
+          </div>
+          
+          <p>Paratë do të kthehen në kartën tuaj brenda 5-10 ditëve të punës, në varësi të bankës suaj.</p>
+          
+          <p>Nëse keni pyetje, ju lutem na kontaktoni.</p>
+          
+          <p>Me respekt,<br>Ekipi i TravelApp</p>
+        </div>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log(`Refund confirmation email sent to ${user.email}`);
+  } catch (error) {
+    console.error('Error sending refund confirmation email:', error);
+    throw error;
+  }
+};
+
 module.exports = {
   sendPaymentConfirmationEmail,
   sendTravelDocumentEmail,
   generateTravelDocumentPDF,
+  sendRefundConfirmationEmail,
 };
 

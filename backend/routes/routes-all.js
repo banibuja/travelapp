@@ -77,6 +77,7 @@ const {
   verifyPayment,
   approvePurchase,
   rejectPurchase,
+  refundPurchase,
 } = require('../controllers/stripeController');
 
 router.post('/reserveOffer', reserveOffer);
@@ -199,6 +200,7 @@ router.get('/purchases/user/:userId', isAuthenticated, getUserPurchases);
 router.get('/purchases', isAuthenticated, getAllPurchases);
 router.put('/purchases/:id/approve', isAuthenticated, approvePurchase);
 router.put('/purchases/:id/reject', isAuthenticated, rejectPurchase);
+router.put('/purchases/:id/refund', isAuthenticated, refundPurchase);
 router.get('/verify-payment', verifyPayment);
 
 module.exports = router;

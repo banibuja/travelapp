@@ -10,6 +10,7 @@ function PurchaseDetails() {
   const [purchase, setPurchase] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     fetchPurchaseDetails();
@@ -35,6 +36,7 @@ function PurchaseDetails() {
       failed: 'bg-red-100 text-red-800 border-red-200',
       cancelled: 'bg-gray-100 text-gray-800 border-gray-200',
       refused: 'bg-red-100 text-red-800 border-red-200',
+      refunded: 'bg-orange-100 text-orange-800 border-orange-200',
     };
     return statusColors[status] || statusColors.pending;
   };
@@ -52,10 +54,31 @@ function PurchaseDetails() {
   const handleReject = async () => {
     try {
       await axios.put(`http://localhost:5001/api/purchases/${id}/reject`, {}, { withCredentials: true });
+      setMessage('Purchase rejected successfully!');
       fetchPurchaseDetails();
+      setTimeout(() => setMessage(''), 3000);
     } catch (error) {
       console.error('Error rejecting purchase:', error);
-      setError('Failed to reject purchase.');
+      setMessage('Failed to reject purchase.');
+      setTimeout(() => setMessage(''), 3000);
+    }
+  };
+
+  const handleRefund = async () => {
+    if (!window.confirm('Are you sure you want to refund this purchase? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      const response = await axios.put(`http://localhost:5001/api/purchases/${id}/refund`, {}, { withCredentials: true });
+      setMessage('Refund processed successfully!');
+      fetchPurchaseDetails();
+      setTimeout(() => setMessage(''), 3000);
+    } catch (error) {
+      console.error('Error refunding purchase:', error);
+      const errorMessage = error.response?.data?.error || 'Failed to process refund.';
+      setMessage(errorMessage);
+      setTimeout(() => setMessage(''), 5000);
     }
   };
 
@@ -145,6 +168,15 @@ function PurchaseDetails() {
               </span>
             </div>
           </div>
+
+          {message && (
+            <div className={`mx-8 mt-6 p-4 rounded-xl text-center font-medium ${message.includes('Error') || message.includes('Failed') 
+              ? 'bg-red-50 text-red-600 border border-red-200'
+              : 'bg-green-50 text-green-600 border border-green-200'
+              }`}>
+              {message}
+            </div>
+          )}
 
           <div className="p-8">
             <div className="grid md:grid-cols-2 gap-8">
@@ -275,27 +307,43 @@ function PurchaseDetails() {
             </div>
 
             {/* Admin Actions */}
-            {(purchase.status === 'pending' || (purchase.status === 'completed' && purchase.adminApproved === null)) && (
-              <div className="mt-8 bg-gray-50 rounded-xl p-6 border border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Admin Actions</h3>
-                <div className="flex space-x-4">
+            <div className="mt-8 bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Admin Actions</h3>
+              <div className="flex flex-wrap gap-4">
+                {(purchase.status === 'pending' || (purchase.status === 'completed' && purchase.adminApproved === null)) && (
+                  <>
+                    <button
+                      onClick={handleApprove}
+                      className="px-6 py-3 rounded-xl text-white font-semibold hover:scale-105 transition-transform"
+                      style={{ background: 'linear-gradient(135deg, #10b981, #34d399)' }}
+                    >
+                      ✓ Approve Purchase
+                    </button>
+                    <button
+                      onClick={handleReject}
+                      className="px-6 py-3 rounded-xl text-white font-semibold hover:scale-105 transition-transform"
+                      style={{ background: 'linear-gradient(135deg, #ef4444, #f87171)' }}
+                    >
+                      ✗ Reject Purchase
+                    </button>
+                  </>
+                )}
+                {(purchase.status === 'completed' || purchase.status === 'refused') && purchase.status !== 'refunded' && purchase.stripePaymentIntentId && (
                   <button
-                    onClick={handleApprove}
+                    onClick={handleRefund}
                     className="px-6 py-3 rounded-xl text-white font-semibold hover:scale-105 transition-transform"
-                    style={{ background: 'linear-gradient(135deg, #10b981, #34d399)' }}
+                    style={{ background: 'linear-gradient(135deg, #f59e0b, #fbbf24)' }}
                   >
-                    ✓ Approve Purchase
+                    💰 Refund Purchase
                   </button>
-                  <button
-                    onClick={handleReject}
-                    className="px-6 py-3 rounded-xl text-white font-semibold hover:scale-105 transition-transform"
-                    style={{ background: 'linear-gradient(135deg, #ef4444, #f87171)' }}
-                  >
-                    ✗ Reject Purchase
-                  </button>
-                </div>
+                )}
+                {purchase.status === 'refunded' && (
+                  <div className="px-6 py-3 rounded-xl bg-gray-200 text-gray-600 font-semibold">
+                    ✓ Already Refunded
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>

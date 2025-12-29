@@ -3,7 +3,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const Purchases = require('../models/purchases');
 const User = require('../models/user');
 const Aranzhmanet = require('../models/Aranzhmanet');
-const { sendPaymentConfirmationEmail, sendTravelDocumentEmail } = require('../utils/emailService');
+const { sendPaymentConfirmationEmail, sendTravelDocumentEmail, sendRefundConfirmationEmail } = require('../utils/emailService');
 
 // Create Stripe Checkout Session
 const createCheckoutSession = async (req, res) => {
@@ -418,6 +418,88 @@ const rejectPurchase = async (req, res) => {
   }
 };
 
+// Refund purchase (admin only)
+const refundPurchase = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const purchase = await Purchases.findByPk(id, {
+      include: [
+        { model: User, as: 'user' },
+      ],
+    });
+    
+    if (!purchase) {
+      return res.status(404).json({ error: 'Purchase not found' });
+    }
+
+    // Check if purchase is already refunded
+    if (purchase.status === 'refunded') {
+      return res.status(400).json({ error: 'Purchase has already been refunded' });
+    }
+
+    // Check if purchase has a payment intent ID
+    if (!purchase.stripePaymentIntentId) {
+      return res.status(400).json({ error: 'No payment intent found for this purchase. Cannot process refund.' });
+    }
+
+    // Check if purchase status allows refund
+    if (purchase.status !== 'completed' && purchase.status !== 'refused') {
+      return res.status(400).json({ error: 'Only completed or refused purchases can be refunded' });
+    }
+
+    // Create refund in Stripe
+    let refund;
+    try {
+      refund = await stripe.refunds.create({
+        payment_intent: purchase.stripePaymentIntentId,
+        amount: Math.round(parseFloat(purchase.amount) * 100), // Convert to cents
+        reason: 'requested_by_customer',
+      });
+    } catch (stripeError) {
+      console.error('Stripe refund error:', stripeError);
+      return res.status(500).json({ 
+        error: 'Failed to process refund with Stripe', 
+        details: stripeError.message 
+      });
+    }
+
+    // Update purchase status
+    await purchase.update({
+      status: 'refunded',
+      adminApproved: false, // Reset admin approval on refund
+    });
+
+    // Send refund confirmation email
+    if (purchase.user && purchase.user.email) {
+      try {
+        const packageDetails = purchase.packageDetails 
+          ? (typeof purchase.packageDetails === 'string' 
+              ? JSON.parse(purchase.packageDetails) 
+              : purchase.packageDetails)
+          : {};
+
+        await sendRefundConfirmationEmail(purchase.user, purchase, packageDetails, refund);
+      } catch (emailError) {
+        console.error('Error sending refund confirmation email:', emailError);
+        // Don't fail the refund if email fails
+      }
+    }
+
+    res.json({ 
+      message: 'Refund processed successfully', 
+      purchase,
+      refund: {
+        id: refund.id,
+        amount: refund.amount / 100, // Convert back from cents
+        status: refund.status,
+      }
+    });
+  } catch (error) {
+    console.error('Error refunding purchase:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createCheckoutSession,
   handleWebhook,
@@ -427,5 +509,6 @@ module.exports = {
   verifyPayment,
   approvePurchase,
   rejectPurchase,
+  refundPurchase,
 };
 
