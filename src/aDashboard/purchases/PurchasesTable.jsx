@@ -212,7 +212,7 @@ function PurchasesTable() {
                                 >
                                   Details
                                 </button>
-                                {purchase.status === 'pending' && (
+                                {(purchase.status === 'pending' || (purchase.status === 'completed' && purchase.adminApproved === null)) && (
                                   <>
                                     <button
                                       onClick={() => handleApprove(purchase.id)}

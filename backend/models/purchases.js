@@ -39,7 +39,7 @@ const Purchases = sequelize.define('purchases', {
   },
   adminApproved: {
     type: DataTypes.BOOLEAN,
-    defaultValue: false,
+    defaultValue: null,
     allowNull: true,
   },
   stripePaymentIntentId: {

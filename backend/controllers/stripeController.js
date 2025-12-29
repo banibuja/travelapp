@@ -3,6 +3,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const Purchases = require('../models/purchases');
 const User = require('../models/user');
 const Aranzhmanet = require('../models/Aranzhmanet');
+const { sendPaymentConfirmationEmail, sendTravelDocumentEmail } = require('../utils/emailService');
 
 // Create Stripe Checkout Session
 const createCheckoutSession = async (req, res) => {
@@ -30,6 +31,7 @@ const createCheckoutSession = async (req, res) => {
       amount: parseFloat(packageDetails.cmimi),
       currency: 'eur',
       status: 'pending',
+      adminApproved: null, // Explicitly set to null, not false
       packageDetails: JSON.stringify(packageDetailsWithoutImage),
     });
 
@@ -107,14 +109,52 @@ const handleWebhook = async (req, res) => {
       const session = event.data.object;
       const purchaseId = session.metadata.purchaseId;
 
+      console.log('Webhook received: checkout.session.completed');
+      console.log('Purchase ID from metadata:', purchaseId);
+
       if (purchaseId) {
-        await Purchases.update(
-          {
+        const purchase = await Purchases.findByPk(purchaseId, {
+          include: [
+            { model: User, as: 'user' },
+          ],
+        });
+
+        if (purchase) {
+          console.log('Purchase found:', purchase.id);
+          console.log('User found:', purchase.user ? `${purchase.user.firstName} ${purchase.user.lastName} (${purchase.user.email})` : 'NO USER');
+
+          await purchase.update({
             status: 'completed',
             stripePaymentIntentId: session.payment_intent,
-          },
-          { where: { id: purchaseId } }
-        );
+            // Don't touch adminApproved - it should remain null until admin acts
+          });
+
+          // Send payment confirmation email
+          if (purchase.user && purchase.user.email) {
+            try {
+              const packageDetails = purchase.packageDetails 
+                ? (typeof purchase.packageDetails === 'string' 
+                    ? JSON.parse(purchase.packageDetails) 
+                    : purchase.packageDetails)
+                : {};
+
+              console.log('Attempting to send payment confirmation email to:', purchase.user.email);
+              await sendPaymentConfirmationEmail(purchase.user, purchase, packageDetails);
+              console.log('Payment confirmation email sent successfully');
+            } catch (emailError) {
+              console.error('Error sending payment confirmation email:', emailError);
+              console.error('Error stack:', emailError.stack);
+              // Don't fail the webhook if email fails
+            }
+          } else {
+            console.error('Cannot send email: User or user email is missing');
+            console.error('Purchase user:', purchase.user);
+          }
+        } else {
+          console.error('Purchase not found with ID:', purchaseId);
+        }
+      } else {
+        console.error('No purchase ID in session metadata');
       }
       break;
 
@@ -232,14 +272,52 @@ const verifyPayment = async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
     const purchase = await Purchases.findOne({
       where: { stripeSessionId: sessionId },
+      include: [
+        { model: User, as: 'user' },
+      ],
     });
 
     if (!purchase) {
       return res.status(404).json({ error: 'Purchase not found' });
     }
 
+    const isPaid = session.payment_status === 'paid';
+    const wasPending = purchase.status === 'pending';
+    const shouldUpdateStatus = isPaid && wasPending;
+
+    // Update status ONLY if payment is paid AND purchase was still pending
+    // Don't update if already completed or if admin has already approved/rejected
+    if (shouldUpdateStatus) {
+      await purchase.update({
+        status: 'completed',
+        stripePaymentIntentId: session.payment_intent,
+        // Don't touch adminApproved - it should remain null until admin acts
+      });
+
+      // Send payment confirmation email if webhook didn't send it
+      // Only send if status was pending (meaning webhook might not have fired)
+      if (purchase.user && purchase.user.email) {
+        try {
+          const packageDetails = purchase.packageDetails 
+            ? (typeof purchase.packageDetails === 'string' 
+                ? JSON.parse(purchase.packageDetails) 
+                : purchase.packageDetails)
+            : {};
+
+          console.log('Sending payment confirmation email from verifyPayment endpoint');
+          await sendPaymentConfirmationEmail(purchase.user, purchase, packageDetails);
+        } catch (emailError) {
+          console.error('Error sending payment confirmation email from verifyPayment:', emailError);
+          // Don't fail the verification if email fails
+        }
+      }
+    }
+
+    // Reload purchase to get updated status
+    await purchase.reload();
+
     res.json({
-      status: session.payment_status === 'paid' ? 'completed' : purchase.status,
+      status: isPaid ? 'completed' : purchase.status,
       session: {
         payment_status: session.payment_status,
         amount_total: session.amount_total,
@@ -248,6 +326,7 @@ const verifyPayment = async (req, res) => {
         id: purchase.id,
         status: purchase.status,
         amount: purchase.amount,
+        adminApproved: purchase.adminApproved,
       },
     });
   } catch (error) {
@@ -260,7 +339,11 @@ const verifyPayment = async (req, res) => {
 const approvePurchase = async (req, res) => {
   try {
     const { id } = req.params;
-    const purchase = await Purchases.findByPk(id);
+    const purchase = await Purchases.findByPk(id, {
+      include: [
+        { model: User, as: 'user' },
+      ],
+    });
     
     if (!purchase) {
       return res.status(404).json({ error: 'Purchase not found' });
@@ -270,6 +353,41 @@ const approvePurchase = async (req, res) => {
       adminApproved: true,
       status: 'completed',
     });
+
+    // Send travel document email with PDF
+    try {
+      const packageDetails = purchase.packageDetails 
+        ? (typeof purchase.packageDetails === 'string' 
+            ? JSON.parse(purchase.packageDetails) 
+            : purchase.packageDetails)
+        : {};
+
+      // Fetch airport/bus station info if needed
+      if (purchase.aranzhmaniId) {
+        const Airports = require('../models/airports');
+        const BusStations = require('../models/busStations');
+        
+        const aranzhmanet = await Aranzhmanet.findByPk(purchase.aranzhmaniId, {
+          include: [
+            { model: Airports, attributes: ['emri', 'akronimi'] },
+            { model: BusStations, attributes: ['emri', 'adresa'] },
+          ],
+        });
+
+        if (aranzhmanet) {
+          if (packageDetails.llojiTransportit === 'plane' && aranzhmanet.airport) {
+            packageDetails.airport = `${aranzhmanet.airport.emri} (${aranzhmanet.airport.akronimi})`;
+          } else if (packageDetails.llojiTransportit === 'bus' && aranzhmanet.busStation) {
+            packageDetails.busStation = aranzhmanet.busStation.emri;
+          }
+        }
+      }
+
+      await sendTravelDocumentEmail(purchase.user, purchase, packageDetails);
+    } catch (emailError) {
+      console.error('Error sending travel document email:', emailError);
+      // Don't fail the approval if email fails
+    }
 
     res.json({ message: 'Purchase approved successfully', purchase });
   } catch (error) {

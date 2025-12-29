@@ -275,7 +275,7 @@ function PurchaseDetails() {
             </div>
 
             {/* Admin Actions */}
-            {purchase.status === 'pending' && (
+            {(purchase.status === 'pending' || (purchase.status === 'completed' && purchase.adminApproved === null)) && (
               <div className="mt-8 bg-gray-50 rounded-xl p-6 border border-gray-200">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Admin Actions</h3>
                 <div className="flex space-x-4">
