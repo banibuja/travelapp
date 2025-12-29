@@ -16,12 +16,15 @@ function AddAranzhmanet() {
     sherbimi: '',
     dataNisjes: '',
     dataKthimit: '',
-    airportId: '1',
+    airportId: '',
+    busStationId: '',
     rating: '',
+    llojiTransportit: '',
   });
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [airports, setAirports] = useState([]);
+  const [busStations, setBusStations] = useState([]);
   const [shtetet, setShtetet] = useState([]);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -30,22 +33,59 @@ function AddAranzhmanet() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [shtetResponse, airportResponse] = await Promise.all([
-          axios.get('http://localhost:5001/api/shtetet', { withCredentials: true }),
-          axios.get('http://localhost:5001/api/airports', { withCredentials: true })
-        ]);
+        const shtetResponse = await axios.get('http://localhost:5001/api/shtetet', { withCredentials: true });
         setShtetet(shtetResponse.data);
-        setAirports(airportResponse.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching countries:', error);
       }
     };
     fetchData();
   }, []);
 
+  // Fetch airports when country changes
+  useEffect(() => {
+    const fetchAirportsByCountry = async () => {
+      if (formData.shtetiId) {
+        try {
+          const response = await axios.get(`http://localhost:5001/api/airports/by-shteti/${formData.shtetiId}`, { withCredentials: true });
+          setAirports(response.data);
+        } catch (error) {
+          console.error('Error fetching airports:', error);
+          setAirports([]);
+        }
+      } else {
+        setAirports([]);
+      }
+    };
+    fetchAirportsByCountry();
+  }, [formData.shtetiId]);
+
+  // Fetch bus stations when country changes
+  useEffect(() => {
+    const fetchBusStationsByCountry = async () => {
+      if (formData.shtetiId) {
+        try {
+          const response = await axios.get(`http://localhost:5001/api/bus-stations/by-shteti/${formData.shtetiId}`, { withCredentials: true });
+          setBusStations(response.data);
+        } catch (error) {
+          console.error('Error fetching bus stations:', error);
+          setBusStations([]);
+        }
+      } else {
+        setBusStations([]);
+      }
+    };
+    fetchBusStationsByCountry();
+  }, [formData.shtetiId]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    // Reset airportId and busStationId when country changes
+    if (name === 'shtetiId') {
+      setFormData({ ...formData, [name]: value, airportId: '', busStationId: '' });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleImageChange = (e) => {
@@ -83,7 +123,8 @@ function AddAranzhmanet() {
           const submitData = {
             ...formData,
             shtetiId: formData.shtetiId ? parseInt(formData.shtetiId) : null,
-            airportId: formData.airportId ? parseInt(formData.airportId) : null,
+            airportId: formData.llojiTransportit === 'plane' && formData.airportId ? parseInt(formData.airportId) : null,
+            busStationId: formData.llojiTransportit === 'bus' && formData.busStationId ? parseInt(formData.busStationId) : null,
             nrPersonave: formData.nrPersonave ? parseInt(formData.nrPersonave) : null,
             nrNeteve: formData.nrNeteve ? parseInt(formData.nrNeteve) : null,
             cmimi: formData.cmimi ? parseFloat(formData.cmimi) : null,
@@ -110,7 +151,8 @@ function AddAranzhmanet() {
         const submitData = {
           ...formData,
           shtetiId: formData.shtetiId ? parseInt(formData.shtetiId) : null,
-          airportId: formData.airportId ? parseInt(formData.airportId) : null,
+          airportId: formData.llojiTransportit === 'plane' && formData.airportId ? parseInt(formData.airportId) : null,
+          busStationId: formData.llojiTransportit === 'bus' && formData.busStationId ? parseInt(formData.busStationId) : null,
           nrPersonave: formData.nrPersonave ? parseInt(formData.nrPersonave) : null,
           nrNeteve: formData.nrNeteve ? parseInt(formData.nrNeteve) : null,
           cmimi: formData.cmimi ? parseFloat(formData.cmimi) : null,
@@ -237,17 +279,68 @@ function AddAranzhmanet() {
                     style={{ background: '#f8fafc' }} placeholder="All Inclusive, BB, HB" required />
                 </div>
 
-                {/* Airport */}
+                {/* Transport Type */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Airport</label>
-                  <select name="airportId" onChange={handleChange}
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Transport Type</label>
+                  <select name="llojiTransportit" value={formData.llojiTransportit} onChange={(e) => {
+                    handleChange(e);
+                    // Reset airportId and busStationId when transport type changes
+                    setFormData({ ...formData, llojiTransportit: e.target.value, airportId: '', busStationId: '' });
+                  }}
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500 transition-all appearance-none"
                     style={{ background: '#f8fafc' }}>
-                    {airports.map((airport) => (
-                      <option key={airport.id} value={airport.id}>{airport.emri} ({airport.akronimi})</option>
-                    ))}
+                    <option value="">Select transport type</option>
+                    <option value="plane">Plane ✈️</option>
+                    <option value="bus">Bus 🚌</option>
+                    <option value="train">Train 🚂</option>
                   </select>
                 </div>
+
+                {/* Airport - Only show if transport type is plane */}
+                {formData.llojiTransportit === 'plane' && (
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Airport <span className="text-red-500">*</span></label>
+                    <select name="airportId" value={formData.airportId} onChange={handleChange}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500 transition-all appearance-none"
+                      style={{ background: '#f8fafc' }}
+                      required={formData.llojiTransportit === 'plane'}>
+                      <option value="">{formData.shtetiId ? 'Select airport' : 'Select country first'}</option>
+                      {airports.length > 0 ? (
+                        airports.map((airport) => (
+                          <option key={airport.id} value={airport.id}>{airport.emri} ({airport.akronimi})</option>
+                        ))
+                      ) : formData.shtetiId ? (
+                        <option value="" disabled>No airports found for this country</option>
+                      ) : null}
+                    </select>
+                    {formData.shtetiId && airports.length === 0 && (
+                      <p className="text-xs text-gray-500 mt-1">No airports available for this country. Add airports first.</p>
+                    )}
+                  </div>
+                )}
+
+                {/* Bus Station - Only show if transport type is bus */}
+                {formData.llojiTransportit === 'bus' && (
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Bus Station <span className="text-red-500">*</span></label>
+                    <select name="busStationId" value={formData.busStationId || ''} onChange={handleChange}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500 transition-all appearance-none"
+                      style={{ background: '#f8fafc' }}
+                      required={formData.llojiTransportit === 'bus'}>
+                      <option value="">{formData.shtetiId ? 'Select bus station' : 'Select country first'}</option>
+                      {busStations.length > 0 ? (
+                        busStations.map((station) => (
+                          <option key={station.id} value={station.id}>{station.emri} {station.adresa && `- ${station.adresa}`}</option>
+                        ))
+                      ) : formData.shtetiId ? (
+                        <option value="" disabled>No bus stations found for this country</option>
+                      ) : null}
+                    </select>
+                    {formData.shtetiId && busStations.length === 0 && (
+                      <p className="text-xs text-gray-500 mt-1">No bus stations available for this country. Add bus stations first.</p>
+                    )}
+                  </div>
+                )}
 
                 {/* Rating */}
                 <div>

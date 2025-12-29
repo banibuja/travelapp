@@ -42,12 +42,14 @@ const getAllAranzhmanet = async (req, res) => {
           dataNisjes: aranzhmani.dataNisjes,
           dataKthimit: aranzhmani.dataKthimit,
           airportId: aranzhmani.airportId,
-          airport: `${aranzhmani.airport.emri} (${aranzhmani.airport.akronimi})`,
+          airport: aranzhmani.airport ? `${aranzhmani.airport.emri} (${aranzhmani.airport.akronimi})` : null,
+          busStationId: aranzhmani.busStationId,
           cmimi: aranzhmani.cmimi,
           rating: aranzhmani.rating,
           shtetiId: aranzhmani.shtetiId,
           shteti: aranzhmani.shtetet.emri,
-          imageBase64: aranzhmani.imageBase64
+          imageBase64: aranzhmani.imageBase64,
+          llojiTransportit: aranzhmani.llojiTransportit
         }
       ))
     );
@@ -73,7 +75,7 @@ const getAllAranzhmanet = async (req, res) => {
 // };
 
 const addAranzhmanet = async (req, res) => {
-  const { titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airportId, cmimi, rating, shtetiId, imageBase64 } = req.body;
+  const { titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airportId, busStationId, cmimi, rating, shtetiId, imageBase64, llojiTransportit } = req.body;
   
   // Validate required fields
   if (!shtetiId || shtetiId === '' || isNaN(parseInt(shtetiId))) {
@@ -89,11 +91,13 @@ const addAranzhmanet = async (req, res) => {
       sherbimi, 
       dataNisjes, 
       dataKthimit, 
-      airportId: parseInt(airportId) || null, 
+      airportId: airportId ? parseInt(airportId) : null, 
+      busStationId: busStationId ? parseInt(busStationId) : null,
       cmimi: parseFloat(cmimi) || null, 
       rating: parseInt(rating) || null, 
       shtetiId: parseInt(shtetiId),
       imageBase64: imageBase64 || null,
+      llojiTransportit: llojiTransportit || null,
     });
 
     // Try to send email, but don't fail if it doesn't work
@@ -162,7 +166,7 @@ const deleteAranzhmanet = async (req, res) => {
 const updateAranzhmani = async (req, res) => {
   try {
     const { id } = req.params;
-    const { titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airport, cmimi, rating, shteti, imageBase64 } = req.body;
+    const { titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airport, airportId, busStationId, cmimi, rating, shteti, imageBase64, llojiTransportit } = req.body;
     const Aranzhmani = await Aranzhmanet.findByPk(id);
     if (!Aranzhmani) {
       return res.status(404).json({ error: 'Aranzhmani not found' });
@@ -179,8 +183,17 @@ const updateAranzhmani = async (req, res) => {
     Aranzhmani.shteti = shteti !== undefined ? shteti : Aranzhmani.shteti;
     Aranzhmani.cmimi = cmimi !== undefined ? cmimi : Aranzhmani.cmimi;
     Aranzhmani.sherbimi = sherbimi !== undefined ? sherbimi : Aranzhmani.sherbimi;
+    if (airportId !== undefined) {
+      Aranzhmani.airportId = airportId ? parseInt(airportId) : null;
+    }
+    if (busStationId !== undefined) {
+      Aranzhmani.busStationId = busStationId ? parseInt(busStationId) : null;
+    }
     if (imageBase64 !== undefined) {
       Aranzhmani.imageBase64 = imageBase64;
+    }
+    if (llojiTransportit !== undefined) {
+      Aranzhmani.llojiTransportit = llojiTransportit;
     }
 
     await Aranzhmani.save();
@@ -202,13 +215,15 @@ const updateAranzhmani = async (req, res) => {
       sherbimi: updatedAranzhmani.sherbimi,
       dataNisjes: updatedAranzhmani.dataNisjes,
       dataKthimit: updatedAranzhmani.dataKthimit,
-      airportId: updatedAranzhmani.airportId,
-      airport: `${updatedAranzhmani.airport.emri} (${updatedAranzhmani.airport.akronimi})`,
-      cmimi: updatedAranzhmani.cmimi,
-      rating: updatedAranzhmani.rating,
-      shtetiId: updatedAranzhmani.shtetiId,
-      shteti: updatedAranzhmani.shtetet.emri,
-      imageBase64: updatedAranzhmani.imageBase64,
+          airportId: updatedAranzhmani.airportId,
+          airport: updatedAranzhmani.airport ? `${updatedAranzhmani.airport.emri} (${updatedAranzhmani.airport.akronimi})` : null,
+          busStationId: updatedAranzhmani.busStationId,
+          cmimi: updatedAranzhmani.cmimi,
+          rating: updatedAranzhmani.rating,
+          shtetiId: updatedAranzhmani.shtetiId,
+          shteti: updatedAranzhmani.shtetet.emri,
+          imageBase64: updatedAranzhmani.imageBase64,
+          llojiTransportit: updatedAranzhmani.llojiTransportit,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });

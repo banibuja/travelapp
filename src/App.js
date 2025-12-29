@@ -44,6 +44,8 @@ import ManageAirports from './aDashboard/airports/ManageAirports';
 import AddShtetin from './aDashboard/shtetet/AddShtetin';
 import ManageShtetet from './aDashboard/shtetet/ManageShtetet';
 
+import AddBusStation from './aDashboard/busStations/AddBusStation';
+import ManageBusStations from './aDashboard/busStations/ManageBusStations';
 
 import MaqedoniPricesTable from './aDashboard/tables/MaqedoniPricesTable';
 
@@ -104,6 +106,9 @@ const App = () => {
 
           <Route path="/dashboard/AddShtetin" element={<ProtectedRoute><AddShtetin /></ProtectedRoute>} />
           <Route path="/dashboard/ManageShtetet" element={<ProtectedRoute><ManageShtetet /></ProtectedRoute>} />
+
+          <Route path="/dashboard/AddBusStation" element={<ProtectedRoute><AddBusStation /></ProtectedRoute>} />
+          <Route path="/dashboard/ManageBusStations" element={<ProtectedRoute><ManageBusStations /></ProtectedRoute>} />
 
           <Route path="/dashboard/AddQytetet" element={<AddQytetet />} />
           <Route path="/dashboard/ManageQytetet" element={<ManageQytetet />} />

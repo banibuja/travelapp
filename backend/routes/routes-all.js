@@ -27,6 +27,9 @@ const {
   getAllAirports, addAirports, deleteAirport, updateAirport, getAirportsByShtetiId
 } = require('../controllers/airportsController');
 const {
+  getAllBusStations, addBusStation, deleteBusStation, updateBusStation, getBusStationsByShtetiId
+} = require('../controllers/busStationsController');
+const {
   getAllShtetet, addShtetet, deleteShtetet, updateShteti
 } = require('../controllers/shtetetController');
 const {
@@ -155,6 +158,13 @@ router.delete('/airports-delete/:id', isAuthenticated, deleteAirport);
 router.put('/airports-update/:id', isAuthenticated, updateAirport);
 router.get('/airports', getAllAirports);
 router.get('/airports/by-shteti/:shtetiId', getAirportsByShtetiId);
+
+// Bus Stations routes
+router.post('/add-bus-stations', isAuthenticated, addBusStation);
+router.delete('/bus-stations-delete/:id', isAuthenticated, deleteBusStation);
+router.put('/bus-stations-update/:id', isAuthenticated, updateBusStation);
+router.get('/bus-stations', getAllBusStations);
+router.get('/bus-stations/by-shteti/:shtetiId', getBusStationsByShtetiId);
 
 router.post('/add-shtetin', addShtetet);
 router.delete('/shtetin-delete/:id', isAuthenticated, deleteShtetet);

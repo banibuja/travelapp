@@ -113,6 +113,7 @@ function ManageAranzhmanet() {
       dataNisjes: item.dataNisjes,
       dataKthimit: item.dataKthimit,
       rating: item.rating,
+      llojiTransportit: item.llojiTransportit || '',
     });
     setEditingImage(null);
     setEditingImagePreview(null);
@@ -186,6 +187,7 @@ function ManageAranzhmanet() {
                   <th className="px-4 py-4 text-left text-xs font-bold text-gray-500 uppercase">Departure</th>
                   <th className="px-4 py-4 text-left text-xs font-bold text-gray-500 uppercase">Return</th>
                   <th className="px-4 py-4 text-left text-xs font-bold text-gray-500 uppercase">Rating</th>
+                  <th className="px-4 py-4 text-left text-xs font-bold text-gray-500 uppercase">Transport</th>
                   <th className="px-4 py-4 text-center text-xs font-bold text-gray-500 uppercase">Actions</th>
                 </tr>
               </thead>
@@ -271,6 +273,24 @@ function ManageAranzhmanet() {
                           className="px-2 py-1 border border-gray-300 rounded-lg text-sm w-16 focus:border-cyan-500 focus:outline-none" />
                       ) : (
                         <span className="text-yellow-500">{'★'.repeat(item.rating)}</span>
+                      )}
+                    </td>
+                    <td className="px-4 py-4">
+                      {editingId === item.id ? (
+                        <select value={updatedFields.llojiTransportit || ''} onChange={(e) => handleEditChange(e, 'llojiTransportit')}
+                          className="px-2 py-1 border border-gray-300 rounded-lg text-sm focus:border-cyan-500 focus:outline-none">
+                          <option value="">Select transport</option>
+                          <option value="plane">Plane ✈️</option>
+                          <option value="bus">Bus 🚌</option>
+                          <option value="train">Train 🚂</option>
+                        </select>
+                      ) : (
+                        <span className="text-gray-600">
+                          {item.llojiTransportit === 'plane' && '✈️ Plane'}
+                          {item.llojiTransportit === 'bus' && '🚌 Bus'}
+                          {item.llojiTransportit === 'train' && '🚂 Train'}
+                          {!item.llojiTransportit && '-'}
+                        </span>
                       )}
                     </td>
                     <td className="px-4 py-4">

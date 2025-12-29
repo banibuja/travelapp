@@ -58,9 +58,18 @@ const Aranzhmanet = sequelize.define('aranzhmanet', {
         model: Airports,
         key: 'id',
       },
+      allowNull: true,
+    },
+    busStationId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
     imageBase64: {
       type: DataTypes.TEXT('long'),
+      allowNull: true,
+    },
+    llojiTransportit: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
   }, {
