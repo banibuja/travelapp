@@ -45,7 +45,7 @@ import AddShtetin from './aDashboard/shtetet/AddShtetin';
 import ManageShtetet from './aDashboard/shtetet/ManageShtetet';
 
 
-//import ManageMaqedoni from './aDashboard/tables/MaqedoniPricesTable';
+import MaqedoniPricesTable from './aDashboard/tables/MaqedoniPricesTable';
 
 import AddQytetet from './aDashboard/qytetet/AddQytetet';
 import ManageQytetet from './aDashboard/qytetet/ManageQytetet';
@@ -81,8 +81,8 @@ const App = () => {
           <Route path="/dashboard/ManageUser" element={<ProtectedRoute><ManageUser /></ProtectedRoute>} />
           <Route path="/dashboard/ManageHomeTable" element={<ProtectedRoute><ManageHomeTable /></ProtectedRoute>} />
           <Route path="/dashboard/GreqiSlider" element={<ProtectedRoute><GreqiSlider /></ProtectedRoute>} />
-          <Route path="/dashboard/TurqiTable" element={<ProtectedRoute><TurqiTable /></ProtectedRoute>} />
-          <Route path="/dashboard/DubaiTable" element={<ProtectedRoute><DubaiTable /></ProtectedRoute>} />
+          <Route path="/dashboard/turqitable" element={<ProtectedRoute><TurqiTable /></ProtectedRoute>} />
+          <Route path="/dashboard/dubaitable" element={<ProtectedRoute><DubaiTable /></ProtectedRoute>} />
           <Route path="/dashboard/SliderManage" element={<ProtectedRoute><SliderManage /></ProtectedRoute>} />
           <Route path="/dashboard/ManageCardsStamboll" element={<ProtectedRoute><ManageCardsStamboll /></ProtectedRoute>} />
           <Route path="/dashboard/HurghadaCards" element={<ProtectedRoute><HurghadaCards /></ProtectedRoute>} />
@@ -94,7 +94,7 @@ const App = () => {
 
           <Route path="/dashboard/Logs" element={<ProtectedRoute><ManageLogs /></ProtectedRoute>} />
           <Route path="/dashboard/SliderBullgari" element={<ProtectedRoute><SliderBullgari /></ProtectedRoute>} />
-
+          <Route path="/dashboard/MaqedoniPricesTable" element={<ProtectedRoute><MaqedoniPricesTable /></ProtectedRoute>} />
 
           <Route path="/dashboard/AddAranzhmanet" element={<ProtectedRoute><AddAranzhmanet /></ProtectedRoute>} />
           <Route path="/dashboard/ManageAranzhmanet" element={<ProtectedRoute><ManageAranzhmanet /></ProtectedRoute>} />

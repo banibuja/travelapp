@@ -59,6 +59,10 @@ const Aranzhmanet = sequelize.define('aranzhmanet', {
         key: 'id',
       },
     },
+    imageBase64: {
+      type: DataTypes.TEXT('long'),
+      allowNull: true,
+    },
   }, {
     tableName: 'aranzhmanet',
     timestamps: false,

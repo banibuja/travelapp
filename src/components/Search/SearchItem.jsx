@@ -39,6 +39,7 @@ const SearchItem = ({ data }) => {
     sherbimi: data.sherbimi,
     shteti: data.shteti,
     titulli: data.titulli,
+    imageBase64: data.imageBase64,
   };
 
   const handleReservation = async () => {
@@ -61,12 +62,25 @@ const SearchItem = ({ data }) => {
     return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
   }
 
+  // Get image source - use base64 if available, otherwise use placeholder
+  const getImageSrc = () => {
+    if (item.imageBase64) {
+      return `data:image/jpeg;base64,${item.imageBase64}`;
+    }
+    // Fallback to placeholder image if no image is uploaded
+    return "https://diq6z0fqx8xxr.cloudfront.net/images/product/1/8/0/2/2/213950/the_byzantium_-_sultanahmet__istanbul_213950.jpg?width=1024&height=768&mode=min";
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-xs w-full">
       <img
-        src="https://diq6z0fqx8xxr.cloudfront.net/images/product/1/8/0/2/2/213950/the_byzantium_-_sultanahmet__istanbul_213950.jpg?width=1024&height=768&mode=min"
-        alt="Hotel"
+        src={getImageSrc()}
+        alt={item.titulli || "Hotel"}
         className="w-full h-48 object-cover"
+        onError={(e) => {
+          // Fallback to placeholder if image fails to load
+          e.target.src = "https://diq6z0fqx8xxr.cloudfront.net/images/product/1/8/0/2/2/213950/the_byzantium_-_sultanahmet__istanbul_213950.jpg?width=1024&height=768&mode=min";
+        }}
       />
       <div className="p-4 border border-black border-t-0 rounded-bl-lg rounded-br-lg">
         <div className="flex justify-between items-center">

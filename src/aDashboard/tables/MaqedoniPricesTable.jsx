@@ -3,56 +3,56 @@ import axios from 'axios';
 import Menu from '../Menu';
 import Modal from '../Modal';
 
-function DubaiPricesTable() {
+function MaqedoniPricesTable() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [dubaiPrices, setDubaiPrices] = useState([]);
+  const [prices, setPrices] = useState([]);
   const [message, setMessage] = useState('');
   const [editingId, setEditingId] = useState(null);
   const [updatedFields, setUpdatedFields] = useState({});
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newItem, setNewItem] = useState({ nisja: '', tipi_dhomes: '', udhetimi: '', cmimi: '', sherbimi: '' });
+  const [newItem, setNewItem] = useState({ lloji_dhomes: '', sherbimi: '', gjat_sezones: '', jasht_sezones: '' });
 
   useEffect(() => {
-    axios.get('http://localhost:5001/api/dubai-price', { withCredentials: true })
-      .then(res => setDubaiPrices(res.data))
+    axios.get('http://localhost:5001/api/maqedoni-price', { withCredentials: true })
+      .then(res => setPrices(res.data))
       .catch(err => console.error('Error:', err));
   }, []);
 
   const deleteItem = async (id) => {
     try {
-      await axios.delete(`http://localhost:5001/api/dubai-prices-delete/${id}`, { withCredentials: true });
-      setDubaiPrices(dubaiPrices.filter(item => item.id !== id));
-      setMessage('Dubai price deleted successfully!');
+      await axios.delete(`http://localhost:5001/api/maqedoni-prices-delete/${id}`, { withCredentials: true });
+      setPrices(prices.filter(item => item.id !== id));
+      setMessage('Price deleted successfully!');
       setTimeout(() => setMessage(''), 3000);
-    } catch { setMessage('Error deleting dubai price.'); }
+    } catch { setMessage('Error deleting price.'); }
   };
 
   const handleEditChange = (e, field) => setUpdatedFields({ ...updatedFields, [field]: e.target.value });
 
   const updateItem = async (id) => {
     try {
-      const res = await axios.put(`http://localhost:5001/api/dubai-prices-update/${id}`, updatedFields, { withCredentials: true });
-      setDubaiPrices(dubaiPrices.map(item => item.id === id ? res.data : item));
+      const res = await axios.put(`http://localhost:5001/api/maqedoni-prices-update/${id}`, updatedFields, { withCredentials: true });
+      setPrices(prices.map(item => item.id === id ? res.data : item));
       setEditingId(null);
-      setMessage('Dubai price updated successfully!');
+      setMessage('Price updated successfully!');
       setTimeout(() => setMessage(''), 3000);
-    } catch { setMessage('Error updating dubai price.'); }
+    } catch { setMessage('Error updating price.'); }
   };
 
   const startEditing = (item) => {
     setEditingId(item.id);
-    setUpdatedFields({ nisja: item.nisja, tipi_dhomes: item.tipi_dhomes, udhetimi: item.udhetimi, cmimi: item.cmimi, sherbimi: item.sherbimi });
+    setUpdatedFields({ lloji_dhomes: item.lloji_dhomes, sherbimi: item.sherbimi, gjat_sezones: item.gjat_sezones, jasht_sezones: item.jasht_sezones });
   };
 
   const addItem = async () => {
     try {
-      const res = await axios.post('http://localhost:5001/api/add-dubai-price', newItem, { withCredentials: true });
-      setDubaiPrices([...dubaiPrices, res.data.dubaiPrice]);
-      setMessage('Dubai price added successfully!');
-      setNewItem({ nisja: '', tipi_dhomes: '', udhetimi: '', cmimi: '', sherbimi: '' });
+      const res = await axios.post('http://localhost:5001/api/add-maqedoni-price', newItem, { withCredentials: true });
+      setPrices([...prices, res.data.maqedoniPrices]);
+      setMessage('Price added successfully!');
+      setNewItem({ lloji_dhomes: '', sherbimi: '', gjat_sezones: '', jasht_sezones: '' });
       setShowAddForm(false);
       setTimeout(() => setMessage(''), 3000);
-    } catch { setMessage('Error adding dubai price.'); }
+    } catch { setMessage('Error adding price.'); }
   };
 
   return (
@@ -69,8 +69,8 @@ function DubaiPricesTable() {
                   </svg>
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-white">Dubai Prices</h2>
-                  <p className="text-cyan-200 text-sm">{dubaiPrices.length} prices</p>
+                  <h2 className="text-2xl font-bold text-white">Maqedoni Prices</h2>
+                  <p className="text-cyan-200 text-sm">{prices.length} prices</p>
                 </div>
               </div>
               <button onClick={() => setShowAddForm(!showAddForm)}
@@ -90,17 +90,15 @@ function DubaiPricesTable() {
 
           {showAddForm && (
             <div className="mx-8 mt-6 p-6 bg-gray-50 rounded-xl border border-gray-200">
-              <h3 className="font-semibold text-gray-700 mb-4">Add New Dubai Price</h3>
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                <input type="text" placeholder="Departure" value={newItem.nisja} onChange={(e) => setNewItem({ ...newItem, nisja: e.target.value })}
-                  className="px-4 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500" />
-                <input type="text" placeholder="Room Type" value={newItem.tipi_dhomes} onChange={(e) => setNewItem({ ...newItem, tipi_dhomes: e.target.value })}
-                  className="px-4 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500" />
-                <input type="number" placeholder="Trip" value={newItem.udhetimi} onChange={(e) => setNewItem({ ...newItem, udhetimi: e.target.value })}
-                  className="px-4 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500" />
-                <input type="number" placeholder="Price" value={newItem.cmimi} onChange={(e) => setNewItem({ ...newItem, cmimi: e.target.value })}
+              <h3 className="font-semibold text-gray-700 mb-4">Add New Price</h3>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <input type="text" placeholder="Room Type" value={newItem.lloji_dhomes} onChange={(e) => setNewItem({ ...newItem, lloji_dhomes: e.target.value })}
                   className="px-4 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500" />
                 <input type="text" placeholder="Service" value={newItem.sherbimi} onChange={(e) => setNewItem({ ...newItem, sherbimi: e.target.value })}
+                  className="px-4 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500" />
+                <input type="number" placeholder="In Season" value={newItem.gjat_sezones} onChange={(e) => setNewItem({ ...newItem, gjat_sezones: e.target.value })}
+                  className="px-4 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500" />
+                <input type="number" placeholder="Off Season" value={newItem.jasht_sezones} onChange={(e) => setNewItem({ ...newItem, jasht_sezones: e.target.value })}
                   className="px-4 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500" />
               </div>
               <div className="flex justify-end mt-4 space-x-2">
@@ -115,46 +113,39 @@ function DubaiPricesTable() {
               <table className="w-full">
                 <thead>
                   <tr style={{ background: 'linear-gradient(135deg, #f8fafc, #f1f5f9)' }}>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Departure</th>
                     <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Room Type</th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Trip</th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Price</th>
                     <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Service</th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">In Season</th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Off Season</th>
                     <th className="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {dubaiPrices.map((item) => (
+                  {prices.map((item) => (
                     <tr key={item.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-6 py-4">
                         {editingId === item.id ? (
-                          <input type="text" value={updatedFields.nisja} onChange={(e) => handleEditChange(e, 'nisja')}
+                          <input type="text" value={updatedFields.lloji_dhomes} onChange={(e) => handleEditChange(e, 'lloji_dhomes')}
                             className="px-2 py-1 border border-gray-300 rounded-lg text-sm focus:border-cyan-500 focus:outline-none" />
-                        ) : <span className="font-semibold text-gray-800">{item.nisja}</span>}
-                      </td>
-                      <td className="px-6 py-4">
-                        {editingId === item.id ? (
-                          <input type="text" value={updatedFields.tipi_dhomes} onChange={(e) => handleEditChange(e, 'tipi_dhomes')}
-                            className="px-2 py-1 border border-gray-300 rounded-lg text-sm focus:border-cyan-500 focus:outline-none" />
-                        ) : <span className="text-gray-600">{item.tipi_dhomes}</span>}
-                      </td>
-                      <td className="px-6 py-4">
-                        {editingId === item.id ? (
-                          <input type="number" value={updatedFields.udhetimi} onChange={(e) => handleEditChange(e, 'udhetimi')}
-                            className="px-2 py-1 border border-gray-300 rounded-lg text-sm w-20 focus:border-cyan-500 focus:outline-none" />
-                        ) : <span className="text-gray-600">{item.udhetimi}</span>}
-                      </td>
-                      <td className="px-6 py-4">
-                        {editingId === item.id ? (
-                          <input type="number" value={updatedFields.cmimi} onChange={(e) => handleEditChange(e, 'cmimi')}
-                            className="px-2 py-1 border border-gray-300 rounded-lg text-sm w-20 focus:border-cyan-500 focus:outline-none" />
-                        ) : <span className="text-green-600 font-semibold">€{item.cmimi}</span>}
+                        ) : <span className="font-semibold text-gray-800">{item.lloji_dhomes}</span>}
                       </td>
                       <td className="px-6 py-4">
                         {editingId === item.id ? (
                           <input type="text" value={updatedFields.sherbimi} onChange={(e) => handleEditChange(e, 'sherbimi')}
                             className="px-2 py-1 border border-gray-300 rounded-lg text-sm focus:border-cyan-500 focus:outline-none" />
                         ) : <span className="text-gray-600">{item.sherbimi}</span>}
+                      </td>
+                      <td className="px-6 py-4">
+                        {editingId === item.id ? (
+                          <input type="number" value={updatedFields.gjat_sezones} onChange={(e) => handleEditChange(e, 'gjat_sezones')}
+                            className="px-2 py-1 border border-gray-300 rounded-lg text-sm w-20 focus:border-cyan-500 focus:outline-none" />
+                        ) : <span className="text-green-600 font-semibold">€{item.gjat_sezones}</span>}
+                      </td>
+                      <td className="px-6 py-4">
+                        {editingId === item.id ? (
+                          <input type="number" value={updatedFields.jasht_sezones} onChange={(e) => handleEditChange(e, 'jasht_sezones')}
+                            className="px-2 py-1 border border-gray-300 rounded-lg text-sm w-20 focus:border-cyan-500 focus:outline-none" />
+                        ) : <span className="text-green-600 font-semibold">€{item.jasht_sezones}</span>}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-center space-x-2">
@@ -186,7 +177,7 @@ function DubaiPricesTable() {
                 </tbody>
               </table>
             </div>
-            {dubaiPrices.length === 0 && (
+            {prices.length === 0 && (
               <div className="text-center py-12">
                 <p className="text-gray-400 text-lg">No prices found</p>
               </div>
@@ -198,4 +189,5 @@ function DubaiPricesTable() {
   );
 }
 
-export default DubaiPricesTable;
+export default MaqedoniPricesTable;
+
