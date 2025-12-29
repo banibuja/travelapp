@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import SvgIcons from '../icons/svgs';
 
 const SearchItem = ({ data }) => {
-  const [isReserved, setIsReserved] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
@@ -50,12 +49,15 @@ const SearchItem = ({ data }) => {
       return;
     }
 
-    try {
-      await axios.post('http://localhost:5001/api/reserveOffer', { item, userId });
-      setIsReserved(true);
-    } catch (error) {
-      console.error('Gabim gjatë rezervimit:', error);
-    }
+    // Navigate to payment page with package data
+    navigate('/payment', {
+      state: {
+        packageData: {
+          ...item,
+          id: data.id, // Include the aranzhmani ID
+        },
+      },
+    });
   };
 
   function formatDate(dateString) {
@@ -121,15 +123,15 @@ const SearchItem = ({ data }) => {
         </div>
         <div className="mt-4 text-center">
           <button
-            className="bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600"
+            className="bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
             onClick={handleReservation}
-            disabled={isReserved || !isLoggedIn}
+            disabled={!isLoggedIn}
           >
-                {isReserved ? 'E rezervuar' : (isLoggedIn ? 'Rezervo këtë aranzhma...' : (
-                <span onClick={() => navigate('/login', { state: { from: window.location.pathname } })}>
-                    Ju duhet të kyçeni
-                </span>
-                ))}
+            {isLoggedIn ? 'Rezervo këtë aranzhma...' : (
+              <span onClick={() => navigate('/login', { state: { from: window.location.pathname } })}>
+                Ju duhet të kyçeni
+              </span>
+            )}
           </button>
         </div>
       </div>

@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const {
   registerUser, loginUser, getUsers, deleteUser, updateUser, verifyRole, countUsers, registerUserForm, requestPasswordReset, resetPassword
 } = require('../controllers/userController');
@@ -66,6 +67,17 @@ const { abonohu, reserveOffer
 
 const { sendContactEmail
 } = require('../controllers/nodeKontaktForm');
+
+const {
+  createCheckoutSession,
+  handleWebhook,
+  getPurchase,
+  getUserPurchases,
+  getAllPurchases,
+  verifyPayment,
+  approvePurchase,
+  rejectPurchase,
+} = require('../controllers/stripeController');
 
 router.post('/reserveOffer', reserveOffer);
 router.post('/abonohu', abonohu);
@@ -179,5 +191,14 @@ router.get('/qytetet', getAllQytetet);
 router.post('/add-greqi-image', addGreqiImage);
 router.delete('/greqi-image-delete/:id', isAuthenticated, deleteGreqiImage);
 router.get('/greqi-images', getAllGreqiImages);
+
+// Stripe Payment routes
+router.post('/create-checkout-session', createCheckoutSession);
+router.get('/purchase/:id', isAuthenticated, getPurchase);
+router.get('/purchases/user/:userId', isAuthenticated, getUserPurchases);
+router.get('/purchases', isAuthenticated, getAllPurchases);
+router.put('/purchases/:id/approve', isAuthenticated, approvePurchase);
+router.put('/purchases/:id/reject', isAuthenticated, rejectPurchase);
+router.get('/verify-payment', verifyPayment);
 
 module.exports = router;

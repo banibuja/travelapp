@@ -124,6 +124,10 @@ app.use(passport.session());
 //   next();
 // });
 
+// Stripe webhook route (must be before body parser to receive raw body)
+const { handleWebhook } = require('./controllers/stripeController');
+app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), handleWebhook);
+
 // Routes
 app.use('/api', routes);
 

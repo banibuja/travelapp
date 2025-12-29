@@ -79,6 +79,14 @@ function Menu({ isCollapsed, setIsCollapsed }) {
         { to: '/dashboard/ManageBusStations', label: 'Manage Bus Stations' },
       ]
     },
+    {
+      id: 'purchases',
+      label: 'Purchases',
+      icon: 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z',
+      items: [
+        { to: '/dashboard/purchases', label: 'View Purchases' },
+      ]
+    },
   ];
 
   useEffect(() => {

@@ -58,6 +58,13 @@ import SliderBullgari from './aDashboard/tables/SliderBullgari';
 
 import Kontakt from './components/Kontakt/Kontakt';
 
+import Payment from './components/Payment/Payment';
+import PaymentSuccess from './components/Payment/PaymentSuccess';
+import PaymentCancel from './components/Payment/PaymentCancel';
+
+import PurchasesTable from './aDashboard/purchases/PurchasesTable';
+import PurchaseDetails from './aDashboard/purchases/PurchaseDetails';
+
 const App = () => {
 
   const location = useLocation();
@@ -123,6 +130,13 @@ const App = () => {
 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/payment/success" element={<PaymentSuccess />} />
+          <Route path="/payment/cancel" element={<PaymentCancel />} />
+
+          <Route path="/dashboard/purchases" element={<ProtectedRoute><PurchasesTable /></ProtectedRoute>} />
+          <Route path="/dashboard/purchases/:id" element={<ProtectedRoute><PurchaseDetails /></ProtectedRoute>} />
 
         </Routes>
       </div></>
