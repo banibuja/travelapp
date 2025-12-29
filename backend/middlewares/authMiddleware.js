@@ -1,21 +1,26 @@
 const jwt = require('jsonwebtoken');
 
 const isAuthenticated = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ error: "Authentication required." });
+  // Check if user is authenticated via passport session
+  if (req.isAuthenticated && req.isAuthenticated() && req.user) {
+    return next();
   }
 
-  const token = authHeader.split(" ")[1];
-
-  jwt.verify(token, process.env.JWT_SECRET || "supersecret", (err, user) => {
-    if (err) {
-      return res.status(403).json({ error: "Invalid token." });
-    }
-    req.user = user;
-    console.log('Authenticated user:', user);
-    next();
-  });
+  // Fallback: Check for Bearer token in header
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    const token = authHeader.split(" ")[1];
+    jwt.verify(token, process.env.JWT_SECRET || "supersecret", (err, user) => {
+      if (err) {
+        return res.status(403).json({ error: "Invalid token." });
+      }
+      req.user = user;
+      console.log('Authenticated user via JWT:', user);
+      return next();
+    });
+  } else {
+    return res.status(401).json({ error: "Authentication required." });
+  }
 };
 
 function restrictUserRole(req, res, next) {
