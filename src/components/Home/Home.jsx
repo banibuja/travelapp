@@ -293,46 +293,73 @@ function Home() {
     
 <div className="p-4 sm:p-6 md:p-10">
       {/* Recommendations Section */}
-      <div>
-        <div className="flex justify-center items-center space-x-4 mx-auto truncate whitespace-break-spaces text-navy text-lg font-bold tracking-tight sm:text-xl lg:text-2xl">
-          <span>Rekomandimet</span>
+      <div className="mb-12">
+        <div className="flex justify-center items-center mb-8">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800" style={{ 
+            background: 'linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent'
+          }}>
+            Rekomandimet
+          </h2>
         </div>
 
-        <div className="flex flex-wrap justify-center items-center gap-4 mt-6 sm:mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {/* City Break */}
-          <div className="card1 w-full sm:w-1/2 lg:w-1/4 text-center relative rounded-lg overflow-hidden">
+          <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+            <div className="relative h-[280px] sm:h-[320px] overflow-hidden">
             <img
-              className="rounded-lg object-cover w-full h-[200px] sm:h-[250px] md:h-[300px] transition-transform duration-300 ease-in-out transform hover:scale-105"
-              src="https://images.ctfassets.net/pzootm7d2s0g/6HIzcqGhHdAD68aGixaEDl/74d6b3825b8ea872c694b31780c1c919/city_break.jpg"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                src="https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=800&h=600&fit=crop&q=80"
               alt="City Break"
-            />
-            <p className="city font-semibold text-white absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 px-3 py-1 rounded-lg">
-              City Break
-            </p>
+                onError={(e) => {
+                  e.target.src = 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop';
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">City Break</h3>
+                <p className="text-white/90 text-sm">Eksploroni qytetet më të bukura të Evropës</p>
+              </div>
+            </div>
           </div>
 
           {/* Dubai */}
-          <div className="card1 w-full sm:w-1/2 lg:w-1/4 text-center relative rounded-lg overflow-hidden">
+          <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+            <div className="relative h-[280px] sm:h-[320px] overflow-hidden">
             <img
-              className="rounded-lg object-cover w-full h-[200px] sm:h-[250px] md:h-[300px] transition-transform duration-300 ease-in-out transform hover:scale-105"
-              src="https://images.ctfassets.net/pzootm7d2s0g/4lcQvODRZ3CVyLSVreRCFt/98754a0e4909d5fde9c3af9a23309202/dubai_main1w.jpg"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                src="https://images.unsplash.com/photo-1512453979798-5e66b5f9f7e7?w=800&h=600&fit=crop&q=80"
               alt="Dubai"
-            />
-            <p className="city font-semibold text-white absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 px-3 py-1 rounded-lg">
-              Dubai
-            </p>
+                onError={(e) => {
+                  e.target.src = 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop';
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">Dubai</h3>
+                <p className="text-white/90 text-sm">Luks dhe aventurë në qytetin e arit</p>
+              </div>
+            </div>
           </div>
 
           {/* Stamboll */}
-          <div className="card1 w-full sm:w-1/2 lg:w-1/4 text-center relative rounded-lg overflow-hidden">
+          <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 sm:col-span-2 lg:col-span-1">
+            <div className="relative h-[280px] sm:h-[320px] overflow-hidden">
             <img
-              className="rounded-lg object-cover w-full h-[200px] sm:h-[250px] md:h-[300px] transition-transform duration-300 ease-in-out transform hover:scale-105"
-              src="https://images.ctfassets.net/pzootm7d2s0g/11X8bWs3Zrnwq7EqOLhhHU/242d74a5f3d5485f8bbb6ff7f701c34d/IST_TEA.jpg"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                src="https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=800&h=600&fit=crop&q=80"
               alt="Stamboll"
-            />
-            <p className="city font-semibold text-white absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 px-3 py-1 rounded-lg">
-              Stamboll
-            </p>
+                onError={(e) => {
+                  e.target.src = 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop';
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">Stamboll</h3>
+                <p className="text-white/90 text-sm">Një qytet ku takohën dy kontinente</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -387,34 +414,74 @@ function Home() {
     </div>
 
 
-        <div className="flex justify-center items-center space-x-4 mx-auto truncate whitespace-break-spaces text-navy text-xl font-bold tracking-tight lg:text-2xl">
-          <span>Rekomandimet</span>
-        </div>
-        <div className="rekomandimet  place-items-center py-10">
-          <div className="a group relative block overflow-hidden rounded-lg col-span-2">
-            <img
-              width={400}
-              height={400}
-              className=" h-96 w-[57rem] w- rounded-lg object-cover transition-all group-hover:scale-105"
-              src="https://images.ctfassets.net/pzootm7d2s0g/2BqWwB1eTDPZCiprij3mGi/10bf974ef68fe2f9a30ad5a73662f126/dimri.jpg"
-              alt="aaa"
-            />
+        <div className="mb-12">
+          <div className="flex justify-center items-center mb-8">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-800" style={{ 
+              background: 'linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}>
+              Rekomandimet
+            </h2>
           </div>
 
-          <div className="flex gap-4 justify-center items-center mx-auto py-3">
-            <div className="im1 group rounded-lg overflow-hidden">
-              <img
-                className="w-[28rem] h-auto rounded-lg object-cover transition-all group-hover:scale-105"
-                src="https://images.ctfassets.net/pzootm7d2s0g/4a0lfKENlzoNyN9yJy3r7V/3db03110eba2f273b42ac809efefa42a/pexels-asadphoto-1430676.jpg"
-                alt="bb"
-              />
+          <div className="max-w-7xl mx-auto">
+            {/* Large Featured Image */}
+            <div className="mb-6 group relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300">
+              <div className="relative h-[400px] sm:h-[500px] overflow-hidden">
+                <img
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=600&fit=crop&q=80"
+                  alt="Destinacion i rekomanduar"
+                  onError={(e) => {
+                    e.target.src = 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop';
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-8">
+                  <h3 className="text-3xl sm:text-4xl font-bold text-white mb-2 drop-shadow-lg">Destinacione të Veçanta</h3>
+                  <p className="text-white/90 text-lg">Zbuloni vendet më të bukura për pushime</p>
+                </div>
+              </div>
             </div>
-            <div className="im1 group rounded-lg overflow-hidden">
-              <img
-                className="w-[28rem] h-auto rounded-lg object-cover transition-all group-hover:scale-105"
-                src="https://images.ctfassets.net/pzootm7d2s0g/54r5Al6TKR7Sf7TdYv4tr9/10900d0e2733316bad53b80d214dc90d/exotic.jpg"
-                alt="cc"
-              />
+
+            {/* Two Smaller Images */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                <div className="relative h-[300px] sm:h-[350px] overflow-hidden">
+                  <img
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&h=600&fit=crop&q=80"
+                    alt="Destinacion 1"
+                    onError={(e) => {
+                      e.target.src = 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <h3 className="text-xl font-bold text-white mb-1 drop-shadow-lg">Aventurë dhe Eksplorim</h3>
+                    <p className="text-white/90 text-sm">Eksperienca të paharrueshme</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                <div className="relative h-[300px] sm:h-[350px] overflow-hidden">
+                  <img
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=600&fit=crop&q=80"
+                    alt="Destinacion 2"
+                    onError={(e) => {
+                      e.target.src = 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <h3 className="text-xl font-bold text-white mb-1 drop-shadow-lg">Destinacione Ekzotike</h3>
+                    <p className="text-white/90 text-sm">Relaksim dhe luks</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
