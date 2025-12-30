@@ -11,6 +11,7 @@ function PurchaseDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState('');
+  const [showRefundModal, setShowRefundModal] = useState(false);
 
   useEffect(() => {
     fetchPurchaseDetails();
@@ -65,19 +66,17 @@ function PurchaseDetails() {
   };
 
   const handleRefund = async () => {
-    if (!window.confirm('Are you sure you want to refund this purchase? This action cannot be undone.')) {
-      return;
-    }
-
     try {
       const response = await axios.put(`http://localhost:5001/api/purchases/${id}/refund`, {}, { withCredentials: true });
       setMessage('Refund processed successfully!');
+      setShowRefundModal(false);
       fetchPurchaseDetails();
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
       console.error('Error refunding purchase:', error);
       const errorMessage = error.response?.data?.error || 'Failed to process refund.';
       setMessage(errorMessage);
+      setShowRefundModal(false);
       setTimeout(() => setMessage(''), 5000);
     }
   };
@@ -330,7 +329,7 @@ function PurchaseDetails() {
                 )}
                 {(purchase.status === 'completed' || purchase.status === 'refused') && purchase.status !== 'refunded' && purchase.stripePaymentIntentId && (
                   <button
-                    onClick={handleRefund}
+                    onClick={() => setShowRefundModal(true)}
                     className="px-6 py-3 rounded-xl text-white font-semibold hover:scale-105 transition-transform"
                     style={{ background: 'linear-gradient(135deg, #f59e0b, #fbbf24)' }}
                   >
@@ -347,6 +346,54 @@ function PurchaseDetails() {
           </div>
         </div>
       </div>
+
+      {/* Refund Confirmation Modal */}
+      {showRefundModal && purchase && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+            <div className="px-8 py-6" style={{ background: 'linear-gradient(135deg, #f59e0b, #fbbf24)' }}>
+              <h2 className="text-2xl font-bold text-white">Confirm Refund</h2>
+            </div>
+            
+            <div className="p-8">
+              <div className="mb-6">
+                <p className="text-gray-600 mb-4">Are you sure you want to refund this purchase?</p>
+                <div className="bg-orange-50 border-2 border-orange-200 rounded-xl p-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-gray-700 font-medium">Refund Amount:</span>
+                    <span className="text-3xl font-bold text-orange-600">€{parseFloat(purchase.amount).toFixed(2)}</span>
+                  </div>
+                  <p className="text-sm text-gray-500 mt-2">
+                    This amount will be refunded to the customer's original payment method.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                <p className="text-sm text-yellow-800">
+                  <strong>Note:</strong> This action cannot be undone. The refund will be processed immediately.
+                </p>
+              </div>
+
+              <div className="flex space-x-4">
+                <button
+                  onClick={() => setShowRefundModal(false)}
+                  className="flex-1 px-6 py-3 rounded-xl text-gray-700 font-semibold bg-gray-100 hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleRefund}
+                  className="flex-1 px-6 py-3 rounded-xl text-white font-semibold hover:scale-105 transition-transform"
+                  style={{ background: 'linear-gradient(135deg, #f59e0b, #fbbf24)' }}
+                >
+                  Confirm Refund
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
