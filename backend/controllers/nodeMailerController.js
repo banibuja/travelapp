@@ -17,22 +17,30 @@ const transporter = nodemailer.createTransport({
     const { email } = req.body;
   
     if (!email) {
-      return res.status(400).json({ message: 'Ju lutem vendosni një email të vlefshëm!' });
+      return res.status(400).json({ message: 'Please enter a valid email address!' });
     }
   
     const mailOptions = {
-      from: 'travelbani48@gmail.com', 
+      from: process.env.EMAIL_USER || 'travelbani48@gmail.com', 
       to: email, 
-      subject: 'Abonimi juaj u realizua me sukses!',
-      text: 'Jeni abonuar me sukses! Do të njoftoheni për ofertat më të mira çdo javë.',
+      subject: 'Subscription Successful! - TravelApp',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #1e3a5f;">Subscription Successful!</h2>
+          <p>Hello,</p>
+          <p>You have successfully subscribed to our newsletter! You will be notified about the best offers every week.</p>
+          <p>Thank you for choosing TravelApp!</p>
+          <p>Best regards,<br>The TravelApp Team</p>
+        </div>
+      `,
     };
   
     try {
       await transporter.sendMail(mailOptions);
-      res.status(200).json({ message: 'Email u dërgua me sukses!' });
+      res.status(200).json({ message: 'Email sent successfully!' });
     } catch (error) {
-      console.error('Gabim gjatë dërgimit të email-it:', error);
-      res.status(500).json({ message: 'Gabim gjatë dërgimit të email-it.' });
+      console.error('Error sending subscription email:', error);
+      res.status(500).json({ message: 'Error sending email.' });
     }
   };
 
@@ -48,39 +56,60 @@ const transporter = nodemailer.createTransport({
   
       const userEmail = user.email;
       const username = user.username;  
-
+  
       if (!item || !userEmail) {
-        return res.status(400).json({ message: 'Të gjitha fushat janë të detyrueshme!' });
+        return res.status(400).json({ message: 'All fields are required!' });
       }
   
       const staffEmailOptions = {
-        from: process.env.EMAIL_USER,
+        from: process.env.EMAIL_USER || 'travelbani48@gmail.com',
         to: 'travelbani48@gmail.com',
-        subject: 'Rezervim i ri',
-        text: `Ofertë e rezervuar nga klienti: ${username}
-          Titulli: ${item.titulli}
-          Çmimi: €${item.cmimi}.00
-          Detaje: ${item.nrNeteve} netë, ${item.nrPersonave} të rritur, ${item.shteti}`,
+        subject: 'New Reservation - TravelApp',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #1e3a5f;">New Reservation</h2>
+            <p>A new offer has been reserved by client: <strong>${username}</strong></p>
+            
+            <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="color: #2d5a87; margin-top: 0;">Reservation Details:</h3>
+              <p><strong>Title:</strong> ${item.titulli}</p>
+              <p><strong>Price:</strong> €${item.cmimi}.00</p>
+              <p><strong>Details:</strong> ${item.nrNeteve} nights, ${item.nrPersonave} adults, ${item.shteti}</p>
+            </div>
+          </div>
+        `,
       };
   
       const userEmailOptions = {
-        from: process.env.EMAIL_USER,
+        from: process.env.EMAIL_USER || 'travelbani48@gmail.com',
         to: userEmail, 
-        subject: 'Rezervim i konfirmuar',
-        text: `Ju keni rezervuar këtë ofertë:
-          Titulli: ${item.titulli}
-          Çmimi: €${item.cmimi}.00
-          Ju faleminderit që zgjodhët shërbimet tona!`,
+        subject: 'Reservation Confirmed - TravelApp',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #1e3a5f;">Reservation Confirmed</h2>
+            <p>Hello <strong>${username}</strong>,</p>
+            <p>You have reserved the following offer:</p>
+            
+            <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="color: #2d5a87; margin-top: 0;">Reservation Details:</h3>
+              <p><strong>Title:</strong> ${item.titulli}</p>
+              <p><strong>Price:</strong> €${item.cmimi}.00</p>
+            </div>
+            
+            <p>Thank you for choosing our services!</p>
+            <p>Best regards,<br>The TravelApp Team</p>
+          </div>
+        `,
       };
   
       // Send emails
       await transporter.sendMail(staffEmailOptions);
       await transporter.sendMail(userEmailOptions);
   
-      res.status(200).json({ message: 'Rezervimi u krye me sukses!' });
+      res.status(200).json({ message: 'Reservation completed successfully!' });
     } catch (error) {
-      console.error('Gabim gjatë dërgimit të email-it:', error);
-      res.status(500).json({ message: 'Gabim gjatë dërgimit të email-it.' });
+      console.error('Error sending reservation email:', error);
+      res.status(500).json({ message: 'Error sending email.' });
     }
   };
 

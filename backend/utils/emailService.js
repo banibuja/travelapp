@@ -24,28 +24,28 @@ const sendPaymentConfirmationEmail = async (user, purchase, packageDetails) => {
     const mailOptions = {
       from: process.env.EMAIL_USER || 'travelbani48@gmail.com',
       to: user.email,
-      subject: 'Pagesa u krye me sukses! - TravelApp',
+      subject: 'Payment Successful! - TravelApp',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #1e3a5f;">Pagesa u konfirmua me sukses!</h2>
-          <p>Përshëndetje <strong>${user.firstName || ''} ${user.lastName || ''}</strong>,</p>
-          <p>Faleminderit për pagesën tuaj! Rezervimi juaj është konfirmuar.</p>
+          <h2 style="color: #1e3a5f;">Payment Confirmed Successfully!</h2>
+          <p>Hello <strong>${user.firstName || ''} ${user.lastName || ''}</strong>,</p>
+          <p>Thank you for your payment! Your reservation has been confirmed.</p>
           
           <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #2d5a87; margin-top: 0;">Detajet e rezervimit:</h3>
-            <p><strong>Paketa:</strong> ${packageDetails.titulli || 'N/A'}</p>
-            <p><strong>Destinacioni:</strong> ${packageDetails.shteti || 'N/A'}</p>
-            <p><strong>Numri i personave:</strong> ${packageDetails.nrPersonave || 'N/A'}</p>
-            <p><strong>Numri i netëve:</strong> ${packageDetails.nrNeteve || 'N/A'}</p>
-            <p><strong>Data e nisjes:</strong> ${packageDetails.dataNisjes || 'N/A'}</p>
-            <p><strong>Data e kthimit:</strong> ${packageDetails.dataKthimit || 'N/A'}</p>
-            <p><strong>Shuma:</strong> €${parseFloat(purchase.amount).toFixed(2)}</p>
+            <h3 style="color: #2d5a87; margin-top: 0;">Reservation Details:</h3>
+            <p><strong>Package:</strong> ${packageDetails.titulli || 'N/A'}</p>
+            <p><strong>Destination:</strong> ${packageDetails.shteti || 'N/A'}</p>
+            <p><strong>Number of Travelers:</strong> ${packageDetails.nrPersonave || 'N/A'}</p>
+            <p><strong>Number of Nights:</strong> ${packageDetails.nrNeteve || 'N/A'}</p>
+            <p><strong>Departure Date:</strong> ${packageDetails.dataNisjes || 'N/A'}</p>
+            <p><strong>Return Date:</strong> ${packageDetails.dataKthimit || 'N/A'}</p>
+            <p><strong>Amount:</strong> €${parseFloat(purchase.amount).toFixed(2)}</p>
             <p><strong>Status:</strong> ${purchase.status}</p>
           </div>
           
-          <p>Rezervimi juaj do të shqyrtoret nga stafi ynë dhe do të merrni një email konfirmimi me dokumentin e udhëtimit pas aprovimit.</p>
+          <p>Your reservation will be reviewed by our staff and you will receive a confirmation email with your travel document after approval.</p>
           
-          <p>Me respekt,<br>Ekipi i TravelApp</p>
+          <p>Best regards,<br>The TravelApp Team</p>
         </div>
       `,
     };
@@ -219,25 +219,25 @@ const sendTravelDocumentEmail = async (user, purchase, packageDetails) => {
     const mailOptions = {
       from: process.env.EMAIL_USER || 'travelbani48@gmail.com',
       to: user.email,
-      subject: 'Dokumenti juaj i udhëtimit - TravelApp',
+      subject: 'Your Travel Document - TravelApp',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #1e3a5f;">Rezervimi juaj u aprovua!</h2>
-          <p>Përshëndetje <strong>${user.firstName} ${user.lastName}</strong>,</p>
-          <p>Rezervimi juaj është aprovuar me sukses! Në bashkëngjitje gjeni dokumentin tuaj të udhëtimit.</p>
+          <h2 style="color: #1e3a5f;">Your Reservation Has Been Approved!</h2>
+          <p>Hello <strong>${user.firstName} ${user.lastName}</strong>,</p>
+          <p>Your reservation has been approved successfully! Please find your travel document attached.</p>
           
           <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #2d5a87; margin-top: 0;">Detajet e rezervimit:</h3>
-            <p><strong>Paketa:</strong> ${packageDetails.titulli || 'N/A'}</p>
-            <p><strong>Destinacioni:</strong> ${packageDetails.shteti || 'N/A'}</p>
-            <p><strong>Data e nisjes:</strong> ${packageDetails.dataNisjes || 'N/A'}</p>
-            <p><strong>Data e kthimit:</strong> ${packageDetails.dataKthimit || 'N/A'}</p>
+            <h3 style="color: #2d5a87; margin-top: 0;">Reservation Details:</h3>
+            <p><strong>Package:</strong> ${packageDetails.titulli || 'N/A'}</p>
+            <p><strong>Destination:</strong> ${packageDetails.shteti || 'N/A'}</p>
+            <p><strong>Departure Date:</strong> ${packageDetails.dataNisjes || 'N/A'}</p>
+            <p><strong>Return Date:</strong> ${packageDetails.dataKthimit || 'N/A'}</p>
           </div>
           
-          <p><strong>Ju lutem printoni ose ruani këtë dokument për udhëtimin tuaj.</strong></p>
-          <p>Ky dokument është i nevojshëm për të udhëtuar me ${packageDetails.llojiTransportit === 'plane' ? 'aeroplan' : 'autobus'}.</p>
+          <p><strong>Please print or save this document for your trip.</strong></p>
+          <p>This document is required for traveling by ${packageDetails.llojiTransportit === 'plane' ? 'plane' : 'bus'}.</p>
           
-          <p>Me respekt,<br>Ekipi i TravelApp</p>
+          <p>Best regards,<br>The TravelApp Team</p>
         </div>
       `,
       attachments: [
@@ -271,28 +271,28 @@ const sendRefundConfirmationEmail = async (user, purchase, packageDetails, refun
     const mailOptions = {
       from: process.env.EMAIL_USER || 'travelbani48@gmail.com',
       to: user.email,
-      subject: 'Rimbursimi u krye me sukses! - TravelApp',
+      subject: 'Refund Processed Successfully! - TravelApp',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #1e3a5f;">Rimbursimi u krye me sukses!</h2>
-          <p>Përshëndetje <strong>${user.firstName} ${user.lastName}</strong>,</p>
-          <p>Rimbursimi për rezervimin tuaj është procesuar me sukses.</p>
+          <h2 style="color: #1e3a5f;">Refund Processed Successfully!</h2>
+          <p>Hello <strong>${user.firstName} ${user.lastName}</strong>,</p>
+          <p>The refund for your reservation has been processed successfully.</p>
           
           <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #2d5a87; margin-top: 0;">Detajet e rimbursimit:</h3>
-            <p><strong>Paketa:</strong> ${packageDetails.titulli || 'N/A'}</p>
-            <p><strong>Destinacioni:</strong> ${packageDetails.shteti || 'N/A'}</p>
-            <p><strong>Shuma e rimbursuar:</strong> €${parseFloat(purchase.amount).toFixed(2)}</p>
-            <p><strong>Status i rimbursimit:</strong> ${refund.status}</p>
-            <p><strong>ID e rimbursimit:</strong> ${refund.id}</p>
+            <h3 style="color: #2d5a87; margin-top: 0;">Refund Details:</h3>
+            <p><strong>Package:</strong> ${packageDetails.titulli || 'N/A'}</p>
+            <p><strong>Destination:</strong> ${packageDetails.shteti || 'N/A'}</p>
+            <p><strong>Refund Amount:</strong> €${parseFloat(purchase.amount).toFixed(2)}</p>
+            <p><strong>Refund Status:</strong> ${refund.status}</p>
+            <p><strong>Refund ID:</strong> ${refund.id}</p>
             <p><strong>Purchase ID:</strong> #${purchase.id}</p>
           </div>
           
-          <p>Paratë do të kthehen në kartën tuaj brenda 5-10 ditëve të punës, në varësi të bankës suaj.</p>
+          <p>The funds will be returned to your original payment method within 5-10 business days, depending on your bank.</p>
           
-          <p>Nëse keni pyetje, ju lutem na kontaktoni.</p>
+          <p>If you have any questions, please contact us.</p>
           
-          <p>Me respekt,<br>Ekipi i TravelApp</p>
+          <p>Best regards,<br>The TravelApp Team</p>
         </div>
       `,
     };
