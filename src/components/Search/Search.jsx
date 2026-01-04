@@ -199,7 +199,8 @@ const Search = () => {
             queryParams.get('busStationId') ||
             queryParams.get('toId') ||
             queryParams.get('DepartureDate') ||
-            queryParams.get('nrNeteve');
+            queryParams.get('nrNeteve') ||
+            queryParams.get('nrPersonave');
           
           // If no filters, show all future published packages
           if (!hasFilters) {
@@ -265,6 +266,18 @@ const Search = () => {
               });
             }
           }
+
+          // Filter by number of travelers
+          const nrPersonave = queryParams.get('nrPersonave');
+          if(nrPersonave) {
+            const requestedTravelers = parseInt(nrPersonave);
+            if (!isNaN(requestedTravelers) && requestedTravelers > 0) {
+              filteredAranzhmanet = filteredAranzhmanet.filter((aranzhmani) => {
+                // Show packages that can accommodate the requested number of travelers
+                return aranzhmani.nrPersonave >= requestedTravelers;
+              });
+            }
+          }
         
           setDisplayedAranzhmanet(filteredAranzhmanet);
         }, 200);
@@ -294,7 +307,8 @@ const Search = () => {
       (searchPrompts.busStation?.id && searchPrompts.busStation.id !== null) ||
       (searchPrompts.to.id && searchPrompts.to.id !== null && searchPrompts.to.id !== '') ||
       (searchPrompts.DepartureDate && searchPrompts.DepartureDate !== '') ||
-      (searchPrompts.nrNeteve.length > 0 && searchPrompts.nrNeteve[0] !== undefined && searchPrompts.nrNeteve[1] !== undefined);
+      (searchPrompts.nrNeteve.length > 0 && searchPrompts.nrNeteve[0] !== undefined && searchPrompts.nrNeteve[1] !== undefined) ||
+      (searchPrompts.nrPersonave && searchPrompts.nrPersonave !== '');
     
     // If no filters, just show all future published packages
     if (!hasFilters) {
@@ -358,8 +372,23 @@ const Search = () => {
         return packageNights >= minNights && packageNights <= maxNights;
       });
     }
+
+    // Filter by number of travelers
+    if(searchPrompts.nrPersonave && searchPrompts.nrPersonave !== '') {
+      const requestedTravelers = parseInt(searchPrompts.nrPersonave);
+      if (!isNaN(requestedTravelers) && requestedTravelers > 0) {
+        filteredAranzhmanet = filteredAranzhmanet.filter((aranzhmani) => {
+          // Show packages that can accommodate the requested number of travelers
+          return aranzhmani.nrPersonave >= requestedTravelers;
+        });
+      }
+    }
   
-    setDisplayedAranzhmanet(filteredAranzhmanet);
+    // Sort by price after filtering
+    const sortedAranzhmanet = [...filteredAranzhmanet].sort((a, b) => {
+      return a.cmimi - b.cmimi;
+    });
+    setDisplayedAranzhmanet(sortedAranzhmanet);
   }
 
 
@@ -410,7 +439,7 @@ const Search = () => {
           from: { id:null, emri: ''}, // Reset airport when country changes
           busStation: { id:null, emri: ''} // Reset bus station when country changes
         });
-      }
+    }
       setSearchTerm('');
       setIsDropdownOpen(false);
     };
@@ -429,8 +458,8 @@ const Search = () => {
         setSearchPrompts({...searchPrompts, nrNeteve: []});
       } else {
         try {
-          const parsedValue = JSON.parse(selectedValue);
-          setSearchPrompts({...searchPrompts, nrNeteve: [parsedValue.start, parsedValue.end]});
+      const parsedValue = JSON.parse(selectedValue);
+      setSearchPrompts({...searchPrompts, nrNeteve: [parsedValue.start, parsedValue.end]});
         } catch (error) {
           console.error('Error parsing nrNeteve:', error);
           setSearchPrompts({...searchPrompts, nrNeteve: []});
@@ -482,13 +511,7 @@ const Search = () => {
   }, []);
 
 
-    useEffect(() => {
-      // const queryParams = new URLSearchParams(location.search);
-      // const searchTerm = queryParams.get('s') || '';
-      // filterBySearch(searchTerm)
-
-
-  }, [aranzhmanet]);
+    // Removed auto-sort useEffect - sort is applied directly when setting displayedAranzhmanet
 
 
   const sortByPrice = (ascending = true) => {
@@ -580,8 +603,7 @@ const Search = () => {
     setDisplayedAranzhmanet(allPackages);
   }
   const getTitle = () => {
-    if (transportType === 'bus') return 'Find Your Bus Trip';
-    return 'Find Your Flight';
+    return 'Find Your Package';
   };
 
   const getSearchButtonText = () => {
@@ -810,22 +832,22 @@ const Search = () => {
                 <option value='{"start":10,"end":12}'>10-12 Nights</option>
                 <option value='{"start":13,"end":99}'>13+ Nights</option>
                 </select>
-              </div>
+            </div>
 
               {/* Departure Date */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Departure Date</label>
-                <input
-                  type="date"
-                  min={today} 
-                  onChange={handleDepartureDate}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Departure Date</label>
+              <input
+                type="date"
+                min={today} 
+                onChange={handleDepartureDate}
                   value={searchPrompts.DepartureDate || ''}
-                  className="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
+                className="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
 
               {/* Travelers */}
-              <div>
+            <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Travelers</label>
                 <input
                   type="number"
@@ -833,7 +855,7 @@ const Search = () => {
                   value={searchPrompts.nrPersonave || ''}
                   onChange={(e) => setSearchPrompts({...searchPrompts, nrPersonave: e.target.value})}
                   placeholder="Number of travelers"
-                  className="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
             </div>
