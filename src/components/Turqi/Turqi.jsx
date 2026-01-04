@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   FaStar, 
   FaSwimmingPool, 
@@ -28,11 +29,13 @@ import Table from '../Table';
 import axiosInstance from '../../axiosInstance';
 
 function Turqi() {
+  const navigate = useNavigate();
   const [roomPrices, setRoomPrices] = useState([]);
   const [message, setMessage] = useState('');
   const [selectedCity, setSelectedCity] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [turkeyCountryId, setTurkeyCountryId] = useState(null);
 
   // Sample data for demonstration
   const cities = [
@@ -88,7 +91,24 @@ function Turqi() {
       }
     };
 
+    // Fetch Turkey country ID
+    const fetchTurkeyCountryId = async () => {
+      try {
+        const response = await axiosInstance.get('/shtetet');
+        const turkey = response.data.find(country => 
+          country.emri && (country.emri.toLowerCase().includes('turkey') || 
+          country.emri.toLowerCase().includes('turqi'))
+        );
+        if (turkey) {
+          setTurkeyCountryId(turkey.id);
+        }
+      } catch (error) {
+        console.error('Error fetching country ID:', error);
+      }
+    };
+
     fetchRoomPrices();
+    fetchTurkeyCountryId();
   }, []);
 
   // Animation styles as inline objects
@@ -271,13 +291,31 @@ function Turqi() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 px-4">
-            <button className="group px-8 sm:px-10 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-lg rounded-2xl hover:from-amber-600 hover:to-orange-600 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-amber-500/30">
+            <button 
+              onClick={() => {
+                if (turkeyCountryId) {
+                  navigate(`/search?toId=${turkeyCountryId}&toEmri=Turkey`);
+                } else {
+                  navigate('/search?toEmri=Turkey');
+                }
+              }}
+              className="group px-8 sm:px-10 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-lg rounded-2xl hover:from-amber-600 hover:to-orange-600 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-amber-500/30"
+            >
               <span className="flex items-center justify-center">
                 BOOK NOW
                 <FaCalendarAlt className="ml-3 group-hover:rotate-12 transition-transform" />
               </span>
             </button>
-            <button className="group px-8 sm:px-10 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold text-lg rounded-2xl hover:from-blue-600 hover:to-cyan-600 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/30">
+            <button 
+              onClick={() => {
+                if (turkeyCountryId) {
+                  navigate(`/search?toId=${turkeyCountryId}&toEmri=Turkey`);
+                } else {
+                  navigate('/search?toEmri=Turkey');
+                }
+              }}
+              className="group px-8 sm:px-10 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold text-lg rounded-2xl hover:from-blue-600 hover:to-cyan-600 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/30"
+            >
               <span className="flex items-center justify-center">
                 VIEW PACKAGES
                 <FaMoneyBillWave className="ml-3 group-hover:scale-110 transition-transform" />

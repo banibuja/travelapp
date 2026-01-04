@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Footer from '../layout/Footer';
 import { FaSnowflake, FaSkiing, FaMountain, FaHotel, FaStar, FaCalendarAlt, FaCheckCircle, FaUtensils, FaTemperatureLow, FaRegSnowflake, FaFire } from 'react-icons/fa';
 import Slider from "react-slick";
@@ -7,8 +8,10 @@ import "slick-carousel/slick/slick-theme.css";
 import axiosInstance from '../../axiosInstance';
 
 function Bullgari() {
+    const navigate = useNavigate();
     const [images, setImages] = useState([]);
     const [message, setMessage] = useState('');
+    const [bulgariaCountryId, setBulgariaCountryId] = useState(null);
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -23,7 +26,24 @@ function Bullgari() {
             }
         };
 
+        // Fetch Bulgaria country ID
+        const fetchBulgariaCountryId = async () => {
+            try {
+                const response = await axiosInstance.get('/shtetet');
+                const bulgaria = response.data.find(country => 
+                    country.emri && (country.emri.toLowerCase().includes('bulgaria') || 
+                    country.emri.toLowerCase().includes('bullgari'))
+                );
+                if (bulgaria) {
+                    setBulgariaCountryId(bulgaria.id);
+                }
+            } catch (error) {
+                console.error('Error fetching country ID:', error);
+            }
+        };
+
         fetchImages();
+        fetchBulgariaCountryId();
     }, []);
 
     const settings = {
@@ -390,7 +410,16 @@ function Bullgari() {
                                                         <div className="text-3xl font-bold text-blue-600">
                                                             {pkg.price}
                                                         </div>
-                                                        <button className="mt-4 px-6 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-md">
+                                                        <button 
+                                                            onClick={() => {
+                                                                if (bulgariaCountryId) {
+                                                                    navigate(`/search?toId=${bulgariaCountryId}&toEmri=Bulgaria`);
+                                                                } else {
+                                                                    navigate('/search?toEmri=Bulgaria');
+                                                                }
+                                                            }}
+                                                            className="mt-4 px-6 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-md"
+                                                        >
                                                             Book Now
                                                         </button>
                                                     </div>
@@ -416,11 +445,29 @@ function Bullgari() {
                     </p>
                     
                     <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
-                        <button className="px-8 py-3 bg-white text-blue-600 font-bold text-lg rounded-xl hover:bg-gray-100 transition-all duration-300 shadow-2xl flex items-center">
+                        <button 
+                            onClick={() => {
+                                if (bulgariaCountryId) {
+                                    navigate(`/search?toId=${bulgariaCountryId}&toEmri=Bulgaria`);
+                                } else {
+                                    navigate('/search?toEmri=Bulgaria');
+                                }
+                            }}
+                            className="px-8 py-3 bg-white text-blue-600 font-bold text-lg rounded-xl hover:bg-gray-100 transition-all duration-300 shadow-2xl flex items-center"
+                        >
                             BOOK ONLINE
                             <FaCalendarAlt className="ml-3" />
                         </button>
-                        <button className="px-8 py-3 bg-transparent border-2 border-white text-white font-bold text-lg rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center">
+                        <button 
+                            onClick={() => {
+                                if (bulgariaCountryId) {
+                                    navigate(`/search?toId=${bulgariaCountryId}&toEmri=Bulgaria`);
+                                } else {
+                                    navigate('/search?toEmri=Bulgaria');
+                                }
+                            }}
+                            className="px-8 py-3 bg-transparent border-2 border-white text-white font-bold text-lg rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center"
+                        >
                             <FaSkiing className="mr-3" />
                             VIEW PACKAGES
                         </button>
