@@ -484,14 +484,10 @@ function HomeTable() {
     );
   }; 
   const handleSearch = () => {
-    // Validate that transport type is selected
-    if (!transportType) {
-      setShowTransportModal(true);
-      return;
-    }
+    // Removed transport type validation - allow search without transport type
     
     const queryParams = Object.entries({
-      transportType: transportType,
+      transportType: transportType || null,
       fromId: transportType === 'plane' ? searchPrompts.from?.id : null,
       fromEmri: transportType === 'plane' ? searchPrompts.from?.emri : null,
       busStationId: transportType === 'bus' ? searchPrompts.busStation?.id : null,
