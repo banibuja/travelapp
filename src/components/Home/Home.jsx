@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { FaPhoneAlt, FaWhatsapp, FaViber, FaHeadset, FaCheckCircle } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import HomeTable from "./HomeTable";
 import Footer from "../layout/Footer";
 import Slider from "react-slick";
@@ -10,12 +11,15 @@ import axios from 'axios';
 import axiosInstance from '../../axiosInstance';
 
 function Home() {
-
+  const navigate = useNavigate();
   const [images, setImages] = useState([]);
   const [message, setMessage] = useState('');
   const [hotels, setHotels] = useState([]);
   const [hotelsHurghada, setHotelsHughada] = useState([]);
   const [kapodakia, setKapodakia] = useState([]);
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [countries, setCountries] = useState([]);
 
 
 
@@ -84,8 +88,78 @@ function Home() {
     fetchImages();
   }, []);
 
+  // Fetch countries for navigation
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await axiosInstance.get('/shtetet', {
+          withCredentials: true,
+        });
+        setCountries(response.data);
+      } catch (error) {
+        console.error('Error fetching countries:', error);
+      }
+    };
+    fetchCountries();
+  }, []);
 
+  // Function to find country ID by name
+  const findCountryId = (countryName) => {
+    if (!countries || countries.length === 0) {
+      return null;
+    }
+    const country = countries.find(c => 
+      c.emri && (
+        c.emri.toLowerCase().includes(countryName.toLowerCase()) ||
+        countryName.toLowerCase().includes(c.emri.toLowerCase()) ||
+        c.emri.toLowerCase() === countryName.toLowerCase()
+      )
+    );
+    return country ? country.id : null;
+  };
 
+  // Function to navigate to search page with filters
+  const handleBookNow = (cardType) => {
+    let countryId = null;
+    let countryName = '';
+
+    // Map card types to countries
+    if (cardType === 'istanbul' || cardType === 'cappadocia') {
+      countryName = 'Turkey';
+      countryId = findCountryId('Turkey') || findCountryId('Turkiye') || findCountryId('Turqi');
+    } else if (cardType === 'hurghada') {
+      countryName = 'Egypt';
+      // Try multiple variations of Egypt name
+      countryId = findCountryId('Egypt') || findCountryId('Egjipt') || findCountryId('Egjipti') || findCountryId('Egypt');
+      
+      // If still not found, try to find by checking all countries
+      if (!countryId && countries.length > 0) {
+        const egyptCountry = countries.find(c => 
+          c.emri && (
+            c.emri.toLowerCase().includes('egypt') ||
+            c.emri.toLowerCase().includes('egjipt') ||
+            c.emri.toLowerCase() === 'egypt'
+          )
+        );
+        if (egyptCountry) {
+          countryId = egyptCountry.id;
+        }
+      }
+    }
+
+    // Build query parameters
+    const queryParams = new URLSearchParams();
+    if (countryId) {
+      queryParams.append('toId', countryId);
+    }
+    if (countryName) {
+      queryParams.append('toEmri', countryName);
+    }
+
+    // Navigate to search page
+    navigate(`/search?${queryParams.toString()}`);
+    setIsModalOpen(false);
+  };
 
   const settings = {
     dots: true, 
@@ -492,7 +566,14 @@ function Home() {
       </div>
       <div className="flex flex-wrap justify-center gap-8">
         {hotels.map((hotel, index) => (
-          <div key={index} className="stamboll bg-white shadow-md rounded-lg flex p-6 w-[30rem]">
+          <div 
+            key={index} 
+            onClick={() => {
+              setSelectedCard({ ...hotel, type: 'istanbul' });
+              setIsModalOpen(true);
+            }}
+            className="stamboll bg-white shadow-md rounded-lg flex p-6 w-[30rem] cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          >
             <div className="flex flex-col justify-center">
               <h3 className="text-2xl font-bold mb-2">{hotel.name}</h3>
               <p className="text-gray-600 mb-1 flex items-center">
@@ -520,7 +601,14 @@ function Home() {
       </div>
       <div className="flex flex-wrap justify-center gap-8">
         {hotelsHurghada.map((hotel, index) => (
-          <div key={index} className="stamboll bg-white shadow-md rounded-lg flex p-6 w-[30rem]">
+          <div 
+            key={index} 
+            onClick={() => {
+              setSelectedCard({ ...hotel, type: 'hurghada' });
+              setIsModalOpen(true);
+            }}
+            className="stamboll bg-white shadow-md rounded-lg flex p-6 w-[30rem] cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          >
             <div className="flex flex-col justify-center">
               <h3 className="text-2xl font-bold mb-2">{hotel.name}</h3>
               <p className="text-gray-600 mb-1 flex items-center">
@@ -549,7 +637,13 @@ function Home() {
     <Slider {...settings1}>
       {kapodakia.map((hotel, index) => (
         <div key={index} className="p-2">
-          <div className="bg-white shadow-md rounded-lg overflow-hidden w-60 mx-auto"> {/* Karta të vogla */}
+          <div 
+            onClick={() => {
+              setSelectedCard({ ...hotel, type: 'cappadocia' });
+              setIsModalOpen(true);
+            }}
+            className="bg-white shadow-md rounded-lg overflow-hidden w-60 mx-auto cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          >
           <img src={`data:image/jpeg;base64,${hotel.imageBase64}`} alt={hotel.title} 
 
               className="w-full h-40 object-cover"
@@ -573,7 +667,135 @@ function Home() {
   </div>
 </div>
 
+     
 
+      {/* Card Details Modal */}
+      {isModalOpen && selectedCard && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          onClick={() => setIsModalOpen(false)}
+        >
+          <div 
+            className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="relative">
+              <img 
+                src={`data:image/jpeg;base64,${selectedCard.imageBase64}`} 
+                alt={selectedCard.name}
+                className="w-full h-64 object-cover rounded-t-2xl"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-t-2xl"></div>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="absolute top-4 right-4 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+              >
+                <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">{selectedCard.name}</h2>
+                <div className="flex items-center space-x-2">
+                  {selectedCard.stars && [...Array(selectedCard.stars)].map((_, i) => (
+                    <span key={i} className="text-yellow-400 text-xl">★</span>
+                  ))}
+                  {!selectedCard.stars && <span className="text-yellow-400 text-xl">⭐⭐⭐⭐</span>}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 md:p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                {/* Location */}
+                <div className="flex items-start space-x-3">
+                  <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-1">Location</h3>
+                    <p className="text-lg font-semibold text-gray-800">{selectedCard.location || 'N/A'}</p>
+                  </div>
+                </div>
+
+                {/* Price */}
+                <div className="flex items-start space-x-3">
+                  <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-1">Price</h3>
+                    <p className="text-2xl font-bold text-green-600">from PP €{selectedCard.price}</p>
+                  </div>
+                </div>
+
+                {/* Service Type */}
+                <div className="flex items-start space-x-3">
+                  <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-1">Service</h3>
+                    <p className="text-lg font-semibold text-gray-800">All Inclusive</p>
+                  </div>
+                </div>
+
+                {/* Type */}
+                <div className="flex items-start space-x-3">
+                  <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-1">Type</h3>
+                    <p className="text-lg font-semibold text-gray-800">
+                      {selectedCard.type === 'istanbul' ? 'Istanbul Offer' : 
+                       selectedCard.type === 'hurghada' ? 'Hurghada Offer' : 
+                       'Cappadocia Hotel'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Description Section */}
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h3 className="text-xl font-bold text-gray-800 mb-4">About This Offer</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Experience the best of {selectedCard.location || 'this destination'} with our exclusive {selectedCard.type === 'istanbul' ? 'Istanbul' : selectedCard.type === 'hurghada' ? 'Hurghada' : 'Cappadocia'} package. 
+                  This all-inclusive offer includes premium accommodations, exceptional service, and unforgettable experiences. 
+                  Perfect for families, couples, and solo travelers looking for an amazing vacation.
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={() => handleBookNow(selectedCard.type)}
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                >
+                  View Available Packages
+                </button>
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="flex-1 px-6 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-all duration-300"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
      
         <Footer />

@@ -2,12 +2,13 @@ import React, {useEffect, useState, useRef } from 'react'
 import axios from 'axios';
 import SvgIcons from '../icons/svgs'
 import SearchItem from './SearchItem'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../axiosInstance';
 
 
 const Search = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     
     
     const [isOpen, setIsOpen] = useState(false);
@@ -133,9 +134,52 @@ const Search = () => {
       };
     }, []);
   
+    // Update searchPrompts when URL query parameters change
     useEffect(() => {
-      handleSearch()
-    }, [aranzhmanet])
+      const queryParams = new URLSearchParams(location.search);
+      const transportType = queryParams.get('transportType') || '';
+      const fromId = queryParams.get('fromId');
+      const fromEmri = queryParams.get('fromEmri');
+      const busStationId = queryParams.get('busStationId');
+      const busStationEmri = queryParams.get('busStationEmri');
+      const toId = queryParams.get('toId');
+      const toEmri = queryParams.get('toEmri');
+      const toQytetiId = queryParams.get('toQytetiId');
+      const toQytetiEmri = queryParams.get('toQytetiEmri');
+      const DepartureDate = queryParams.get('DepartureDate');
+      const nrPersonave = queryParams.get('nrPersonave');
+      const nrNeteve = queryParams.get('nrNeteve');
+      const nrNeteveArray = nrNeteve ? nrNeteve.split(',') : [];
+
+      setSearchPrompts({
+        transportType: transportType,
+        from: {
+          id: fromId || null,
+          emri: fromEmri || ''
+        },
+        busStation: {
+          id: busStationId || null,
+          emri: busStationEmri || ''
+        },
+        to: {
+          id: toId || null,
+          emri: toEmri || '',
+          qyteti: {
+            id: toQytetiId || null,
+            emri: toQytetiEmri || ''
+          }
+        },
+        DepartureDate: DepartureDate || '',
+        nrPersonave: nrPersonave || '',
+        nrNeteve: nrNeteveArray
+      });
+    }, [location.search]);
+
+    useEffect(() => {
+      if (aranzhmanet.length > 0) {
+        handleSearch();
+      }
+    }, [aranzhmanet, searchPrompts])
   
     
   const handleSearch = () => {
@@ -151,8 +195,8 @@ const Search = () => {
       return departureDate >= now;
     });
 
-    // Filter by transport type
-    if(searchPrompts.transportType) {
+    // Filter by transport type (only if transportType is not empty)
+    if(searchPrompts.transportType && searchPrompts.transportType !== '' && searchPrompts.transportType !== null) {
       filteredAranzhmanet = filteredAranzhmanet.filter((aranzhmani) => {
         return aranzhmani.llojiTransportit === searchPrompts.transportType;
       });
@@ -173,10 +217,13 @@ const Search = () => {
     }
 
     // Filter by destination country
-    if(searchPrompts.to.id) {
-      filteredAranzhmanet = filteredAranzhmanet.filter((aranzhmani) => {
-        return aranzhmani.shtetiId == searchPrompts.to.id;
-      });
+    if(searchPrompts.to.id && searchPrompts.to.id !== null && searchPrompts.to.id !== '') {
+      const countryId = parseInt(searchPrompts.to.id);
+      if (!isNaN(countryId)) {
+        filteredAranzhmanet = filteredAranzhmanet.filter((aranzhmani) => {
+          return aranzhmani.shtetiId === countryId;
+        });
+      }
     }
     
     // Filter by departure date
@@ -367,30 +414,45 @@ const Search = () => {
 }
   };
   const handleClearFilters = (e) => {
+    e.preventDefault();
+    
+    // Clear URL query parameters
+    navigate('/search', { replace: true });
+    
+    // Reset all search prompts
     setSearchPrompts({
-      from: 
-        {
+      transportType: '',
+      from: {
+        id: null,
+        emri: ''
+      },
+      busStation: {
+        id: null,
+        emri: ''
+      },
+      to: {
+        id: null,
+        emri: '',
+        qyteti: {
           id: null,
           emri: ''
         }
-      ,
-      to: 
-        {
-          id: null,
-          emri: '',
-          qyteti: 
-            {
-              id: null,
-              emri: ''
-            }
-          
-        }
-      ,
-      DepartureDate:new Date().toLocaleDateString('en-CA'),
-      nrPersonave: 2,
-      nrNeteve: [0,5]
+      },
+      DepartureDate: '',
+      nrPersonave: '',
+      nrNeteve: []
     });
-    setDisplayedAranzhmanet(aranzhmanet)
+    
+    // Show all packages (both bus and plane)
+    // Filter only by past dates
+    const now = new Date();
+    const allPackages = aranzhmanet.filter((aranzhmani) => {
+      const departureDate = new Date(aranzhmani.dataNisjes);
+      departureDate.setHours(23, 59, 59, 999);
+      return departureDate >= now;
+    });
+    
+    setDisplayedAranzhmanet(allPackages);
   }
   const getTitle = () => {
     if (transportType === 'bus') return 'Find Your Bus Trip';
