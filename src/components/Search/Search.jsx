@@ -278,7 +278,9 @@ const Search = () => {
     // Fetch room prices from the server
     axios.get('http://localhost:5001/api/aranzhmanet')
       .then(response => {
-        setAranzhmanet(response.data);
+        // Filter only published packages
+        const publishedPackages = response.data.filter(pkg => pkg.status === 'published');
+        setAranzhmanet(publishedPackages);
       })
       .catch(error => {
         console.error("There was an error fetching the room prices:", error);

@@ -56,7 +56,8 @@ const getAllAranzhmanet = async (req, res) => {
           shteti: aranzhmani.shtetet.emri,
           imageBase64: aranzhmani.imageBase64,
           llojiTransportit: aranzhmani.llojiTransportit,
-          usageLimit: aranzhmani.usageLimit
+          usageLimit: aranzhmani.usageLimit,
+          status: aranzhmani.status || 'draft',
         }
       ))
     );
@@ -82,7 +83,7 @@ const getAllAranzhmanet = async (req, res) => {
 // };
 
 const addAranzhmanet = async (req, res) => {
-  const { titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airportId, busStationId, cmimi, rating, shtetiId, imageBase64, llojiTransportit, usageLimit } = req.body;
+  const { titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airportId, busStationId, cmimi, rating, shtetiId, imageBase64, llojiTransportit, usageLimit, status } = req.body;
   
   // Validate required fields
   if (!shtetiId || shtetiId === '' || isNaN(parseInt(shtetiId))) {
@@ -106,6 +107,7 @@ const addAranzhmanet = async (req, res) => {
       imageBase64: imageBase64 || null,
       llojiTransportit: llojiTransportit || null,
       usageLimit: usageLimit ? parseInt(usageLimit) : null,
+      status: status || 'draft',
     });
 
     // Try to send email, but don't fail if it doesn't work
@@ -174,7 +176,7 @@ const deleteAranzhmanet = async (req, res) => {
 const updateAranzhmani = async (req, res) => {
   try {
     const { id } = req.params;
-    const { titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airport, airportId, busStationId, cmimi, rating, shteti, imageBase64, llojiTransportit, usageLimit } = req.body;
+    const { titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airport, airportId, busStationId, cmimi, rating, shteti, imageBase64, llojiTransportit, usageLimit, status } = req.body;
     const Aranzhmani = await Aranzhmanet.findByPk(id);
     if (!Aranzhmani) {
       return res.status(404).json({ error: 'Aranzhmani not found' });
@@ -205,6 +207,9 @@ const updateAranzhmani = async (req, res) => {
     }
     if (usageLimit !== undefined) {
       Aranzhmani.usageLimit = usageLimit ? parseInt(usageLimit) : null;
+    }
+    if (status !== undefined && status !== null) {
+      Aranzhmani.status = status;
     }
 
     await Aranzhmani.save();
@@ -237,6 +242,7 @@ const updateAranzhmani = async (req, res) => {
           imageBase64: updatedAranzhmani.imageBase64,
           llojiTransportit: updatedAranzhmani.llojiTransportit,
           usageLimit: updatedAranzhmani.usageLimit,
+          status: updatedAranzhmani.status || 'draft',
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
