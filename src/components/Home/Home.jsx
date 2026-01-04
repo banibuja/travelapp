@@ -214,7 +214,7 @@ function Home() {
         d="M5 13l4 4L19 7"
       ></path>
     </svg>
-    <span>Udhëtime Individuale</span>
+    <span>Individual Trips</span>
   </div>
   <div className="check flex items-center bg-gray-100 rounded-lg shadow-md p-3 w-full sm:w-auto">
     <svg
@@ -231,7 +231,7 @@ function Home() {
         d="M5 13l4 4L19 7"
       ></path>
     </svg>
-    <span>Bileta Aeroplani</span>
+    <span>Airplane Tickets</span>
   </div>
   <div className="check flex items-center bg-gray-100 rounded-lg shadow-md p-3 w-full sm:w-auto">
     <svg
@@ -248,7 +248,7 @@ function Home() {
         d="M5 13l4 4L19 7"
       ></path>
     </svg>
-    <span>Hotele në të gjithë Botën</span>
+    <span>Hotels Worldwide</span>
   </div>
   <div className="check flex items-center bg-gray-100 rounded-lg shadow-md p-3 w-full sm:w-auto">
     <svg
@@ -265,14 +265,14 @@ function Home() {
         d="M5 13l4 4L19 7"
       ></path>
     </svg>
-    <span>Kroçiere</span>
+    <span>Cruises</span>
   </div>
 </div>
 
 
 <div className="flex flex-col justify-center items-center p-6">
   <div className="flex justify-center items-center space-x-4 p-5 mx-auto truncate whitespace-break-spaces text-navy text-lg font-bold tracking-tight sm:text-xl lg:text-2xl">
-    <span>Oferta Speciale</span>
+    <span>Special Offers</span>
   </div>
   <div className="group rounded-lg overflow-hidden w-full max-w-[70rem] h-[450px] sm:h-[350px] md:h-[450px]">
     <Slider {...settings}>
@@ -300,7 +300,7 @@ function Home() {
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent'
           }}>
-            Rekomandimet
+            Recommendations
           </h2>
         </div>
 
@@ -319,7 +319,7 @@ function Home() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">City Break</h3>
-                <p className="text-white/90 text-sm">Eksploroni qytetet më të bukura të Evropës</p>
+                <p className="text-white/90 text-sm">Explore the most beautiful cities of Europe</p>
               </div>
             </div>
           </div>
@@ -338,7 +338,7 @@ function Home() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">Dubai</h3>
-                <p className="text-white/90 text-sm">Luks dhe aventurë në qytetin e arit</p>
+                <p className="text-white/90 text-sm">Luxury and adventure in the city of gold</p>
               </div>
             </div>
           </div>
@@ -357,7 +357,7 @@ function Home() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">Stamboll</h3>
-                <p className="text-white/90 text-sm">Një qytet ku takohën dy kontinente</p>
+                <p className="text-white/90 text-sm">A city where two continents meet</p>
               </div>
             </div>
           </div>
@@ -421,7 +421,7 @@ function Home() {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent'
             }}>
-              Rekomandimet
+              Recommendations
             </h2>
           </div>
 
@@ -432,15 +432,15 @@ function Home() {
                 <img
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=600&fit=crop&q=80"
-                  alt="Destinacion i rekomanduar"
+                  alt="Recommended destination"
                   onError={(e) => {
                     e.target.src = 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop';
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <h3 className="text-3xl sm:text-4xl font-bold text-white mb-2 drop-shadow-lg">Destinacione të Veçanta</h3>
-                  <p className="text-white/90 text-lg">Zbuloni vendet më të bukura për pushime</p>
+                  <h3 className="text-3xl sm:text-4xl font-bold text-white mb-2 drop-shadow-lg">Special Destinations</h3>
+                  <p className="text-white/90 text-lg">Discover the most beautiful places for vacation</p>
                 </div>
               </div>
             </div>
@@ -452,15 +452,15 @@ function Home() {
                   <img
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&h=600&fit=crop&q=80"
-                    alt="Destinacion 1"
+                    alt="Destination 1"
                     onError={(e) => {
                       e.target.src = 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop';
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
                   <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 className="text-xl font-bold text-white mb-1 drop-shadow-lg">Aventurë dhe Eksplorim</h3>
-                    <p className="text-white/90 text-sm">Eksperienca të paharrueshme</p>
+                    <h3 className="text-xl font-bold text-white mb-1 drop-shadow-lg">Adventure and Exploration</h3>
+                    <p className="text-white/90 text-sm">Unforgettable experiences</p>
                   </div>
                 </div>
               </div>
@@ -470,15 +470,15 @@ function Home() {
                   <img
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=600&fit=crop&q=80"
-                    alt="Destinacion 2"
+                    alt="Destination 2"
                     onError={(e) => {
                       e.target.src = 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop';
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
                   <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 className="text-xl font-bold text-white mb-1 drop-shadow-lg">Destinacione Ekzotike</h3>
-                    <p className="text-white/90 text-sm">Relaksim dhe luks</p>
+                    <h3 className="text-xl font-bold text-white mb-1 drop-shadow-lg">Exotic Destinations</h3>
+                    <p className="text-white/90 text-sm">Relaxation and luxury</p>
                   </div>
                 </div>
               </div>
@@ -488,7 +488,7 @@ function Home() {
 
         <div className="stamboll p-10">
       <div className="flex justify-center items-center space-x-4 mx-auto truncate whitespace-break-spaces text-navy text-xl font-bold tracking-tight lg:text-2xl">
-        <span>Oferta Stamboll</span>
+        <span>Istanbul Offers</span>
       </div>
       <div className="flex flex-wrap justify-center gap-8">
         {hotels.map((hotel, index) => (
@@ -500,7 +500,7 @@ function Home() {
         <span className="ml-2">{hotel.location}</span>
           </p>
               <p className="text-gray-600 mb-1">All Inclusive</p>
-              <p className="text-blue-600 font-bold">nga PP €{hotel.price}</p>
+              <p className="text-blue-600 font-bold">from PP €{hotel.price}</p>
             </div>
             <div className="ml-auto">
         
@@ -516,7 +516,7 @@ function Home() {
 
     <div className="hughada p-10">
       <div className="flex justify-center items-center space-x-4 mx-auto truncate whitespace-break-spaces text-navy text-xl font-bold tracking-tight lg:text-2xl">
-        <span>Oferta Hurghada</span>
+        <span>Hurghada Offers</span>
       </div>
       <div className="flex flex-wrap justify-center gap-8">
         {hotelsHurghada.map((hotel, index) => (
@@ -528,7 +528,7 @@ function Home() {
         <span className="ml-2">{hotel.location}</span>
           </p>
               <p className="text-gray-600 mb-1">All Inclusive</p>
-              <p className="text-blue-600 font-bold">nga PP €{hotel.price}</p>
+              <p className="text-blue-600 font-bold">from PP €{hotel.price}</p>
             </div>
             <div className="ml-auto">
         
@@ -544,7 +544,7 @@ function Home() {
 
     
     <div className="kapodakia">
-  <h2 className="text-3xl font-bold text-center mb-6">Kapadokia hotele</h2>
+  <h2 className="text-3xl font-bold text-center mb-6">Cappadocia Hotels</h2>
   <div className="max-w-6xl mx-auto">
     <Slider {...settings1}>
       {kapodakia.map((hotel, index) => (
@@ -563,7 +563,7 @@ function Home() {
               </div>
               <p className="text-sm text-gray-500">{hotel.location}</p>
               <div className="text-lg font-semibold mt-2">
-                nga PP €{hotel.price}
+                from PP €{hotel.price}
               </div>
             </div>
           </div>

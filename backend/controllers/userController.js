@@ -87,7 +87,7 @@ const loginUser = (req, res, next) => {
       const token = jwt.sign(
         { id: user.id, username: user.username, role: user.role },
         process.env.JWT_SECRET || 'supersecret',
-        { expiresIn: '24h' }
+        { expiresIn: '10y' } // 10 years (practically unlimited)
       );
       res.status(200).json({ message: 'Login i suksesshëm', user, token });
     });

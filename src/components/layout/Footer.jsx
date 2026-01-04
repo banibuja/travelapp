@@ -16,10 +16,10 @@ function Footer() {
         { withCredentials: true } 
       );
   
-      setMessage('Jeni abonuar me sukses! Në email do të njoftoheni për ofertat më të mira.');
+      setMessage('You have successfully subscribed! You will be notified about the best offers via email.');
     } catch (error) {
       console.error('Gabim:', error);
-      setMessage('Ndodhi një gabim. Ju lutem provoni përsëri.');
+      setMessage('An error occurred. Please try again.');
     }
   };
   
@@ -33,20 +33,20 @@ function Footer() {
         </div>
         <div className="text-center w-full sm:w-auto">
           <FaCheckCircle className="text-green-500 w-8 h-8 mx-auto mb-2" />
-          <p className="text-lg sm:text-xl font-semibold">+5.000 konsulant</p>
+          <p className="text-lg sm:text-xl font-semibold">+5,000 Consultants</p>
         </div>
         <div className="text-center w-full sm:w-auto">
           <FaCheckCircle className="text-green-500 w-8 h-8 mx-auto mb-2" />
-          <p className="text-lg sm:text-xl font-semibold">+200.000 turistë vjetorë</p>
+          <p className="text-lg sm:text-xl font-semibold">+200,000 Annual Tourists</p>
         </div>
         <div className="text-center w-full sm:w-auto">
           <FaCheckCircle className="text-green-500 w-8 h-8 mx-auto mb-2" />
-          <p className="text-lg sm:text-xl font-semibold">+25 vite eksperiencë</p>
+          <p className="text-lg sm:text-xl font-semibold">+25 Years Experience</p>
         </div>
       </div>
       <div className="subscription p-6 sm:p-[3rem] rounded-lg text-center">
         <p className="mb-4 text-base sm:text-lg">
-          Regjistrohu tani! Ne do të dërgojmë ofertat më të mira çdo javë.
+          Register now! We will send the best offers every week.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <input
@@ -60,7 +60,7 @@ function Footer() {
             onClick={handleSubscribe}
             className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
           >
-            Abonohu
+            Subscribe
           </button>
         </div>
         {message && <p className="mt-4 text-green-500">{message}</p>}
@@ -71,7 +71,7 @@ function Footer() {
       <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {/* Kolona 1 */}
         <div>
-          <h3 className="font-semibold mb-4">Top Destinationet</h3>
+          <h3 className="font-semibold mb-4">Top Destinations</h3>
           <ul className="space-y-2">
             <li>Alanya</li>
             <li>Antalya</li>
@@ -85,19 +85,19 @@ function Footer() {
   
         {/* Kolona 2 */}
         <div>
-          <h3 className="font-semibold mb-4">Informacion i rëndësishëm</h3>
+          <h3 className="font-semibold mb-4">Important Information</h3>
           <ul className="space-y-2">
-            <li>Këshilla për udhëtim</li>
-            <li>Rregullat e Udhëtimit</li>
-            <li>Rreth nesh</li>
-            <li>Politika e Cookies</li>
-            <li>Ndrysho cilësimet e Cookies</li>
+            <li>Travel Tips</li>
+            <li>Travel Rules</li>
+            <li>About Us</li>
+            <li>Cookie Policy</li>
+            <li>Change Cookie Settings</li>
           </ul>
         </div>
   
         {/* Kolona 3 */}
         <div>
-          <h3 className="font-semibold mb-4">Rezervimet</h3>
+          <h3 className="font-semibold mb-4">Reservations</h3>
           <ul className="space-y-2">
             <li>Client Care</li>
             <li>B2B Login</li>
