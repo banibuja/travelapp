@@ -53,6 +53,14 @@ function Nav() {
       {/* Main Navigation */}
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-4">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-2 group mr-4">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-r from-cyan-500 to-blue-500 group-hover:from-cyan-600 group-hover:to-blue-600 transition-all duration-300 shadow-md group-hover:shadow-lg">
+              <span className="text-white text-xl">✈️</span>
+            </div>
+            <span className="text-xl font-bold text-gray-800 group-hover:text-cyan-600 transition-colors duration-300 hidden sm:block">TravelApp</span>
+          </Link>
+
           {/* Mobile Menu Button */}
           <div className="lg:hidden">
             <button
@@ -142,6 +150,13 @@ function Nav() {
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-white border-t border-gray-200 shadow-xl">
           <div className="container mx-auto px-4 py-4">
+            {/* Mobile Logo */}
+            <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center space-x-2 mb-4 pb-4 border-b border-gray-200">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-r from-cyan-500 to-blue-500">
+                <span className="text-white text-xl">✈️</span>
+              </div>
+              <span className="text-xl font-bold text-gray-800">TravelApp</span>
+            </Link>
             <div className="space-y-1">
               {[
                 { href: "/turqi", label: "Turkey" },

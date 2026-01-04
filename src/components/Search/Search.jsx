@@ -142,6 +142,15 @@ const Search = () => {
     
     var filteredAranzhmanet = aranzhmanet;
 
+    // Filter out packages with departure date in the past (before current date and time)
+    const now = new Date();
+    filteredAranzhmanet = filteredAranzhmanet.filter((aranzhmani) => {
+      const departureDate = new Date(aranzhmani.dataNisjes);
+      // Set time to end of day for comparison (23:59:59)
+      departureDate.setHours(23, 59, 59, 999);
+      return departureDate >= now;
+    });
+
     // Filter by transport type
     if(searchPrompts.transportType) {
       filteredAranzhmanet = filteredAranzhmanet.filter((aranzhmani) => {
@@ -173,7 +182,10 @@ const Search = () => {
     // Filter by departure date
     if(searchPrompts.DepartureDate) {
       filteredAranzhmanet = filteredAranzhmanet.filter((aranzhmani) => {
-        return aranzhmani.dataNisjes == searchPrompts.DepartureDate;
+        // Normalize both dates to YYYY-MM-DD format for comparison
+        const searchDate = new Date(searchPrompts.DepartureDate).toISOString().split('T')[0];
+        const packageDate = new Date(aranzhmani.dataNisjes).toISOString().split('T')[0];
+        return packageDate === searchDate;
       });
     }
 
@@ -279,7 +291,17 @@ const Search = () => {
     axios.get('http://localhost:5001/api/aranzhmanet')
       .then(response => {
         // Filter only published packages
-        const publishedPackages = response.data.filter(pkg => pkg.status === 'published');
+        let publishedPackages = response.data.filter(pkg => pkg.status === 'published');
+        
+        // Filter out packages with departure date in the past (before current date and time)
+        const now = new Date();
+        publishedPackages = publishedPackages.filter((pkg) => {
+          const departureDate = new Date(pkg.dataNisjes);
+          // Set time to end of day for comparison (23:59:59)
+          departureDate.setHours(23, 59, 59, 999);
+          return departureDate >= now;
+        });
+        
         setAranzhmanet(publishedPackages);
       })
       .catch(error => {
