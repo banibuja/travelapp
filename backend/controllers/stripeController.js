@@ -21,6 +21,26 @@ const createCheckoutSession = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
+    // Check usage limit if aranzhmaniId is provided
+    if (aranzhmaniId) {
+      const aranzhmani = await Aranzhmanet.findByPk(aranzhmaniId);
+      if (aranzhmani && aranzhmani.usageLimit !== null) {
+        // Count completed purchases for this package
+        const completedPurchases = await Purchases.count({
+          where: {
+            aranzhmaniId: aranzhmaniId,
+            status: 'completed',
+          },
+        });
+
+        if (completedPurchases >= aranzhmani.usageLimit) {
+          return res.status(400).json({ 
+            error: 'This package has reached its reservation limit. No more reservations are available.' 
+          });
+        }
+      }
+    }
+
     // Remove imageBase64 from packageDetails to save space in database
     const { imageBase64, ...packageDetailsWithoutImage } = packageDetails;
 
@@ -223,6 +243,29 @@ const getUserPurchases = async (req, res) => {
     res.json(purchases);
   } catch (error) {
     console.error('Error getting user purchases:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Get completed reservations count for an aranzhman
+const getCompletedReservationsCount = async (req, res) => {
+  try {
+    const { aranzhmaniId } = req.params;
+    
+    if (!aranzhmaniId) {
+      return res.status(400).json({ error: 'Aranzhmani ID is required' });
+    }
+
+    const count = await Purchases.count({
+      where: {
+        aranzhmaniId: parseInt(aranzhmaniId),
+        status: 'completed',
+      },
+    });
+
+    res.json({ count });
+  } catch (error) {
+    console.error('Error getting completed reservations count:', error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -506,6 +549,7 @@ module.exports = {
   getPurchase,
   getUserPurchases,
   getAllPurchases,
+  getCompletedReservationsCount,
   verifyPayment,
   approvePurchase,
   rejectPurchase,

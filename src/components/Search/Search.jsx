@@ -438,7 +438,7 @@ const Search = () => {
                     className="flex items-center w-full p-3 bg-gray-100 border rounded-md hover:bg-gray-200"
                   >
                     <span className="mr-2">✈️</span>
-                    {searchPrompts.from.emri || 'Nga'}
+                    {searchPrompts.from.emri || 'From'}
                   </button>
 
                   {isAirportDropdownOpen && (
@@ -478,7 +478,7 @@ const Search = () => {
                   className="flex items-center w-full p-3 bg-gray-100 border rounded-md hover:bg-gray-200"
                 >
                   <span className="mr-2">✈️</span>
-                  {searchPrompts.to.qyteti.emri|| searchPrompts.to.emri || 'Destinimi'}
+                  {searchPrompts.to.qyteti.emri|| searchPrompts.to.emri || 'Destination'}
                 </button>
 
               {isDropdownOpen && (
@@ -487,7 +487,7 @@ const Search = () => {
                   <div className="p-2">
                     <input
                       type="text"
-                      placeholder="Kërko vend ose qytet"
+                      placeholder="Search place or city"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -552,15 +552,15 @@ const Search = () => {
 
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Numri i Neteve</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Number of Nights</label>
               <select
                 className="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={handleNrNeteve}
               >
-              <option value='{"start": 0, "end": 5}'>1-5 Netë</option>
-              <option value='{"start": 6, "end": 9}'>6-9 Netë</option>
-              <option value='{"start": 10, "end": 12}'>10-12 Netë</option>
-              <option value='{"start": 12, "end": 99}'>12+ Netë</option>
+              <option value='{"start": 0, "end": 5}'>1-5 Nights</option>
+              <option value='{"start": 6, "end": 9}'>6-9 Nights</option>
+              <option value='{"start": 10, "end": 12}'>10-12 Nights</option>
+              <option value='{"start": 12, "end": 99}'>12+ Nights</option>
               </select>
             </div>
 
@@ -586,7 +586,7 @@ const Search = () => {
             <div className="w-full border border-black">
                 <div className="p-3 flex">
                     <div>
-                        {displayedAranzhmanet.length} te kerkuara
+                        {displayedAranzhmanet.length} results found
                     </div>
                     <div className="relative inline-block text-left ml-auto">
                         <button onClick={toggleDropdown} className="flex items-center gap-2 border-2 border-black  text-black px-4 py-2 rounded-md hover:bg-gray-300 focus:outline-none">
