@@ -15,7 +15,7 @@ const isAuthenticated = (req, res, next) => {
         return res.status(403).json({ error: "Invalid token." });
       }
       req.user = user;
-      console.log('Authenticated user via JWT:', user);
+      // console.log('Authenticated user via JWT:', user); // Disabled for cleaner logs
       return next();
     });
   } else {

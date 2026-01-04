@@ -20,7 +20,7 @@ const getAllHotels = async (req, res) => {
 
 // Add a new hotel
 const addCard = async (req, res) => {
-  console.log('User Info:', req.user);
+  // console.log('User Info:', req.user); // Disabled for cleaner logs
   const { title, description, price, imageBase64 } = req.body;
 
   try {

@@ -50,15 +50,15 @@ const sendPaymentConfirmationEmail = async (user, purchase, packageDetails) => {
       `,
     };
 
-    console.log('Sending email with options:', {
-      from: mailOptions.from,
-      to: mailOptions.to,
-      subject: mailOptions.subject,
-    });
+    // console.log('Sending email with options:', { // Disabled for cleaner logs
+    //   from: mailOptions.from,
+    //   to: mailOptions.to,
+    //   subject: mailOptions.subject,
+    // });
 
     const result = await transporter.sendMail(mailOptions);
-    console.log('Payment confirmation email sent successfully to:', user.email);
-    console.log('Email result:', result.messageId);
+    // console.log('Payment confirmation email sent successfully to:', user.email); // Disabled for cleaner logs
+    // console.log('Email result:', result.messageId); // Disabled for cleaner logs
     return result;
   } catch (error) {
     console.error('Error sending payment confirmation email:', error);

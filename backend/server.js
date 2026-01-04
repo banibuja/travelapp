@@ -47,7 +47,7 @@ app.set('trust proxy', 1);
 const corsOptions = {
   origin: function (origin, callback) {
     // For development, allow any origin
-    console.log("Request Origin:", origin); // Log the origin for debugging
+    // console.log("Request Origin:", origin); // Disabled for cleaner logs
     callback(null, true);
   },
   credentials: true,
@@ -78,7 +78,7 @@ try {
   });
   // Sync session store with database
   sessionStore.sync();
-  console.log('Session store initialized with database persistence');
+  // console.log('Session store initialized with database persistence'); // Disabled for cleaner logs
 } catch (error) {
   console.warn('connect-session-sequelize not installed. Using memory store. Sessions will be lost on server restart.');
   console.warn('To fix this, run: npm install connect-session-sequelize');
@@ -201,7 +201,7 @@ app.post('/logout', (req, res) => {
 
 const initializeDatabase = async () => {
   try {
-    await sequelize.sync();
+    await sequelize.sync({ alter: false, logging: false });
     const PORT = 5001;
     app.listen(PORT, () => {
       console.log(`Serveri po punon në portin ${PORT}`);

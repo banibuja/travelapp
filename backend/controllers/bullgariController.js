@@ -18,8 +18,8 @@ const getAllImagesBullgari = async (req, res) => {
 
 // Add a new image
 const addImageBullgari = async (req, res) => {
-    console.log('Request Body:', req.body);
-    console.log('Image Size:', req.body.imageBase64?.length);
+    // console.log('Request Body:', req.body); // Disabled for cleaner logs
+    // console.log('Image Size:', req.body.imageBase64?.length); // Disabled for cleaner logs
   
     try {
       const { imageBase64, title } = req.body;

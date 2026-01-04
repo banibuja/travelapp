@@ -129,8 +129,8 @@ const handleWebhook = async (req, res) => {
       const session = event.data.object;
       const purchaseId = session.metadata.purchaseId;
 
-      console.log('Webhook received: checkout.session.completed');
-      console.log('Purchase ID from metadata:', purchaseId);
+      // console.log('Webhook received: checkout.session.completed'); // Disabled for cleaner logs
+      // console.log('Purchase ID from metadata:', purchaseId); // Disabled for cleaner logs
 
       if (purchaseId) {
         const purchase = await Purchases.findByPk(purchaseId, {
@@ -140,8 +140,8 @@ const handleWebhook = async (req, res) => {
         });
 
         if (purchase) {
-          console.log('Purchase found:', purchase.id);
-          console.log('User found:', purchase.user ? `${purchase.user.firstName} ${purchase.user.lastName} (${purchase.user.email})` : 'NO USER');
+          // console.log('Purchase found:', purchase.id); // Disabled for cleaner logs
+          // console.log('User found:', purchase.user ? `${purchase.user.firstName} ${purchase.user.lastName} (${purchase.user.email})` : 'NO USER'); // Disabled for cleaner logs
 
           await purchase.update({
             status: 'completed',
@@ -158,9 +158,9 @@ const handleWebhook = async (req, res) => {
                     : purchase.packageDetails)
                 : {};
 
-              console.log('Attempting to send payment confirmation email to:', purchase.user.email);
+              // console.log('Attempting to send payment confirmation email to:', purchase.user.email); // Disabled for cleaner logs
               await sendPaymentConfirmationEmail(purchase.user, purchase, packageDetails);
-              console.log('Payment confirmation email sent successfully');
+              // console.log('Payment confirmation email sent successfully'); // Disabled for cleaner logs
             } catch (emailError) {
               console.error('Error sending payment confirmation email:', emailError);
               console.error('Error stack:', emailError.stack);
@@ -188,7 +188,7 @@ const handleWebhook = async (req, res) => {
       break;
 
     default:
-      console.log(`Unhandled event type ${event.type}`);
+      // console.log(`Unhandled event type ${event.type}`); // Disabled for cleaner logs
   }
 
   res.json({ received: true });
@@ -293,7 +293,7 @@ const getAllPurchases = async (req, res) => {
 
     // Debug: log first purchase to see structure
     if (purchases.length > 0) {
-      console.log('First purchase sample:', JSON.stringify(purchases[0].toJSON(), null, 2));
+      // console.log('First purchase sample:', JSON.stringify(purchases[0].toJSON(), null, 2)); // Disabled for cleaner logs
     }
 
     res.json(purchases);
@@ -347,7 +347,7 @@ const verifyPayment = async (req, res) => {
                 : purchase.packageDetails)
             : {};
 
-          console.log('Sending payment confirmation email from verifyPayment endpoint');
+          // console.log('Sending payment confirmation email from verifyPayment endpoint'); // Disabled for cleaner logs
           await sendPaymentConfirmationEmail(purchase.user, purchase, packageDetails);
         } catch (emailError) {
           console.error('Error sending payment confirmation email from verifyPayment:', emailError);
