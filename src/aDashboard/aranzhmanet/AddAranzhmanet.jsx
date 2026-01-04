@@ -21,6 +21,7 @@ function AddAranzhmanet() {
     rating: '',
     llojiTransportit: '',
     usageLimit: '',
+    status: 'draft', // Default status is draft
   });
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -390,6 +391,19 @@ function AddAranzhmanet() {
                     placeholder="Leave empty for unlimited" 
                   />
                   <p className="text-xs text-gray-500 mt-1">Maximum number of times this package can be reserved. Leave empty for unlimited.</p>
+                </div>
+
+                {/* Status */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Status</label>
+                  <select name="status" value={formData.status} onChange={handleChange}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500 transition-all appearance-none"
+                    style={{ background: '#f8fafc' }} required>
+                    <option value="draft">Draft</option>
+                    <option value="published">Published</option>
+                    <option value="unpublished">Unpublished</option>
+                  </select>
+                  <p className="text-xs text-gray-500 mt-1">Package will be created as draft by default. Change to published to make it visible to users.</p>
                 </div>
 
                 {/* Image Upload */}

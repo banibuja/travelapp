@@ -78,6 +78,11 @@ const Aranzhmanet = sequelize.define('aranzhmanet', {
       allowNull: true,
       defaultValue: null, // null means unlimited
     },
+    status: {
+      type: DataTypes.ENUM('draft', 'published', 'unpublished'),
+      allowNull: false,
+      defaultValue: 'draft',
+    },
   }, {
     tableName: 'aranzhmanet',
     timestamps: false,

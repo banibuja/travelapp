@@ -79,6 +79,11 @@ function ManageAranzhmanet() {
   const updateItem = async (id) => {
     try {
       let updateData = { ...updatedFields };
+      // Ensure status is included in updateData (use current item status if not in updatedFields)
+      if (!updateData.hasOwnProperty('status') || updateData.status === undefined || updateData.status === null) {
+        const currentItem = aranzhmanet.find(item => item.id === id);
+        updateData.status = currentItem?.status || 'draft';
+      }
       
       // If new image is selected, convert it to base64
       if (editingImage) {
@@ -168,6 +173,7 @@ function ManageAranzhmanet() {
       dataKthimit: item.dataKthimit,
       llojiTransportit: item.llojiTransportit || '',
       usageLimit: item.usageLimit || '',
+      status: item.status || 'draft',
     });
     setEditingImage(null);
     setEditingImagePreview(null);
@@ -242,6 +248,7 @@ function ManageAranzhmanet() {
                   <th className="px-4 py-4 text-left text-xs font-bold text-gray-500 uppercase">Return</th>
                   <th className="px-4 py-4 text-left text-xs font-bold text-gray-500 uppercase">Usage Limit</th>
                   <th className="px-4 py-4 text-left text-xs font-bold text-gray-500 uppercase">Transport</th>
+                  <th className="px-4 py-4 text-left text-xs font-bold text-gray-500 uppercase">Status</th>
                   <th className="px-4 py-4 text-center text-xs font-bold text-gray-500 uppercase">Actions</th>
                 </tr>
               </thead>
@@ -352,6 +359,26 @@ function ManageAranzhmanet() {
                           {item.llojiTransportit === 'plane' && '✈️ Plane'}
                           {item.llojiTransportit === 'bus' && '🚌 Bus'}
                           {!item.llojiTransportit && '-'}
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-4 py-4">
+                      {editingId === item.id ? (
+                        <select value={updatedFields.status ? updatedFields.status : (item.status || 'draft')} onChange={(e) => handleEditChange(e, 'status')}
+                          className="px-2 py-1 border border-gray-300 rounded-lg text-sm focus:border-cyan-500 focus:outline-none">
+                          <option value="draft">Draft</option>
+                          <option value="published">Published</option>
+                          <option value="unpublished">Unpublished</option>
+                        </select>
+                      ) : (
+                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                          item.status === 'published' ? 'bg-green-100 text-green-700' :
+                          item.status === 'unpublished' ? 'bg-red-100 text-red-700' :
+                          'bg-gray-100 text-gray-700'
+                        }`}>
+                          {item.status === 'published' ? 'Published' :
+                           item.status === 'unpublished' ? 'Unpublished' :
+                           'Draft'}
                         </span>
                       )}
                     </td>
