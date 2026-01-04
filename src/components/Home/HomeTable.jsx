@@ -176,8 +176,22 @@ function HomeTable() {
     });
   };
 
-  const handleCityClick = (city) => {
-    setSearchPrompts({...searchPrompts, to: {...searchPrompts.to, qyteti: {id:city.id, emri: city.emri}}});
+  const handleCityClick = (city, country = null) => {
+    // When clicking a city, ensure the country ID is set so transport type selector is enabled
+    // If country is provided, use it; otherwise use the current searchPrompts.to
+    const countryId = country ? country.id : searchPrompts.to.id;
+    const countryEmri = country ? country.emri : searchPrompts.to.emri;
+    
+    setSearchPrompts({
+      ...searchPrompts, 
+      to: {
+        id: countryId,
+        emri: countryEmri,
+        qyteti: {id:city.id, emri: city.emri}
+      },
+      from: { id:null, emri: ''}, // Reset airport when city changes
+      busStation: { id:null, emri: ''} // Reset bus station when city changes
+    });
     setIsDropdownOpen(false);
   };
  
@@ -239,8 +253,8 @@ function HomeTable() {
  
   
     return (
-      <div className="relative font-sans border-gray-300 rounded-lg w-40 shadow-md">
-        <button type='button' onClick={() => {setIsDepartureDropdownOpen(false);setIsDropdownOpen(false);setIsNrNeteveDropdownOpen(!isNrNeteveDropdownOpen)}} className="outline-none flex items-center w-40 p-3 bg-gray-100 border rounded-md hover:bg-gray-200">
+      <div className="relative font-sans border-gray-300 rounded-lg w-full md:w-40 shadow-md">
+        <button type='button' onClick={() => {setIsDepartureDropdownOpen(false);setIsDropdownOpen(false);setIsNrNeteveDropdownOpen(!isNrNeteveDropdownOpen)}} className="outline-none flex items-center w-full p-3 bg-gray-100 border rounded-md hover:bg-gray-200">
         {searchPrompts.nrNeteve ? `${searchPrompts.nrNeteve[0]}-${searchPrompts.nrNeteve[1]} Nights` : 'Number of Nights'}
         </button>
 
@@ -300,8 +314,8 @@ function HomeTable() {
   const Destinimi = () => {
     return(
       
-      <div className="relative">
-      <button type='button' onClick={() => {setIsDropdownOpen(!isDropdownOpen);setIsDepartureDropdownOpen(false)}} className="flex outline-none items-center w-40 p-3 bg-gray-100 border rounded-md hover:bg-gray-200">
+      <div className="relative w-full md:w-40">
+      <button type='button' onClick={() => {setIsDropdownOpen(!isDropdownOpen);setIsDepartureDropdownOpen(false)}} className="flex outline-none items-center w-full p-3 bg-gray-100 border rounded-md hover:bg-gray-200">
         <span className="mr-2">🌍</span>
         {searchPrompts.to.qyteti.emri|| searchPrompts.to.emri || 'Destination'}
       </button>
@@ -340,7 +354,7 @@ function HomeTable() {
                     .map((city) => (
                       <li
                         key={city.emri}
-                        onClick={() => {handleCountryClick(country); handleCityClick(city)}}
+                        onClick={() => {handleCityClick(city, country)}}
                         className="p-1 text-gray-600 hover:bg-blue-100 cursor-pointer rounded"
                       >
                         {city.emri}
@@ -367,11 +381,11 @@ function HomeTable() {
     }
     
     return (
-      <div className="relative font-sans border-gray-300 rounded-lg w-40 shadow-md">
+      <div className="relative font-sans border-gray-300 rounded-lg w-full md:w-40 shadow-md">
         <button 
           type='button' 
           onClick={() => {setIsDepartureDropdownOpen(false); setIsDropdownOpen(false); setIsBusStationDropdownOpen(false)}} 
-          className="outline-none flex items-center w-40 p-3 bg-gray-100 border rounded-md hover:bg-gray-200"
+          className="outline-none flex items-center w-full p-3 bg-gray-100 border rounded-md hover:bg-gray-200"
         >
           <span className="mr-2">
             {transportType === 'plane' ? '✈️' : transportType === 'bus' ? '🚌' : '🚗'}
@@ -395,11 +409,11 @@ function HomeTable() {
     
     if (transportType === 'bus') {
       return (
-        <div className="relative font-sans border-gray-300 rounded-lg w-40 shadow-md">
+        <div className="relative font-sans border-gray-300 rounded-lg w-full md:w-40 shadow-md">
           <button 
             type='button' 
             onClick={() => {setIsBusStationDropdownOpen(!isBusStationDropdownOpen); setIsDropdownOpen(false); setIsDepartureDropdownOpen(false)}} 
-            className="outline-none flex items-center w-40 p-3 bg-gray-100 border rounded-md hover:bg-gray-200"
+            className="outline-none flex items-center w-full p-3 bg-gray-100 border rounded-md hover:bg-gray-200"
           >
             <span className="mr-2">🚌</span>
             {searchPrompts.busStation.emri || 'Bus Station'}
@@ -440,11 +454,11 @@ function HomeTable() {
     }
 
     return(
-      <div className="relative font-sans border-gray-300 rounded-lg w-40 shadow-md">
+      <div className="relative font-sans border-gray-300 rounded-lg w-full md:w-40 shadow-md">
         <button 
           type='button' 
           onClick={() => {setIsDepartureDropdownOpen(!isDepartureDropdownOpen); setIsDropdownOpen(false); setIsBusStationDropdownOpen(false)}} 
-          className="outline-none flex items-center w-40 p-3 bg-gray-100 border rounded-md hover:bg-gray-200"
+          className="outline-none flex items-center w-full p-3 bg-gray-100 border rounded-md hover:bg-gray-200"
         >
           <span className="mr-2">✈️</span>
           {searchPrompts.from.emri || 'Airport'}
@@ -555,16 +569,16 @@ function HomeTable() {
           </div>
 
           {/* Inputet dhe butoni */}
-          <div className="flex flex-nowrap bg-[#ffffff4c] shadow-lg rounded-lg justify-center items-center gap-3 p-4 w-full max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row flex-wrap md:flex-nowrap bg-[#ffffff4c] shadow-lg rounded-lg justify-center items-stretch md:items-center gap-3 p-3 md:p-4 w-full max-w-7xl mx-auto">
           {selected === 0 && (
               <>
                 {/* Destination First */}
-                <div className="flex-shrink-0">
+                <div className="flex-shrink-0 w-full md:w-auto">
                   <Destinimi />
                 </div>
 
                 {/* Transport Type Selector - Only shows after destination is selected */}
-                <div className="relative font-sans border-gray-300 rounded-lg w-36 shadow-md flex-shrink-0">
+                <div className="relative font-sans border-gray-300 rounded-lg w-full md:w-36 shadow-md flex-shrink-0">
                   <select 
                     value={transportType} 
                     onChange={(e) => handleTransportTypeChange(e.target.value)}
@@ -587,23 +601,23 @@ function HomeTable() {
                 </div>
 
                 {/* Bus Station/Airport - Only shows after destination and transport type are selected */}
-                <div className="flex-shrink-0">
+                <div className="flex-shrink-0 w-full md:w-auto">
                   <NisjaNga />
                 </div>
 
-                <div className="flex-shrink-0">
+                <div className="flex-shrink-0 w-full md:w-auto">
                   <NrNeteve />
                 </div>
 
-                <div className="flex-shrink-0">
+                <div className="flex-shrink-0 w-full md:w-auto">
                   <DataENisjes />
                 </div>
                
-                <div className="flex-shrink-0">
+                <div className="flex-shrink-0 w-full md:w-auto">
                   <Udhetaret />
                 </div>
 
-                <button className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 flex-shrink-0 whitespace-nowrap" onClick={handleSearch}>
+                <button className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 flex-shrink-0 whitespace-nowrap w-full md:w-auto" onClick={handleSearch}>
                   SEARCH 
                 </button>
               </>
