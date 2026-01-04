@@ -117,6 +117,38 @@ function ManageAranzhmanet() {
         setEditingImagePreview(null);
         setMessage('Package updated successfully!');
         setTimeout(() => setMessage(''), 3000);
+        
+        // Refresh reservations count for updated package if it has a usage limit
+        if (response.data.usageLimit !== null && response.data.usageLimit !== undefined) {
+          try {
+            const countResponse = await axios.get(
+              `http://localhost:5001/api/purchases/completed-count/${id}`,
+              { withCredentials: true }
+            );
+            setReservationsCount(prev => ({
+              ...prev,
+              [id]: countResponse.data.count || 0
+            }));
+          } catch (error) {
+            console.error(`Error refreshing count for package ${id}:`, error);
+          }
+        }
+        
+        // Refresh reservations count for updated package if it has a usage limit
+        if (response.data.usageLimit !== null && response.data.usageLimit !== undefined) {
+          try {
+            const countResponse = await axios.get(
+              `http://localhost:5001/api/purchases/completed-count/${id}`,
+              { withCredentials: true }
+            );
+            setReservationsCount(prev => ({
+              ...prev,
+              [id]: countResponse.data.count || 0
+            }));
+          } catch (error) {
+            console.error(`Error refreshing count for package ${id}:`, error);
+          }
+        }
       }
     } catch (error) {
       setMessage('Error updating package.');
