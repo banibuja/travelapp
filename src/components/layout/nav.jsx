@@ -75,11 +75,11 @@ function Nav() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center justify-center flex-1 space-x-1 overflow-x-auto scrollbar-hide">
             {[
-              { href: "/turqi", label: "Turqi" },
-              { href: "/bullgari", label: "Bullgari" },
-              { href: "/FestateFundVitit", label: "Festat e fundvitit" },
-              { href: "/Maqedoni", label: "Maqedoni" },
-              { href: "/Greqi", label: "Greqi" },
+              { href: "/turqi", label: "Turkey" },
+              { href: "/bullgari", label: "Bulgaria" },
+              { href: "/FestateFundVitit", label: "New Year Holidays" },
+              { href: "/Maqedoni", label: "Macedonia" },
+              { href: "/Greqi", label: "Greece" },
               { href: "/EuropeCityBreak", label: "Europe-City Break" },
               { href: "/Dubai", label: "Dubai" },
               { href: "/VisitKosova", label: "Visit Kosova" },
@@ -144,11 +144,11 @@ function Nav() {
           <div className="container mx-auto px-4 py-4">
             <div className="space-y-1">
               {[
-                { href: "/turqi", label: "Turqi" },
-                { href: "/bullgari", label: "Bullgari" },
-                { href: "/FestateFundVitit", label: "Festat e fundvitit" },
-                { href: "/Maqedoni", label: "Maqedoni" },
-                { href: "/Greqi", label: "Greqi" },
+                { href: "/turqi", label: "Turkey" },
+                { href: "/bullgari", label: "Bulgaria" },
+                { href: "/FestateFundVitit", label: "New Year Holidays" },
+                { href: "/Maqedoni", label: "Macedonia" },
+                { href: "/Greqi", label: "Greece" },
                 { href: "/EuropeCityBreak", label: "Europe-City Break" },
                 { href: "/Dubai", label: "Dubai" },
                 { href: "/VisitKosova", label: "Visit Kosova" },
