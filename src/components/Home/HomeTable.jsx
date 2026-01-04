@@ -132,11 +132,20 @@ function HomeTable() {
 
   const handleCountryClick = (country) => {  
     if (!country) {
-      setSearchPrompts({...searchPrompts, to: { id:null, emri: '', qyteti: {id:null, emri:''}}});
-      
-    }else{   
-    setSearchPrompts({...searchPrompts, to: {...searchPrompts.to, id:country.id, emri: country.emri}});
-  }
+      setSearchPrompts({
+        ...searchPrompts, 
+        to: { id:null, emri: '', qyteti: {id:null, emri:''}},
+        from: { id:null, emri: ''}, // Reset airport when country changes
+        busStation: { id:null, emri: ''} // Reset bus station when country changes
+      });
+    } else {   
+      setSearchPrompts({
+        ...searchPrompts, 
+        to: {...searchPrompts.to, id:country.id, emri: country.emri},
+        from: { id:null, emri: ''}, // Reset airport when country changes
+        busStation: { id:null, emri: ''} // Reset bus station when country changes
+      });
+    }
     setIsDropdownOpen(false);
   };
   const handleAirportClick = (airport) => {  
@@ -159,7 +168,12 @@ function HomeTable() {
 
   const handleTransportTypeChange = (type) => {
     setTransportType(type);
-    setSearchPrompts({...searchPrompts, transportType: type, from: { id:null, emri: ''}, busStation: { id:null, emri: ''}});
+    setSearchPrompts({
+      ...searchPrompts, 
+      transportType: type, 
+      from: { id:null, emri: ''}, 
+      busStation: { id:null, emri: ''}
+    });
   };
 
   const handleCityClick = (city) => {
@@ -347,6 +361,11 @@ function HomeTable() {
 
 
   const TransportType = () => {
+    // Don't show if destination (country) is not selected
+    if (!searchPrompts.to.id) {
+      return null;
+    }
+    
     return (
       <div className="relative font-sans border-gray-300 rounded-lg w-40 shadow-md">
         <button 
@@ -364,10 +383,15 @@ function HomeTable() {
   };
 
   const NisjaNga = () => {
-    // Don't show if transport type is not selected
-    if (!transportType) {
+    // Don't show if transport type is not selected OR destination (country) is not selected
+    // Order: destination -> transport type -> bus station/airport
+    if (!searchPrompts.to.id || !transportType) {
       return null;
     }
+    
+    // Filter bus stations/airports by selected country
+    const filteredBusStations = busStations.filter(station => station.shtetiId === searchPrompts.to.id);
+    const filteredAirports = airports.filter(airport => airport.shtetiId === searchPrompts.to.id);
     
     if (transportType === 'bus') {
       return (
@@ -392,16 +416,22 @@ function HomeTable() {
                     All Bus Stations
                   </div>
                 </li>
-                {busStations.map((station) => (
-                  <li key={station.id} className="p-2 text-sm text-[#374151] cursor-pointer transition-all">
-                    <div
-                      onClick={() => handleBusStationClick(station)}
-                      className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
-                    >
-                      {station.emri} {station.adresa && `- ${station.adresa}`}
-                    </div>
+                {filteredBusStations.length > 0 ? (
+                  filteredBusStations.map((station) => (
+                    <li key={station.id} className="p-2 text-sm text-[#374151] cursor-pointer transition-all">
+                      <div
+                        onClick={() => handleBusStationClick(station)}
+                        className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                      >
+                        {station.emri} {station.adresa && `- ${station.adresa}`}
+                      </div>
+                    </li>
+                  ))
+                ) : (
+                  <li className="p-2 text-sm text-gray-500">
+                    No bus stations found for this country
                   </li>
-                ))}
+                )}
               </ul>
             </div>
           )}
@@ -431,16 +461,22 @@ function HomeTable() {
                   All Airports
                 </div>
               </li>
-              {airports.map((airport) => (
-                <li key={airport.emri} className="p-2 text-sm text-[#374151] cursor-pointer transition-all">
-                  <div
-                    onClick={() => handleAirportClick(airport)}
-                    className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
-                  >
-                    {airport.emri}  ({airport.akronimi})
-                  </div>
+              {filteredAirports.length > 0 ? (
+                filteredAirports.map((airport) => (
+                  <li key={airport.emri} className="p-2 text-sm text-[#374151] cursor-pointer transition-all">
+                    <div
+                      onClick={() => handleAirportClick(airport)}
+                      className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
+                    >
+                      {airport.emri}  ({airport.akronimi})
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <li className="p-2 text-sm text-gray-500">
+                  No airports found for this country
                 </li>
-              ))}
+              )}
             </ul>
           </div>
         )}
@@ -526,26 +562,37 @@ function HomeTable() {
           <div className="flex flex-nowrap bg-[#ffffff4c] shadow-lg rounded-lg justify-center items-center gap-3 p-4 w-full max-w-7xl mx-auto">
           {selected === 0 && (
               <>
-                {/* Transport Type Selector */}
+                {/* Destination First */}
+                <div className="flex-shrink-0">
+                  <Destinimi />
+                </div>
+
+                {/* Transport Type Selector - Only shows after destination is selected */}
                 <div className="relative font-sans border-gray-300 rounded-lg w-36 shadow-md flex-shrink-0">
                   <select 
                     value={transportType} 
                     onChange={(e) => handleTransportTypeChange(e.target.value)}
-                    className="outline-none w-full p-3 bg-gray-100 border rounded-md hover:bg-gray-200 appearance-none cursor-pointer text-sm"
+                    disabled={!searchPrompts.to.id}
+                    className={`outline-none w-full p-3 border rounded-md appearance-none cursor-pointer text-sm ${
+                      searchPrompts.to.id 
+                        ? 'bg-gray-100 hover:bg-gray-200' 
+                        : 'bg-gray-50 text-gray-400 cursor-not-allowed'
+                    }`}
                     required
                   >
                     <option value="">Select Transport</option>
-                    <option value="plane">✈️ Plane</option>
-                    <option value="bus">🚌 Bus</option>
+                    {searchPrompts.to.id && (
+                      <>
+                        <option value="plane">✈️ Plane</option>
+                        <option value="bus">🚌 Bus</option>
+                      </>
+                    )}
                   </select>
                 </div>
 
+                {/* Bus Station/Airport - Only shows after destination and transport type are selected */}
                 <div className="flex-shrink-0">
                   <NisjaNga />
-                </div>
-
-                <div className="flex-shrink-0">
-                  <Destinimi />
                 </div>
 
                 <div className="flex-shrink-0">

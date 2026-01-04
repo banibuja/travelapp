@@ -40,7 +40,7 @@ const Search = () => {
     const DepartureDate = queryParams.get('DepartureDate');
     const nrPersonave = queryParams.get('nrPersonave');
     const nrNeteve = queryParams.get('nrNeteve');
-    const nrNeteveArray = nrNeteve ? nrNeteve.split(',') : [];
+    const nrNeteveArray = nrNeteve ? nrNeteve.split(',').map(n => parseInt(n)) : [];
       
   const [searchPrompts, setSearchPrompts] = useState({
       transportType: transportType,
@@ -149,7 +149,7 @@ const Search = () => {
       const DepartureDate = queryParams.get('DepartureDate');
       const nrPersonave = queryParams.get('nrPersonave');
       const nrNeteve = queryParams.get('nrNeteve');
-      const nrNeteveArray = nrNeteve ? nrNeteve.split(',') : [];
+      const nrNeteveArray = nrNeteve ? nrNeteve.split(',').map(n => parseInt(n)) : [];
 
       setSearchPrompts({
         transportType: transportType,
@@ -209,7 +209,8 @@ const Search = () => {
       });
     }
 
-    // Filter by bus station if transport is bus
+    // Filter by bus station if transport is bus (only if busStation is selected)
+    // If busStation is not selected, show all bus packages for the country
     if(searchPrompts.transportType === 'bus' && searchPrompts.busStation?.id) {
       filteredAranzhmanet = filteredAranzhmanet.filter((aranzhmani) => {
         return aranzhmani.busStationId == searchPrompts.busStation.id;
@@ -237,17 +238,20 @@ const Search = () => {
     }
 
     // Filter by number of nights
-    if(searchPrompts.nrNeteve.length > 0) {
+    if(searchPrompts.nrNeteve.length > 0 && searchPrompts.nrNeteve[0] !== undefined && searchPrompts.nrNeteve[1] !== undefined) {
       filteredAranzhmanet = filteredAranzhmanet.filter((aranzhmani) => {
-        const dataKthimit = new Date(aranzhmani.dataKthimit).getTime();
-        const dataNisjes = new Date(aranzhmani.dataNisjes).getTime();
-        const startDate = dataNisjes + searchPrompts.nrNeteve[0] * 24 * 60 * 60 * 1000;
-        const endDate = dataNisjes + searchPrompts.nrNeteve[1] * 24 * 60 * 60 * 1000;
-    
-        return (
-          dataKthimit >= startDate && 
-          dataKthimit <= endDate
-        );
+        const dataKthimit = new Date(aranzhmani.dataKthimit);
+        const dataNisjes = new Date(aranzhmani.dataNisjes);
+        
+        // Calculate the number of nights (difference in days)
+        const timeDiff = dataKthimit.getTime() - dataNisjes.getTime();
+        const nightsDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        
+        // Check if nightsDiff is within the selected range
+        const minNights = parseInt(searchPrompts.nrNeteve[0]);
+        const maxNights = parseInt(searchPrompts.nrNeteve[1]);
+        
+        return nightsDiff >= minNights && nightsDiff <= maxNights;
       });
     }
   
@@ -642,11 +646,13 @@ const Search = () => {
               <select
                 className="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={handleNrNeteve}
+                value={searchPrompts.nrNeteve.length > 0 ? JSON.stringify({start: searchPrompts.nrNeteve[0], end: searchPrompts.nrNeteve[1]}) : ''}
               >
+              <option value="">All Nights</option>
               <option value='{"start": 0, "end": 5}'>1-5 Nights</option>
               <option value='{"start": 6, "end": 9}'>6-9 Nights</option>
               <option value='{"start": 10, "end": 12}'>10-12 Nights</option>
-              <option value='{"start": 12, "end": 99}'>12+ Nights</option>
+              <option value='{"start": 13, "end": 99}'>13+ Nights</option>
               </select>
             </div>
 
