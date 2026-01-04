@@ -73,6 +73,11 @@ const Aranzhmanet = sequelize.define('aranzhmanet', {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    usageLimit: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: null, // null means unlimited
+    },
   }, {
     tableName: 'aranzhmanet',
     timestamps: false,

@@ -6,6 +6,8 @@ import SvgIcons from '../icons/svgs';
 const SearchItem = ({ data }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [completedReservations, setCompletedReservations] = useState(0);
+  const [isLimitReached, setIsLimitReached] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,6 +28,24 @@ const SearchItem = ({ data }) => {
     checkLoginStatus();
   }, []);
 
+  // Check usage limit
+  useEffect(() => {
+    const checkUsageLimit = async () => {
+      if (data.id && data.usageLimit !== null && data.usageLimit !== undefined) {
+        try {
+          const response = await axios.get(`http://localhost:5001/api/purchases/completed-count/${data.id}`, { withCredentials: true });
+          const count = response.data.count || 0;
+          setCompletedReservations(count);
+          setIsLimitReached(count >= data.usageLimit);
+        } catch (error) {
+          console.error('Error checking usage limit:', error);
+        }
+      }
+    };
+
+    checkUsageLimit();
+  }, [data.id, data.usageLimit]);
+
   const item = {
     airport: data.airport,
     busStation: data.busStation,
@@ -41,6 +61,8 @@ const SearchItem = ({ data }) => {
     titulli: data.titulli,
     imageBase64: data.imageBase64,
     llojiTransportit: data.llojiTransportit,
+    usageLimit: data.usageLimit,
+    id: data.id,
   };
 
   const handleReservation = async () => {
@@ -96,11 +118,11 @@ const SearchItem = ({ data }) => {
         <p className="text-gray-600 text-sm">{item.shteti}</p>
         <div className="mt-2 flex justify-between text-gray-600 text-sm">
           <div>
-            <p>{item.nrPersonave} Të rritur</p>
+            <p>{item.nrPersonave} Adults</p>
             <p>{formatDate(item.dataNisjes)} - {formatDate(item.dataKthimit)}</p>
           </div>
           <div className="text-right">
-            <p>{item.nrNeteve} Netë</p>
+            <p>{item.nrNeteve} Nights</p>
             <p className="font-semibold text-gray-800">€{item.cmimi}.00</p>
           </div>
         </div>
@@ -121,18 +143,38 @@ const SearchItem = ({ data }) => {
             </>
           )}
         </div>
-        <div className="mt-4 text-center">
-          <button
-            className="bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
-            onClick={handleReservation}
-            disabled={!isLoggedIn}
-          >
-            {isLoggedIn ? 'Book This Package' : (
-              <span onClick={() => navigate('/login', { state: { from: window.location.pathname } })}>
-                Please Login
+        {/* Usage Limit Display */}
+        {item.usageLimit !== null && item.usageLimit !== undefined && (
+          <div className="mt-3 p-2 bg-blue-50 rounded-lg border border-blue-200">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-blue-700 font-medium">Availability:</span>
+              <span className={`font-semibold ${isLimitReached ? 'text-red-600' : 'text-green-600'}`}>
+                {completedReservations} / {item.usageLimit} reserved
               </span>
+            </div>
+            {isLimitReached && (
+              <p className="text-red-600 text-xs mt-1 font-medium">Fully Booked</p>
             )}
-          </button>
+          </div>
+        )}
+        <div className="mt-4 text-center">
+          {isLimitReached ? (
+            <div className="bg-gray-400 text-white py-2 px-4 rounded-lg cursor-not-allowed">
+              Fully Booked
+            </div>
+          ) : (
+            <button
+              className="bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
+              onClick={handleReservation}
+              disabled={!isLoggedIn || isLimitReached}
+            >
+              {isLoggedIn ? 'Book This Package' : (
+                <span onClick={() => navigate('/login', { state: { from: window.location.pathname } })}>
+                  Please Login
+                </span>
+              )}
+            </button>
+          )}
         </div>
       </div>
     </div>

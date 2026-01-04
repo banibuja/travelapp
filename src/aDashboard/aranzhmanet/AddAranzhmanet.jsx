@@ -20,6 +20,7 @@ function AddAranzhmanet() {
     busStationId: '',
     rating: '',
     llojiTransportit: '',
+    usageLimit: '',
   });
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -266,17 +267,36 @@ function AddAranzhmanet() {
                 {/* Room Type */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Room Type</label>
-                  <input type="text" name="llojiDhomes" value={formData.llojiDhomes} onChange={handleChange}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500 transition-all"
-                    style={{ background: '#f8fafc' }} placeholder="Double, Suite, etc." required />
+                  <select name="llojiDhomes" value={formData.llojiDhomes} onChange={handleChange}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500 transition-all appearance-none"
+                    style={{ background: '#f8fafc' }} required>
+                    <option value="">Select room type</option>
+                    <option value="Single">Single</option>
+                    <option value="Double">Double</option>
+                    <option value="Twin">Twin</option>
+                    <option value="Triple">Triple</option>
+                    <option value="Quad">Quad</option>
+                    <option value="Suite">Suite</option>
+                    <option value="Family Room">Family Room</option>
+                    <option value="Studio">Studio</option>
+                    <option value="Apartment">Apartment</option>
+                  </select>
                 </div>
 
                 {/* Service */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Service Type</label>
-                  <input type="text" name="sherbimi" value={formData.sherbimi} onChange={handleChange}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500 transition-all"
-                    style={{ background: '#f8fafc' }} placeholder="All Inclusive, BB, HB" required />
+                  <select name="sherbimi" value={formData.sherbimi} onChange={handleChange}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500 transition-all appearance-none"
+                    style={{ background: '#f8fafc' }} required>
+                    <option value="">Select service type</option>
+                    <option value="All Inclusive">All Inclusive</option>
+                    <option value="BB">BB (Bed & Breakfast)</option>
+                    <option value="HB">HB (Half Board)</option>
+                    <option value="FB">FB (Full Board)</option>
+                    <option value="Room Only">Room Only</option>
+                    <option value="Ultra All Inclusive">Ultra All Inclusive</option>
+                  </select>
                 </div>
 
                 {/* Transport Type */}
@@ -292,7 +312,6 @@ function AddAranzhmanet() {
                     <option value="">Select transport type</option>
                     <option value="plane">Plane ✈️</option>
                     <option value="bus">Bus 🚌</option>
-                    <option value="train">Train 🚂</option>
                   </select>
                 </div>
 
@@ -345,9 +364,32 @@ function AddAranzhmanet() {
                 {/* Rating */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Rating (1-5)</label>
-                  <input type="number" name="rating" min="1" max="5" value={formData.rating} onChange={handleChange}
+                  <select name="rating" value={formData.rating} onChange={handleChange}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500 transition-all appearance-none"
+                    style={{ background: '#f8fafc' }} required>
+                    <option value="">Select rating</option>
+                    <option value="1">1 Star</option>
+                    <option value="2">2 Stars</option>
+                    <option value="3">3 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="5">5 Stars</option>
+                  </select>
+                </div>
+
+                {/* Usage Limit */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Usage Limit</label>
+                  <input 
+                    type="number" 
+                    name="usageLimit" 
+                    value={formData.usageLimit} 
+                    onChange={handleChange}
+                    min="1"
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500 transition-all"
-                    style={{ background: '#f8fafc' }} placeholder="5" required />
+                    style={{ background: '#f8fafc' }} 
+                    placeholder="Leave empty for unlimited" 
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Maximum number of times this package can be reserved. Leave empty for unlimited.</p>
                 </div>
 
                 {/* Image Upload */}

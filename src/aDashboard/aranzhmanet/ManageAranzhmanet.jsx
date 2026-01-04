@@ -14,12 +14,34 @@ function ManageAranzhmanet() {
   const [searchTerm, setSearchTerm] = useState('');
   const [editingImage, setEditingImage] = useState(null);
   const [editingImagePreview, setEditingImagePreview] = useState(null);
+  const [reservationsCount, setReservationsCount] = useState({}); // Store counts for each package
 
   useEffect(() => {
     const fetchAranzhmanet = async () => {
       try {
         const response = await axios.get('http://localhost:5001/api/aranzhmanet', { withCredentials: true });
         setAranzhmanet(response.data);
+        
+        // Fetch completed reservations count for each package that has a usage limit
+        const counts = {};
+        const packagesWithLimit = response.data.filter(pkg => pkg.usageLimit !== null && pkg.usageLimit !== undefined);
+        
+        await Promise.all(
+          packagesWithLimit.map(async (pkg) => {
+            try {
+              const countResponse = await axios.get(
+                `http://localhost:5001/api/purchases/completed-count/${pkg.id}`,
+                { withCredentials: true }
+              );
+              counts[pkg.id] = countResponse.data.count || 0;
+            } catch (error) {
+              console.error(`Error fetching count for package ${pkg.id}:`, error);
+              counts[pkg.id] = 0;
+            }
+          })
+        );
+        
+        setReservationsCount(counts);
       } catch (error) {
         console.error('Error fetching packages:', error);
       }
@@ -95,6 +117,38 @@ function ManageAranzhmanet() {
         setEditingImagePreview(null);
         setMessage('Package updated successfully!');
         setTimeout(() => setMessage(''), 3000);
+        
+        // Refresh reservations count for updated package if it has a usage limit
+        if (response.data.usageLimit !== null && response.data.usageLimit !== undefined) {
+          try {
+            const countResponse = await axios.get(
+              `http://localhost:5001/api/purchases/completed-count/${id}`,
+              { withCredentials: true }
+            );
+            setReservationsCount(prev => ({
+              ...prev,
+              [id]: countResponse.data.count || 0
+            }));
+          } catch (error) {
+            console.error(`Error refreshing count for package ${id}:`, error);
+          }
+        }
+        
+        // Refresh reservations count for updated package if it has a usage limit
+        if (response.data.usageLimit !== null && response.data.usageLimit !== undefined) {
+          try {
+            const countResponse = await axios.get(
+              `http://localhost:5001/api/purchases/completed-count/${id}`,
+              { withCredentials: true }
+            );
+            setReservationsCount(prev => ({
+              ...prev,
+              [id]: countResponse.data.count || 0
+            }));
+          } catch (error) {
+            console.error(`Error refreshing count for package ${id}:`, error);
+          }
+        }
       }
     } catch (error) {
       setMessage('Error updating package.');
@@ -112,8 +166,8 @@ function ManageAranzhmanet() {
       sherbimi: item.sherbimi,
       dataNisjes: item.dataNisjes,
       dataKthimit: item.dataKthimit,
-      rating: item.rating,
       llojiTransportit: item.llojiTransportit || '',
+      usageLimit: item.usageLimit || '',
     });
     setEditingImage(null);
     setEditingImagePreview(null);
@@ -186,7 +240,7 @@ function ManageAranzhmanet() {
                   <th className="px-4 py-4 text-left text-xs font-bold text-gray-500 uppercase">Service</th>
                   <th className="px-4 py-4 text-left text-xs font-bold text-gray-500 uppercase">Departure</th>
                   <th className="px-4 py-4 text-left text-xs font-bold text-gray-500 uppercase">Return</th>
-                  <th className="px-4 py-4 text-left text-xs font-bold text-gray-500 uppercase">Rating</th>
+                  <th className="px-4 py-4 text-left text-xs font-bold text-gray-500 uppercase">Usage Limit</th>
                   <th className="px-4 py-4 text-left text-xs font-bold text-gray-500 uppercase">Transport</th>
                   <th className="px-4 py-4 text-center text-xs font-bold text-gray-500 uppercase">Actions</th>
                 </tr>
@@ -269,10 +323,20 @@ function ManageAranzhmanet() {
                     </td>
                     <td className="px-4 py-4">
                       {editingId === item.id ? (
-                        <input type="number" value={updatedFields.rating} onChange={(e) => handleEditChange(e, 'rating')}
-                          className="px-2 py-1 border border-gray-300 rounded-lg text-sm w-16 focus:border-cyan-500 focus:outline-none" />
+                        <input 
+                          type="number" 
+                          value={updatedFields.usageLimit || ''} 
+                          onChange={(e) => handleEditChange(e, 'usageLimit')}
+                          min="1"
+                          className="px-2 py-1 border border-gray-300 rounded-lg text-sm w-20 focus:border-cyan-500 focus:outline-none" 
+                          placeholder="Unlimited" 
+                        />
                       ) : (
-                        <span className="text-yellow-500">{'★'.repeat(item.rating)}</span>
+                        <span className="text-gray-600 font-medium">
+                          {item.usageLimit !== null && item.usageLimit !== undefined 
+                            ? `${reservationsCount[item.id] || 0}/${item.usageLimit}`
+                            : 'Unlimited'}
+                        </span>
                       )}
                     </td>
                     <td className="px-4 py-4">
@@ -282,13 +346,11 @@ function ManageAranzhmanet() {
                           <option value="">Select transport</option>
                           <option value="plane">Plane ✈️</option>
                           <option value="bus">Bus 🚌</option>
-                          <option value="train">Train 🚂</option>
                         </select>
                       ) : (
                         <span className="text-gray-600">
                           {item.llojiTransportit === 'plane' && '✈️ Plane'}
                           {item.llojiTransportit === 'bus' && '🚌 Bus'}
-                          {item.llojiTransportit === 'train' && '🚂 Train'}
                           {!item.llojiTransportit && '-'}
                         </span>
                       )}

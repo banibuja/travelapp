@@ -74,6 +74,7 @@ const {
   getPurchase,
   getUserPurchases,
   getAllPurchases,
+  getCompletedReservationsCount,
   verifyPayment,
   approvePurchase,
   rejectPurchase,
@@ -198,6 +199,7 @@ router.post('/create-checkout-session', createCheckoutSession);
 router.get('/purchase/:id', isAuthenticated, getPurchase);
 router.get('/purchases/user/:userId', isAuthenticated, getUserPurchases);
 router.get('/purchases', isAuthenticated, getAllPurchases);
+router.get('/purchases/completed-count/:aranzhmaniId', getCompletedReservationsCount);
 router.put('/purchases/:id/approve', isAuthenticated, approvePurchase);
 router.put('/purchases/:id/reject', isAuthenticated, rejectPurchase);
 router.put('/purchases/:id/refund', isAuthenticated, refundPurchase);

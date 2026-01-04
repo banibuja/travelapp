@@ -55,7 +55,8 @@ const getAllAranzhmanet = async (req, res) => {
           shtetiId: aranzhmani.shtetiId,
           shteti: aranzhmani.shtetet.emri,
           imageBase64: aranzhmani.imageBase64,
-          llojiTransportit: aranzhmani.llojiTransportit
+          llojiTransportit: aranzhmani.llojiTransportit,
+          usageLimit: aranzhmani.usageLimit
         }
       ))
     );
@@ -81,7 +82,7 @@ const getAllAranzhmanet = async (req, res) => {
 // };
 
 const addAranzhmanet = async (req, res) => {
-  const { titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airportId, busStationId, cmimi, rating, shtetiId, imageBase64, llojiTransportit } = req.body;
+  const { titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airportId, busStationId, cmimi, rating, shtetiId, imageBase64, llojiTransportit, usageLimit } = req.body;
   
   // Validate required fields
   if (!shtetiId || shtetiId === '' || isNaN(parseInt(shtetiId))) {
@@ -104,6 +105,7 @@ const addAranzhmanet = async (req, res) => {
       shtetiId: parseInt(shtetiId),
       imageBase64: imageBase64 || null,
       llojiTransportit: llojiTransportit || null,
+      usageLimit: usageLimit ? parseInt(usageLimit) : null,
     });
 
     // Try to send email, but don't fail if it doesn't work
@@ -115,17 +117,17 @@ const addAranzhmanet = async (req, res) => {
         const mailOptions = {
           from: process.env.EMAIL_USER,
           to: emailList,
-          subject: 'Ofertë e re është shtuar!',
-          text: `Një ofertë e re është shtuar:
+          subject: 'New Offer Added!',
+          text: `A new offer has been added:
       
-      Titulli: ${newAranzhmani.titulli}
-      Numri i Personave: ${newAranzhmani.nrPersonave}
-      Numri i Netëve: ${newAranzhmani.nrNeteve}
-      Lloji i Dhomës: ${newAranzhmani.llojiDhomes}
-      Shërbimi: ${newAranzhmani.sherbimi}
-      Data e Nisjes: ${newAranzhmani.dataNisjes}
-      Data e Kthimit: ${newAranzhmani.dataKthimit}
-      Çmimi: ${newAranzhmani.cmimi} EUR
+      Title: ${newAranzhmani.titulli}
+      Number of People: ${newAranzhmani.nrPersonave}
+      Number of Nights: ${newAranzhmani.nrNeteve}
+      Room Type: ${newAranzhmani.llojiDhomes}
+      Service: ${newAranzhmani.sherbimi}
+      Departure Date: ${newAranzhmani.dataNisjes}
+      Return Date: ${newAranzhmani.dataKthimit}
+      Price: ${newAranzhmani.cmimi} EUR
       `,
         };
 
@@ -172,7 +174,7 @@ const deleteAranzhmanet = async (req, res) => {
 const updateAranzhmani = async (req, res) => {
   try {
     const { id } = req.params;
-    const { titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airport, airportId, busStationId, cmimi, rating, shteti, imageBase64, llojiTransportit } = req.body;
+    const { titulli, nrPersonave, nrNeteve, llojiDhomes, sherbimi, dataNisjes, dataKthimit, airport, airportId, busStationId, cmimi, rating, shteti, imageBase64, llojiTransportit, usageLimit } = req.body;
     const Aranzhmani = await Aranzhmanet.findByPk(id);
     if (!Aranzhmani) {
       return res.status(404).json({ error: 'Aranzhmani not found' });
@@ -201,6 +203,9 @@ const updateAranzhmani = async (req, res) => {
     if (llojiTransportit !== undefined) {
       Aranzhmani.llojiTransportit = llojiTransportit;
     }
+    if (usageLimit !== undefined) {
+      Aranzhmani.usageLimit = usageLimit ? parseInt(usageLimit) : null;
+    }
 
     await Aranzhmani.save();
     
@@ -218,6 +223,7 @@ const updateAranzhmani = async (req, res) => {
       nrPersonave: updatedAranzhmani.nrPersonave,
       nrNeteve: updatedAranzhmani.nrNeteve,
       llojiDhomes: updatedAranzhmani.llojiDhomes,
+      usageLimit: updatedAranzhmani.usageLimit,
       sherbimi: updatedAranzhmani.sherbimi,
       dataNisjes: updatedAranzhmani.dataNisjes,
       dataKthimit: updatedAranzhmani.dataKthimit,
@@ -230,6 +236,7 @@ const updateAranzhmani = async (req, res) => {
           shteti: updatedAranzhmani.shtetet.emri,
           imageBase64: updatedAranzhmani.imageBase64,
           llojiTransportit: updatedAranzhmani.llojiTransportit,
+          usageLimit: updatedAranzhmani.usageLimit,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
