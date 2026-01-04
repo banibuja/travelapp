@@ -30,6 +30,7 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "sequelize": "^6.37.5",
+    "connect-session-sequelize": "^7.1.1",
     "stripe": "^14.21.0"
   },
   "devDependencies": {

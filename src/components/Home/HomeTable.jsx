@@ -21,6 +21,7 @@ function HomeTable() {
   const [isDepartureDropdownOpen, setIsDepartureDropdownOpen] = useState(false);
   const [isNrNeteveDropdownOpen, setIsNrNeteveDropdownOpen] = useState(false);
   const [isBusStationDropdownOpen, setIsBusStationDropdownOpen] = useState(false);
+  const [showTransportModal, setShowTransportModal] = useState(false);
 
   const today = new Date().toISOString().split('T')[0];
   const [searchPrompts, setSearchPrompts] = useState({
@@ -184,7 +185,7 @@ function HomeTable() {
           className="w-full border border-gray-300 rounded-md p-3 caret-transparent outline-none"
           onChange={handleDepartureDate}
           minDate={today}
-          placeholderText="Data e Nisjes"
+          placeholderText="Departure Date"
           selected={searchPrompts.DepartureDate}
           onKeyDown={(e) => e.preventDefault()}
         />
@@ -205,7 +206,7 @@ function HomeTable() {
           value={searchPrompts.nrPersonave || ''}  
           className="border caret-transparent rounded-lg p-3 w-28 outline-none"
           onKeyDown={(e) => e.preventDefault()}
-          placeholder="Udhëtarët"
+          placeholder="Travelers"
           min={1}
         />
       </div>
@@ -226,7 +227,7 @@ function HomeTable() {
     return (
       <div className="relative font-sans border-gray-300 rounded-lg w-40 shadow-md">
         <button type='button' onClick={() => {setIsDepartureDropdownOpen(false);setIsDropdownOpen(false);setIsNrNeteveDropdownOpen(!isNrNeteveDropdownOpen)}} className="outline-none flex items-center w-40 p-3 bg-gray-100 border rounded-md hover:bg-gray-200">
-        {searchPrompts.nrNeteve ? `${searchPrompts.nrNeteve[0]}-${searchPrompts.nrNeteve[1]} Netë` : 'Numri i Neteve'}
+        {searchPrompts.nrNeteve ? `${searchPrompts.nrNeteve[0]}-${searchPrompts.nrNeteve[1]} Nights` : 'Number of Nights'}
         </button>
 
         {isNrNeteveDropdownOpen && (
@@ -237,7 +238,7 @@ function HomeTable() {
                     onClick={() => handleNrNeteve(null)}
                     className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
                   >
-                    Te gjitha
+                    All
                   </div>
                 </li>
                 <li key="0" className="p-2 text-sm text-[#374151] cursor-pointer transition-all  ">
@@ -245,7 +246,7 @@ function HomeTable() {
                     onClick={() => handleNrNeteve([0, 5])}
                     className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
                   >
-                    1-5 Netë
+                    1-5 Nights
                   </div>
                 </li>
                 <li key="1" className="p-2 text-sm text-[#374151] cursor-pointer transition-all  ">
@@ -253,7 +254,7 @@ function HomeTable() {
                     onClick={() => handleNrNeteve([6, 9])}
                     className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
                   >
-                    6-9 Netë
+                    6-9 Nights
                   </div>
                 </li>
                 <li key="2" className="p-2 text-sm text-[#374151] cursor-pointer transition-all  ">
@@ -261,7 +262,7 @@ function HomeTable() {
                     onClick={() => handleNrNeteve([10, 12])}
                     className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
                   >
-                    10-12 Netë
+                    10-12 Nights
                   </div>
                 </li>
                 <li key="3" className="p-2 text-sm text-[#374151] cursor-pointer transition-all  ">
@@ -269,7 +270,7 @@ function HomeTable() {
                     onClick={() => handleNrNeteve([13,99])}
                     className="font-semibold text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded"
                   >
-                    12+ Netë
+                    12+ Nights
                   </div>
                 </li>
               </ul>
@@ -288,7 +289,7 @@ function HomeTable() {
       <div className="relative">
       <button type='button' onClick={() => {setIsDropdownOpen(!isDropdownOpen);setIsDepartureDropdownOpen(false)}} className="flex outline-none items-center w-40 p-3 bg-gray-100 border rounded-md hover:bg-gray-200">
         <span className="mr-2">🌍</span>
-        {searchPrompts.to.qyteti.emri|| searchPrompts.to.emri || 'Destinimi'}
+        {searchPrompts.to.qyteti.emri|| searchPrompts.to.emri || 'Destination'}
       </button>
 
       {isDropdownOpen && (
@@ -297,7 +298,7 @@ function HomeTable() {
           <div className="p-2">
             <input
               type="text"
-              placeholder="Kërko vend ose qytet"
+              placeholder="Search place or city"
               className="w-full p-2 border rounded-md focus:outline-none "
             />
           </div>
@@ -449,7 +450,7 @@ function HomeTable() {
   const handleSearch = () => {
     // Validate that transport type is selected
     if (!transportType) {
-      alert('Ju lutem zgjidhni llojin e transportit');
+      setShowTransportModal(true);
       return;
     }
     
@@ -499,7 +500,7 @@ function HomeTable() {
                 className={`flex items-center justify-center px-4 py-2 rounded-lg w-28 `}
                 onClick={() => setSelected(0)}
               >
-              <span className="z-10">Aranzhman</span>
+              <span className="z-10">Package</span>
                 
               </button>
 
@@ -516,7 +517,7 @@ function HomeTable() {
                 className={`flex items-center justify-center px-4 py-2 rounded-lg w-28 `}
                 onClick={() => setSelected(2)}
               >
-                <span className="z-10">Fluturimi</span>
+                <span className="z-10">Flight</span>
               </button>
             </div>
           </div>
@@ -560,7 +561,7 @@ function HomeTable() {
                 </div>
 
                 <button className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 flex-shrink-0 whitespace-nowrap" onClick={handleSearch}>
-                  KËRKO 
+                  SEARCH 
                 </button>
               </>
             )}
@@ -583,7 +584,7 @@ function HomeTable() {
                 </div>
 
                 <button className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 flex-shrink-0 whitespace-nowrap" onClick={handleSearch}>
-                  KËRKO 
+                  SEARCH 
                 </button>
               </>
             )}
@@ -606,13 +607,64 @@ function HomeTable() {
                 </div>
 
                 <button className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 flex-shrink-0 whitespace-nowrap" onClick={handleSearch}>
-                  KËRKO 
+                  SEARCH 
                 </button>
               </>
             )}
           </div>
         </div>
       </div>
+
+      {/* Transport Type Modal */}
+      {showTransportModal && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md mx-4">
+            <div className="flex items-center space-x-4 mb-6">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg, #f97316, #fb923c)' }}>
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-800">Transport Type Required</h3>
+                <p className="text-gray-500 text-sm">Please select a transport type to continue</p>
+              </div>
+            </div>
+
+            <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-6">
+              <p className="text-orange-800 text-center font-medium">
+                You need to select a transport type (Plane or Bus) before searching for packages.
+              </p>
+            </div>
+
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => setShowTransportModal(false)}
+                className="px-5 py-2.5 rounded-xl text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors font-medium"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => {
+                  setShowTransportModal(false);
+                  // Focus on transport type selector
+                  setTimeout(() => {
+                    const transportSelect = document.querySelector('select[value=""]');
+                    if (transportSelect) {
+                      transportSelect.focus();
+                    }
+                  }, 100);
+                }}
+                className="px-5 py-2.5 rounded-xl text-white font-semibold"
+                style={{ background: 'linear-gradient(135deg, #f97316, #fb923c)' }}
+              >
+                Select Transport
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
   

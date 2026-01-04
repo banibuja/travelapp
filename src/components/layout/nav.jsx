@@ -131,7 +131,7 @@ function Nav() {
                 to="/kontakt"
                 className="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-cyan-600 hover:bg-cyan-50 transition-all duration-200"
               >
-                Kontakti
+                Contact
               </Link>
             </div>
           </div>
@@ -209,7 +209,7 @@ function Nav() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-cyan-50 hover:text-cyan-600 transition-all duration-200 font-medium"
               >
-                Kontakti
+                Contact
               </Link>
             </div>
           </div>

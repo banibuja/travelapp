@@ -65,16 +65,40 @@ app.use(express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 5001
 
 // Middleware for handling cookies, sessions, and flash messages
 app.use(cookieParser());
+
+// Configure session store to persist in database (prevents session loss on server restart)
+let sessionStore = null;
+try {
+  const SequelizeStore = require('connect-session-sequelize')(session.Store);
+  sessionStore = new SequelizeStore({
+    db: sequelize,
+    tableName: 'sessions',
+    checkExpirationInterval: 15 * 60 * 1000, // Check every 15 minutes
+    expiration: 10 * 365 * 24 * 60 * 60 * 1000, // 10 years
+  });
+  // Sync session store with database
+  sessionStore.sync();
+  console.log('Session store initialized with database persistence');
+} catch (error) {
+  console.warn('connect-session-sequelize not installed. Using memory store. Sessions will be lost on server restart.');
+  console.warn('To fix this, run: npm install connect-session-sequelize');
+}
+
 app.use(session({
   secret: process.env.SESSION_SECRET || 'supersecret',
   resave: false,
   saveUninitialized: false,
+  store: sessionStore, // Will be null if package not installed, using memory store
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    maxAge: 10 * 365 * 24 * 60 * 60 * 1000, // 10 years (practically unlimited)
+    sameSite: 'lax', // Better compatibility
   },
 }));
+
+// Sync session store with database
+sessionStore.sync();
 
 // app.use((req, res, next) => {
 //   console.log('Request Origin:', req.headers.origin);
@@ -146,8 +170,14 @@ const isAuthenticated = (req, res, next) => {
 };
 
 // Example routes
-app.get('/user', isAuthenticated, (req, res) => {
-  res.json({ user: req.user });
+app.get('/user', (req, res) => {
+  // Check if user is authenticated via passport session
+  if (req.isAuthenticated && req.isAuthenticated() && req.user) {
+    return res.json({ user: req.user });
+  }
+  
+  // If not authenticated via session, return null
+  return res.status(401).json({ error: 'Not authenticated' });
 });
 
 app.get('/', (req, res) => {

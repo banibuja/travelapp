@@ -127,9 +127,9 @@ const SearchItem = ({ data }) => {
             onClick={handleReservation}
             disabled={!isLoggedIn}
           >
-            {isLoggedIn ? 'Rezervo këtë aranzhma...' : (
+            {isLoggedIn ? 'Book This Package' : (
               <span onClick={() => navigate('/login', { state: { from: window.location.pathname } })}>
-                Ju duhet të kyçeni
+                Please Login
               </span>
             )}
           </button>
