@@ -76,10 +76,10 @@ const App = () => {
 
       <div className='overflow-hidden'>
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/*<Route path="/" element={<Home />} />
           <Route path="/turqi" element={<Turqi />} />
           <Route path="/bullgari" element={<Bullgari />} />
-          {/* <Route path="/MaqedoniPricesTable" element={<ManageMaqedoni />} /> */}
+          {/* <Route path="/MaqedoniPricesTable" element={<ManageMaqedoni />} />
           <Route path="/greqi" element={<Greqi />} />
           <Route path="/Kontakt" element={<Kontakt />} />
           <Route path="/maqedoni" element={<Maqedoni />} />
@@ -125,7 +125,7 @@ const App = () => {
           <Route path="/Dubai" element={<Dubai />} />
           <Route path="/VisitKosova" element={<VisitKosova />} />
 
-          {/* <Route path="/AddRoomPrices" element={<AddRoomPrices />} /> */}
+          {/* <Route path="/AddRoomPrices" element={<AddRoomPrices />} /> 
 
 
           <Route path="/login" element={<Login />} />
@@ -137,7 +137,7 @@ const App = () => {
 
           <Route path="/dashboard/purchases" element={<ProtectedRoute><PurchasesTable /></ProtectedRoute>} />
           <Route path="/dashboard/purchases/:id" element={<ProtectedRoute><PurchaseDetails /></ProtectedRoute>} />
-
+*/}
         </Routes>
       </div></>
   );
